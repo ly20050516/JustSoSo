@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
+        Picasso.with(this).setIndicatorsEnabled(true);
         mSingleImageView = (ImageView) findViewById(R.id.single_image_view);
         Picasso.with(this).load("http://i.imgur.com/DvpvklR.png").into(mSingleImageView);
         mSingleImageView.setOnClickListener(new View.OnClickListener() {

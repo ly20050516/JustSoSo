@@ -29,6 +29,7 @@ public class PicassoListAdapter extends BaseAdapter {
         if(null == mPicassoItems)
             mPicassoItems = new ArrayList<>();
         mContext = context;
+
         mLayoutInflater = LayoutInflater.from(mContext);
     }
     /**
@@ -94,7 +95,7 @@ public class PicassoListAdapter extends BaseAdapter {
         }else{
             itemViewHolder = (ItemViewHolder) convertView.getTag();
         }
-        itemViewHolder.textView .setText( mPicassoItems.get(position).description);
+        itemViewHolder.textView .setText(mPicassoItems.get(position).description);
         Log.d(TAG, "getView: url " + mPicassoItems.get(position).url);
         Picasso.with(mContext).load(mPicassoItems.get(position).url).fit().into(itemViewHolder.imageView);
         return convertView;
