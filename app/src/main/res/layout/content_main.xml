@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,12 +10,21 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.ly.picassostudy.MainActivity"
+    android:orientation="vertical"
     tools:showIn="@layout/activity_main">
 
     <ImageView
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
         android:id="@+id/single_image_view"
-        android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
          />
-</RelativeLayout>
+    <ImageView
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:id="@+id/recycle_image_view"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        />
+</LinearLayout>

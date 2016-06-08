@@ -11,11 +11,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import com.ly.picassostudy.listview.RecycleViewAdapter;
 import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
 
     ImageView mSingleImageView;
+    ImageView mRecyleImageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,13 +37,31 @@ public class MainActivity extends AppCompatActivity {
         Picasso.with(this).setIndicatorsEnabled(true);
 
         mSingleImageView = (ImageView) findViewById(R.id.single_image_view);
+        mRecyleImageView = (ImageView) findViewById(R.id.recycle_image_view);
+
         Picasso.with(this).load("http://i.imgur.com/DvpvklR.png").into(mSingleImageView);
+        Picasso.with(this).load("http://img5.imgtn.bdimg.com/it/u=3455205360,3244468299&fm=21&gp=0.jpg").into(mRecyleImageView);
         mSingleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Intent intent = new Intent();
-                intent.setClass(MainActivity.this,ListViewActivity.class);
+                intent.setClass(MainActivity.this, ListViewActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        mRecyleImageView.setOnClickListener(new View.OnClickListener(){
+
+            /**
+             * Called when a view has been clicked.
+             *
+             * @param v The view that was clicked.
+             */
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, RecycleViewActivity.class);
                 startActivity(intent);
             }
         });
