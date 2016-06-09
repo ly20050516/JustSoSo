@@ -1,5 +1,7 @@
 package com.ly.picassostudy;
 
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -12,16 +14,26 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.alibaba.fastjson.JSON;
+import com.ly.picassostudy.bean.Pictures;
 import com.ly.picassostudy.listview.DetailImageView;
 import com.ly.picassostudy.listview.PicassoRecycleItem;
 import com.ly.picassostudy.listview.RecycleViewAdapter;
 import com.ly.picassostudy.listview.SpacesItemDecoration;
+import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.net.URLStreamHandler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class RecycleViewActivity extends AppCompatActivity {
 
@@ -66,6 +78,7 @@ public class RecycleViewActivity extends AppCompatActivity {
             "http://imgsrc.baidu.com/forum/w%3D580/sign=12d1cf12a1cc7cd9fa2d34d109002104/5edf8db1cb134954b75d3c9b544e9258d0094a8a.jpg"
     };
 
+
     RecyclerView mRecycleView;
     RecycleViewAdapter mRecycleViewAdapter;
     DetailImageView mImageView;
@@ -80,12 +93,14 @@ public class RecycleViewActivity extends AppCompatActivity {
         mRecycleView = (RecyclerView) findViewById(R.id.picasso_recycle_view);
         mFrameLayout = (FrameLayout) findViewById(R.id.root_activity_recycle_view);
         mRecycleView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        mRecycleViewAdapter = new RecycleViewAdapter(this, initData());
+        mRecycleViewAdapter = new RecycleViewAdapter(this, null);
         mRecycleView.setItemAnimator(new DefaultItemAnimator());
         mRecycleView.addItemDecoration(new SpacesItemDecoration(16));
         mRecycleView.setHasFixedSize(true);
         initOnClickListener(mRecycleViewAdapter);
         mRecycleView.setAdapter(mRecycleViewAdapter);
+
+        okhttpFromPictureServer();
     }
 
     @Override
@@ -96,7 +111,47 @@ public class RecycleViewActivity extends AppCompatActivity {
             super.onBackPressed();
     }
 
-    List initData() {
+    public static final int MSG_NOTIFY_RECYCLE_ADAPTR_CHANGED = 100;
+    Handler H = new Handler(){
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case MSG_NOTIFY_RECYCLE_ADAPTR_CHANGED:
+                {
+                    mRecycleViewAdapter.notifyDataSetChanged();
+                    break;
+                }
+            }
+            super.handleMessage(msg);
+        }
+    };
+    void okhttpFromPictureServer(){
+        OkHttpClient okHttpClient = new OkHttpClient();
+        Request request = new Request.Builder().url("http://192.168.3.13:8080/PictureServer/GetPictures").build();
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d(TAG, "onFailure: " + call.request().body().toString());
+                Log.d(TAG, "onFailure: " + e.getMessage());
+                e.printStackTrace();
+                mRecycleViewAdapter.setmDatas(initDataFromURLS());
+                H.sendEmptyMessage(MSG_NOTIFY_RECYCLE_ADAPTR_CHANGED);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String jsonString = response.body().string();
+                Log.d(TAG, "onResponse: jsonString " + jsonString);
+                Pictures pictures = JSON.parseObject(jsonString,Pictures.class);
+                Log.d(TAG, "onResponse: getClientName " + pictures.getClientName());
+                mRecycleViewAdapter.setmDatas(initDataFromePictureServer(pictures));
+                H.sendEmptyMessage(MSG_NOTIFY_RECYCLE_ADAPTR_CHANGED);
+            }
+        });
+    }
+    List initDataFromURLS() {
         List<PicassoRecycleItem> lists = new ArrayList<>();
         Random random = new Random();
         for (int i = 0; i < URLS.length; i++) {
@@ -106,9 +161,25 @@ public class RecycleViewActivity extends AppCompatActivity {
             item.height = 600 + random.nextInt(100);
             lists.add(item);
         }
+
+
         return lists;
     }
 
+    List initDataFromePictureServer(Pictures picture){
+
+        List<PicassoRecycleItem> lists = new ArrayList<>();
+        Random random = new Random();
+        int N = picture.getPictures().size();
+        for (int i = 0; i <N; i++) {
+            PicassoRecycleItem item = new PicassoRecycleItem();
+            item.url = picture.getPictures().get(i);
+            item.width = 500 + random.nextInt(60);
+            item.height = 600 + random.nextInt(100);
+            lists.add(item);
+        }
+        return lists;
+    }
     void initOnClickListener(RecycleViewAdapter adapter) {
         adapter.setmOnClickItemListener(new RecycleViewAdapter.onClickItemListener() {
             @Override

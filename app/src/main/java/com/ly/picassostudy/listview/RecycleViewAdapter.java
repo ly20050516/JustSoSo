@@ -21,6 +21,11 @@ import java.util.List;
 public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.RecycleViewHolder> {
 
     public static final String TAG = RecycleViewAdapter.class.getCanonicalName();
+
+    public void setmDatas(List<PicassoRecycleItem> mDatas) {
+        this.mDatas = mDatas;
+    }
+
     private List<PicassoRecycleItem> mDatas;
     private LayoutInflater mLayoutInflater;
     private Context mContext;
