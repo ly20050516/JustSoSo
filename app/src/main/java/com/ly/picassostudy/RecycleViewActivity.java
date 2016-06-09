@@ -6,9 +6,17 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 
+import com.ly.picassostudy.listview.DetailImageView;
 import com.ly.picassostudy.listview.PicassoRecycleItem;
 import com.ly.picassostudy.listview.RecycleViewAdapter;
+import com.ly.picassostudy.listview.SpacesItemDecoration;
+import com.squareup.picasso.Picasso;
 
 import java.net.URLStreamHandler;
 import java.util.ArrayList;
@@ -17,10 +25,10 @@ import java.util.Random;
 
 public class RecycleViewActivity extends AppCompatActivity {
 
+    public static final String TAG = RecycleViewActivity.class.getCanonicalName();
 
-
-    static  String[] URLS = {
-            "http://g.hiphotos.baidu.com/zhidao/pic/item/37d12f2eb9389b50a9794db98335e5dde6116e53.jpg",
+    static String[] URLS = {
+            "http://b.hiphotos.baidu.com/zhidao/pic/item/eaf81a4c510fd9f9169aeb8c272dd42a2934a442.jpg",
             "http://pic67.nipic.com/file/20150514/21036787_181947848862_2.jpg",
             "http://c.hiphotos.baidu.com/zhidao/wh%3D450%2C600/sign=4f582c74b4fb43161a4a727e15946a15/72f082025aafa40f39ce8262ad64034f78f01900.jpg",
             "http://img1.imgtn.bdimg.com/it/u=3444612337,3844090186&fm=21&gp=0.jpg",
@@ -60,19 +68,35 @@ public class RecycleViewActivity extends AppCompatActivity {
 
     RecyclerView mRecycleView;
     RecycleViewAdapter mRecycleViewAdapter;
+    DetailImageView mImageView;
+    ViewGroup.LayoutParams mImageViewParams;
+    FrameLayout mFrameLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycle_view);
 
         mRecycleView = (RecyclerView) findViewById(R.id.picasso_recycle_view);
-        mRecycleView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
-        mRecycleViewAdapter = new RecycleViewAdapter(this,initData());
+        mFrameLayout = (FrameLayout) findViewById(R.id.root_activity_recycle_view);
+        mRecycleView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        mRecycleViewAdapter = new RecycleViewAdapter(this, initData());
         mRecycleView.setItemAnimator(new DefaultItemAnimator());
+        mRecycleView.addItemDecoration(new SpacesItemDecoration(16));
+        mRecycleView.setHasFixedSize(true);
+        initOnClickListener(mRecycleViewAdapter);
         mRecycleView.setAdapter(mRecycleViewAdapter);
     }
 
-    List initData(){
+    @Override
+    public void onBackPressed() {
+        if (mImageView!= null && mImageView.isShowing()) {
+            mImageView.hide();
+        } else
+            super.onBackPressed();
+    }
+
+    List initData() {
         List<PicassoRecycleItem> lists = new ArrayList<>();
         Random random = new Random();
         for (int i = 0; i < URLS.length; i++) {
@@ -83,5 +107,26 @@ public class RecycleViewActivity extends AppCompatActivity {
             lists.add(item);
         }
         return lists;
+    }
+
+    void initOnClickListener(RecycleViewAdapter adapter) {
+        adapter.setmOnClickItemListener(new RecycleViewAdapter.onClickItemListener() {
+            @Override
+            public void onClickImage(View view, int position, PicassoRecycleItem item) {
+                Log.d(TAG, "onClickImage: url " + item.url);
+                showImageDetail(item);
+            }
+        });
+    }
+
+    void showImageDetail(PicassoRecycleItem item) {
+        if (mImageView == null) {
+            mImageView = new DetailImageView(this);
+            mImageViewParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        }
+        mFrameLayout.removeView(mImageView);
+        mFrameLayout.addView(mImageView, mImageViewParams);
+        mImageView.show();
+        Picasso.with(this).load(item.url).into(mImageView.mImageView);
     }
 }

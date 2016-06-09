@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ListViewActivity" />
-        <activity android:name=".RecycleViewActivity"></activity>
+        <activity android:name=".RecycleViewActivity" />
     </application>
 
 </manifest>

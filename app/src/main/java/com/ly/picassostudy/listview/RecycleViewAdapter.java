@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.ly.picassostudy.R;
@@ -15,18 +14,22 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by LY on 6/8/2016.
  */
 public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.RecycleViewHolder> {
 
-    public static final String TAG = RecycleViewAdapter.class.getName();
+    public static final String TAG = RecycleViewAdapter.class.getCanonicalName();
     private List<PicassoRecycleItem> mDatas;
     private LayoutInflater mLayoutInflater;
     private Context mContext;
 
+    public void setmOnClickItemListener(onClickItemListener mOnClickItemListener) {
+        this.mOnClickItemListener = mOnClickItemListener;
+    }
+
+    private onClickItemListener mOnClickItemListener;
     public RecycleViewAdapter(Context context,List<PicassoRecycleItem> list){
         mDatas = list;
         if(mDatas == null)
@@ -80,13 +83,17 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
      * @param position The position of the item within the adapter's data set.
      */
     @Override
-    public void onBindViewHolder(RecycleViewHolder holder, int position) {
-        Log.d(TAG, "onBindViewHolder: url " + position + " " + mDatas.get(position));
-        ViewGroup.LayoutParams lp = holder.imageView.getLayoutParams();
-        lp.width =  mDatas.get(position).width;
-        lp.height =  mDatas.get(position).height;
-        holder.imageView.setLayoutParams(lp);
-        Picasso.with(mContext).load(mDatas.get(position).url).fit().into(holder.imageView);
+    public void onBindViewHolder(final RecycleViewHolder holder, final int position) {
+        Log.d(TAG, "onBindViewHolder: url " + position + " " + mDatas.get(position).url);
+        Picasso.with(mContext).load(mDatas.get(position).url).placeholder(R.drawable.user_placeholder).error(R.drawable.user_placeholder).into(holder.imageView);
+        if(mOnClickItemListener != null){
+            holder.imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnClickItemListener.onClickImage(holder.imageView,position,mDatas.get(position));
+                }
+            });
+        }
     }
 
     /**
@@ -106,5 +113,9 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
             imageView = (ImageView) itemView.findViewById(R.id.picasso_item_recycle_view);
         }
+    }
+
+    public interface onClickItemListener{
+        void onClickImage(View view,int position,PicassoRecycleItem item);
     }
 }
