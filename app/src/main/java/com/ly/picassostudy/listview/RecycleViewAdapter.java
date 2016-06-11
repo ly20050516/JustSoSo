@@ -26,6 +26,10 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         this.mDatas = mDatas;
     }
 
+    public List<PicassoRecycleItem> getmDatas() {
+        return mDatas;
+    }
+
     private List<PicassoRecycleItem> mDatas;
     private LayoutInflater mLayoutInflater;
     private Context mContext;

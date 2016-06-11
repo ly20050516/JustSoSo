@@ -7,4 +7,5 @@ public class PicassoRecycleItem {
     public int width;
     public int height;
     public String url;
+    public String detailUrl;
 }

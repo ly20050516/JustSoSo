@@ -24,6 +24,8 @@ import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.net.URLStreamHandler;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,13 +33,19 @@ import java.util.Random;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class RecycleViewActivity extends AppCompatActivity {
 
     public static final String TAG = RecycleViewActivity.class.getCanonicalName();
+
+    final static String KEY_WORD = "KEY_WORD";
+    final static String PAGE_NO = "PAGE_NO";
+    final static String PAGE_COUNT = "PAGE_COUNT";
 
     static String[] URLS = {
             "http://b.hiphotos.baidu.com/zhidao/pic/item/eaf81a4c510fd9f9169aeb8c272dd42a2934a442.jpg",
@@ -100,7 +108,11 @@ public class RecycleViewActivity extends AppCompatActivity {
         initOnClickListener(mRecycleViewAdapter);
         mRecycleView.setAdapter(mRecycleViewAdapter);
 
-        okhttpFromPictureServer();
+        try {
+            okhttpFromPictureServer();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -126,14 +138,17 @@ public class RecycleViewActivity extends AppCompatActivity {
             super.handleMessage(msg);
         }
     };
-    void okhttpFromPictureServer(){
+    void okhttpFromPictureServer() throws UnsupportedEncodingException {
         OkHttpClient okHttpClient = new OkHttpClient();
-        Request request = new Request.Builder().url("http://192.168.3.13:8080/PictureServer/GetPictures").build();
+
+        RequestBody formBuild = new FormBody.Builder().add(KEY_WORD, URLEncoder.encode("美女","utf-8")).add(PAGE_NO,"" + 0).add(PAGE_COUNT,"" + 40).build();
+        Request request = new Request.Builder().url("http://192.168.3.13:8080/PictureServer/GetPictures").post(formBuild).build();
         Call call = okHttpClient.newCall(request);
+
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.d(TAG, "onFailure: " + call.request().body().toString());
+
                 Log.d(TAG, "onFailure: " + e.getMessage());
                 e.printStackTrace();
                 mRecycleViewAdapter.setmDatas(initDataFromURLS());
@@ -173,7 +188,8 @@ public class RecycleViewActivity extends AppCompatActivity {
         int N = picture.getPictures().size();
         for (int i = 0; i <N; i++) {
             PicassoRecycleItem item = new PicassoRecycleItem();
-            item.url = picture.getPictures().get(i);
+            item.url = picture.getPictures().get(i).getThumbURL();
+            item.detailUrl = picture.getPictures().get(i).getObjURL();
             item.width = 500 + random.nextInt(60);
             item.height = 600 + random.nextInt(100);
             lists.add(item);
@@ -198,6 +214,6 @@ public class RecycleViewActivity extends AppCompatActivity {
         mFrameLayout.removeView(mImageView);
         mFrameLayout.addView(mImageView, mImageViewParams);
         mImageView.show();
-        Picasso.with(this).load(item.url).into(mImageView.mImageView);
+        Picasso.with(this).load(item.detailUrl).into(mImageView.mImageView);
     }
 }
