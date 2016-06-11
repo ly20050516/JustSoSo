@@ -1,18 +1,26 @@
 package com.ly.picassostudy;
 
+import android.app.SearchManager;
+import android.app.SearchableInfo;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.SearchView;
 
 import com.alibaba.fastjson.JSON;
 import com.ly.picassostudy.bean.Pictures;
@@ -46,6 +54,7 @@ public class RecycleViewActivity extends AppCompatActivity {
     final static String KEY_WORD = "KEY_WORD";
     final static String PAGE_NO = "PAGE_NO";
     final static String PAGE_COUNT = "PAGE_COUNT";
+    static final String PICTURE_SERVER = "http://192.168.3.13:8080/PictureServer/GetPictures";
 
     static String[] URLS = {
             "http://b.hiphotos.baidu.com/zhidao/pic/item/eaf81a4c510fd9f9169aeb8c272dd42a2934a442.jpg",
@@ -92,14 +101,23 @@ public class RecycleViewActivity extends AppCompatActivity {
     DetailImageView mImageView;
     ViewGroup.LayoutParams mImageViewParams;
     FrameLayout mFrameLayout;
+    SearchOption mSearchOption;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycle_view);
+        Intent intent = getIntent();
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            Log.d(TAG, "onCreate: query " + query);
+        }
 
         mRecycleView = (RecyclerView) findViewById(R.id.picasso_recycle_view);
         mFrameLayout = (FrameLayout) findViewById(R.id.root_activity_recycle_view);
+
+        mSearchOption = new SearchOption();
+
         mRecycleView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         mRecycleViewAdapter = new RecycleViewAdapter(this, null);
         mRecycleView.setItemAnimator(new DefaultItemAnimator());
@@ -108,11 +126,22 @@ public class RecycleViewActivity extends AppCompatActivity {
         initOnClickListener(mRecycleViewAdapter);
         mRecycleView.setAdapter(mRecycleViewAdapter);
 
-        try {
-            okhttpFromPictureServer();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        searchPictureFromPictureServer(mSearchOption);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            Log.d(TAG, "onNewIntent: query " + query);
+            mSearchOption.keywords = query;
+            mSearchOption.pageNo = 0;
+            mSearchOption.counts = 40;
+            searchPictureFromPictureServer(mSearchOption);
+
         }
+        super.onNewIntent(intent);
     }
 
     @Override
@@ -123,6 +152,25 @@ public class RecycleViewActivity extends AppCompatActivity {
             super.onBackPressed();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_recycle_view, menu);
+
+        SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        return super.onOptionsItemSelected(item);
+    }
     public static final int MSG_NOTIFY_RECYCLE_ADAPTR_CHANGED = 100;
     Handler H = new Handler(){
 
@@ -138,11 +186,19 @@ public class RecycleViewActivity extends AppCompatActivity {
             super.handleMessage(msg);
         }
     };
-    void okhttpFromPictureServer() throws UnsupportedEncodingException {
-        OkHttpClient okHttpClient = new OkHttpClient();
 
-        RequestBody formBuild = new FormBody.Builder().add(KEY_WORD, URLEncoder.encode("美女","utf-8")).add(PAGE_NO,"" + 0).add(PAGE_COUNT,"" + 40).build();
-        Request request = new Request.Builder().url("http://192.168.3.13:8080/PictureServer/GetPictures").post(formBuild).build();
+    void searchPictureFromPictureServer(SearchOption sOption){
+        try {
+            okhttpFromPictureServer(sOption);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+    void okhttpFromPictureServer(SearchOption sOption) throws UnsupportedEncodingException {
+
+        OkHttpClient okHttpClient = new OkHttpClient();
+        RequestBody formBuild = new FormBody.Builder().add(KEY_WORD, URLEncoder.encode(sOption.keywords,"utf-8")).add(PAGE_NO,"" + sOption.pageNo).add(PAGE_COUNT,"" + sOption.counts).build();
+        Request request = new Request.Builder().url(PICTURE_SERVER).post(formBuild).build();
         Call call = okHttpClient.newCall(request);
 
         call.enqueue(new Callback() {
@@ -161,7 +217,10 @@ public class RecycleViewActivity extends AppCompatActivity {
                 Log.d(TAG, "onResponse: jsonString " + jsonString);
                 Pictures pictures = JSON.parseObject(jsonString,Pictures.class);
                 Log.d(TAG, "onResponse: getClientName " + pictures.getClientName());
-                mRecycleViewAdapter.setmDatas(initDataFromePictureServer(pictures));
+                if(mSearchOption.pageNo == 0)
+                     mRecycleViewAdapter.setmDatas(initDataFromePictureServer(pictures));
+                else
+                    mRecycleViewAdapter.addDatas(initDataFromePictureServer(pictures));
                 H.sendEmptyMessage(MSG_NOTIFY_RECYCLE_ADAPTR_CHANGED);
             }
         });
@@ -215,5 +274,11 @@ public class RecycleViewActivity extends AppCompatActivity {
         mFrameLayout.addView(mImageView, mImageViewParams);
         mImageView.show();
         Picasso.with(this).load(item.detailUrl).into(mImageView.mImageView);
+    }
+
+    class SearchOption{
+        String keywords = "美女";
+        int pageNo = 0;
+        int counts = 40;
     }
 }

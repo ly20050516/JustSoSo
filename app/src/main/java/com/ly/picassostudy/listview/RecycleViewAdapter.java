@@ -22,13 +22,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
     public static final String TAG = RecycleViewAdapter.class.getCanonicalName();
 
-    public void setmDatas(List<PicassoRecycleItem> mDatas) {
-        this.mDatas = mDatas;
-    }
 
-    public List<PicassoRecycleItem> getmDatas() {
-        return mDatas;
-    }
 
     private List<PicassoRecycleItem> mDatas;
     private LayoutInflater mLayoutInflater;
@@ -122,6 +116,16 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
             imageView = (ImageView) itemView.findViewById(R.id.picasso_item_recycle_view);
         }
+    }
+    public void setmDatas(List<PicassoRecycleItem> mDatas) {
+        this.mDatas = mDatas;
+    }
+
+    public void addDatas(List<PicassoRecycleItem> datas){
+        mDatas.addAll(datas);
+    }
+    public List<PicassoRecycleItem> getmDatas() {
+        return mDatas;
     }
 
     public interface onClickItemListener{
