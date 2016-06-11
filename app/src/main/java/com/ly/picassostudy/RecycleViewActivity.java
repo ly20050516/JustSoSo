@@ -1,13 +1,12 @@
 package com.ly.picassostudy;
 
 import android.app.SearchManager;
-import android.app.SearchableInfo;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -19,7 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.SearchView;
 
 import com.alibaba.fastjson.JSON;
@@ -28,13 +26,11 @@ import com.ly.picassostudy.listview.DetailImageView;
 import com.ly.picassostudy.listview.PicassoRecycleItem;
 import com.ly.picassostudy.listview.RecycleViewAdapter;
 import com.ly.picassostudy.listview.SpacesItemDecoration;
-import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.net.URLStreamHandler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -103,6 +99,9 @@ public class RecycleViewActivity extends AppCompatActivity {
     FrameLayout mFrameLayout;
     SearchOption mSearchOption;
 
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    StaggeredGridLayoutManager  mStaggeredGridLayoutManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,14 +114,19 @@ public class RecycleViewActivity extends AppCompatActivity {
 
         mRecycleView = (RecyclerView) findViewById(R.id.picasso_recycle_view);
         mFrameLayout = (FrameLayout) findViewById(R.id.root_activity_recycle_view);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.picasso_swipe_refresh_layout);
+        mSwipeRefreshLayout.setRefreshing(true);
 
+        initSwipeRefreshLayout();
         mSearchOption = new SearchOption();
 
-        mRecycleView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        mStaggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        mRecycleView.setLayoutManager(mStaggeredGridLayoutManager);
         mRecycleViewAdapter = new RecycleViewAdapter(this, null);
         mRecycleView.setItemAnimator(new DefaultItemAnimator());
         mRecycleView.addItemDecoration(new SpacesItemDecoration(16));
         mRecycleView.setHasFixedSize(true);
+        initRecycleViewLoadMore();
         initOnClickListener(mRecycleViewAdapter);
         mRecycleView.setAdapter(mRecycleViewAdapter);
 
@@ -137,7 +141,7 @@ public class RecycleViewActivity extends AppCompatActivity {
             Log.d(TAG, "onNewIntent: query " + query);
             mSearchOption.keywords = query;
             mSearchOption.pageNo = 0;
-            mSearchOption.counts = 40;
+            mSearchOption.requestCounts = 40;
             searchPictureFromPictureServer(mSearchOption);
 
         }
@@ -179,6 +183,7 @@ public class RecycleViewActivity extends AppCompatActivity {
             switch (msg.what){
                 case MSG_NOTIFY_RECYCLE_ADAPTR_CHANGED:
                 {
+                    mSwipeRefreshLayout.setRefreshing(false);
                     mRecycleViewAdapter.notifyDataSetChanged();
                     break;
                 }
@@ -187,6 +192,66 @@ public class RecycleViewActivity extends AppCompatActivity {
         }
     };
 
+    void initSwipeRefreshLayout(){
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mSearchOption.pageNo = 0;
+                mSearchOption.requestCounts = 40;
+                searchPictureFromPictureServer(mSearchOption);
+            }
+        });
+    }
+
+    void initRecycleViewLoadMore(){
+        mRecycleView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            /**
+             * Callback method to be invoked when RecyclerView's scroll state changes.
+             *
+             * @param recyclerView The RecyclerView whose scroll state has changed.
+             * @param newState     The updated scroll state. One of {@link #SCROLL_STATE_IDLE},
+             *                     {@link #SCROLL_STATE_DRAGGING} or {@link #SCROLL_STATE_SETTLING}.
+             */
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(newState == RecyclerView.SCROLL_STATE_IDLE){
+                    int []positions = mStaggeredGridLayoutManager.findLastVisibleItemPositions(null);
+                    if(null == positions)
+                        return;
+                    int max = positions[0];
+                    for (int i = 1; i <positions.length; i++) {
+                        if(max < positions[i]){
+                            max = positions[i];
+                        }
+                    }
+                    if(mRecycleViewAdapter.getItemCount() == max + 1){
+                        if(mSearchOption.responesCounts >= mSearchOption.requestCounts){
+                            mSearchOption.pageNo = mSearchOption.pageNo + mSearchOption.responesCounts;
+                            mSearchOption.responesCounts = 0;
+                            searchPictureFromPictureServer(mSearchOption);
+                        }
+                    }
+                }
+
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+//        mRecycleView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+//            @Override
+//            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+//                Log.d(TAG, "onScrollChange: view " + v);
+//                Log.d(TAG, "onScrollChange: scrollX " + scrollX);
+//                Log.d(TAG, "onScrollChange: scrollY " + scrollY);
+//                Log.d(TAG, "onScrollChange: oldScrollX " + oldScrollX);
+//                Log.d(TAG, "onScrollChange: oldScrollY " + oldScrollY);
+//            }
+//        });
+    }
     void searchPictureFromPictureServer(SearchOption sOption){
         try {
             okhttpFromPictureServer(sOption);
@@ -197,7 +262,7 @@ public class RecycleViewActivity extends AppCompatActivity {
     void okhttpFromPictureServer(SearchOption sOption) throws UnsupportedEncodingException {
 
         OkHttpClient okHttpClient = new OkHttpClient();
-        RequestBody formBuild = new FormBody.Builder().add(KEY_WORD, URLEncoder.encode(sOption.keywords,"utf-8")).add(PAGE_NO,"" + sOption.pageNo).add(PAGE_COUNT,"" + sOption.counts).build();
+        RequestBody formBuild = new FormBody.Builder().add(KEY_WORD, URLEncoder.encode(sOption.keywords,"utf-8")).add(PAGE_NO,"" + sOption.pageNo).add(PAGE_COUNT,"" + sOption.requestCounts).build();
         Request request = new Request.Builder().url(PICTURE_SERVER).post(formBuild).build();
         Call call = okHttpClient.newCall(request);
 
@@ -217,6 +282,7 @@ public class RecycleViewActivity extends AppCompatActivity {
                 Log.d(TAG, "onResponse: jsonString " + jsonString);
                 Pictures pictures = JSON.parseObject(jsonString,Pictures.class);
                 Log.d(TAG, "onResponse: getClientName " + pictures.getClientName());
+                mSearchOption.responesCounts = pictures.getRealCounts();
                 if(mSearchOption.pageNo == 0)
                      mRecycleViewAdapter.setmDatas(initDataFromePictureServer(pictures));
                 else
@@ -277,8 +343,9 @@ public class RecycleViewActivity extends AppCompatActivity {
     }
 
     class SearchOption{
-        String keywords = "美女";
+        String keywords = "Android";
         int pageNo = 0;
-        int counts = 40;
+        int requestCounts = 40;
+        int responesCounts;
     }
 }

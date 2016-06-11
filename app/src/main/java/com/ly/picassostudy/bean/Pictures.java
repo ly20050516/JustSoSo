@@ -6,8 +6,15 @@ public class Pictures {
 
 	String serverName;
 	String clientName;
+	int realCounts;
 	ArrayList<PictureData> pictures;
-	
+
+	public int getRealCounts() {
+		return realCounts;
+	}
+	public void setRealCounts(int realCounts) {
+		this.realCounts = realCounts;
+	}
 	public String getServerName() {
 		return serverName;
 	}
