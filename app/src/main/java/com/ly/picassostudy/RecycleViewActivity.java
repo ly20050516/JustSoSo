@@ -50,7 +50,8 @@ public class RecycleViewActivity extends AppCompatActivity {
     final static String KEY_WORD = "KEY_WORD";
     final static String PAGE_NO = "PAGE_NO";
     final static String PAGE_COUNT = "PAGE_COUNT";
-    static final String PICTURE_SERVER = "http://192.168.3.13:8080/PictureServer/GetPictures";
+    // static final String PICTURE_SERVER = "http://192.168.3.13:8080/PictureServer/GetPictures";
+    static final String PICTURE_SERVER = "http://192.168.3.13:8080/PictureServer/SpringMVC/GetPictures";
 
     static String[] URLS = {
             "http://b.hiphotos.baidu.com/zhidao/pic/item/eaf81a4c510fd9f9169aeb8c272dd42a2934a442.jpg",
@@ -227,7 +228,7 @@ public class RecycleViewActivity extends AppCompatActivity {
                     }
                     if(mRecycleViewAdapter.getItemCount() == max + 1){
                         if(mSearchOption.responesCounts >= mSearchOption.requestCounts){
-                            mSearchOption.pageNo = mSearchOption.pageNo + mSearchOption.responesCounts;
+                            mSearchOption.pageNo = mSearchOption.pageNo + mSearchOption.requestCounts;
                             mSearchOption.responesCounts = 0;
                             searchPictureFromPictureServer(mSearchOption);
                         }
