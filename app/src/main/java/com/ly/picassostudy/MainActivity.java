@@ -39,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
         mSingleImageView = (ImageView) findViewById(R.id.single_image_view);
         mRecyleImageView = (ImageView) findViewById(R.id.recycle_image_view);
 
-        Picasso.with(this).load("http://i.imgur.com/DvpvklR.png").into(mSingleImageView);
-        Picasso.with(this).load("http://img5.imgtn.bdimg.com/it/u=3455205360,3244468299&fm=21&gp=0.jpg").into(mRecyleImageView);
+        Picasso.with(this).load("http://img3.imgtn.bdimg.com/it/u=1136738351,2109587800&fm=21&gp=0.jpg").into(mSingleImageView);
+        Picasso.with(this).load("http://img0.imgtn.bdimg.com/it/u=678959800,2712238238&fm=21&gp=0.jpg").into(mRecyleImageView);
         mSingleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

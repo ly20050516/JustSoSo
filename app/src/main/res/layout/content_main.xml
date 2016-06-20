@@ -11,8 +11,18 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.ly.picassostudy.MainActivity"
     android:orientation="vertical"
+    android:clipToPadding="false"
+    android:background="@color/primary"
     tools:showIn="@layout/activity_main">
 
+    <TextView
+        android:id="@+id/text"
+        android:text="Just So So"
+        android:textSize="48dp"
+        android:textColor="@color/icons"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
     <ImageView
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"
@@ -21,6 +31,8 @@
         android:layout_height="200dp"
          />
     <ImageView
+        android:outlineProvider="bounds"
+        android:elevation="3dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"
         android:id="@+id/recycle_image_view"

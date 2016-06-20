@@ -242,16 +242,7 @@ public class RecycleViewActivity extends AppCompatActivity {
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
-//        mRecycleView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-//            @Override
-//            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-//                Log.d(TAG, "onScrollChange: view " + v);
-//                Log.d(TAG, "onScrollChange: scrollX " + scrollX);
-//                Log.d(TAG, "onScrollChange: scrollY " + scrollY);
-//                Log.d(TAG, "onScrollChange: oldScrollX " + oldScrollX);
-//                Log.d(TAG, "onScrollChange: oldScrollY " + oldScrollY);
-//            }
-//        });
+
     }
     void searchPictureFromPictureServer(SearchOption sOption){
         try {

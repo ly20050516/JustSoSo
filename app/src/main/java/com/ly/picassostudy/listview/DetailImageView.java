@@ -9,6 +9,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Scroller;
 
+import com.ly.picassostudy.R;
+
 /**
  * Created by LY on 6/9/2016.
  */
@@ -25,7 +27,7 @@ public class DetailImageView extends FrameLayout {
         mImageView = new ImageView(context);
         isShow = true;
         addView(mImageView, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        setBackgroundColor(0xff0099cc);
+        setBackgroundColor(getResources().getColor(R.color.primary));
         mScroller = new Scroller(context);
 
     }
