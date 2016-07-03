@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PicassoStudy</string>
+    <string name="app_name">JustSoSo</string>
     <string name="picture">Picture</string>
     <string name="search">Search</string>
     <string name="search_hint">Search</string>
@@ -8,4 +8,20 @@
     <string name="title_activity_fullscreen">FullscreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <!-- Navigation view menu -->
+    <string name="action_menu_picture">Picture Enjoy</string>
+    <string name="action_menu_battery">Battery Statistics</string>
+    <string name="action_menu_chat">Small Talk</string>
+    <!-- Navigation view menu -->
+
+    <!-- Navigation header layout -->
+    <string name="navigation_view_header_title">Just So So</string>
+    <!-- Navigation header layout -->
+
+    <!-- Drawer Layout -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <!-- Drawer Layout -->
+
 </resources>

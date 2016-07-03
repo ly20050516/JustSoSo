@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "com.ly.picassostudy"
+        applicationId "com.ly.justsoso"
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
@@ -29,4 +29,5 @@ dependencies {
     compile 'com.alibaba:fastjson:1.2.12'
     compile 'com.squareup.okhttp3:okhttp:3.3.1'
     compile 'com.squareup.okio:okio:1.8.0'
+    compile 'com.google.guava:guava:19.0'
 }

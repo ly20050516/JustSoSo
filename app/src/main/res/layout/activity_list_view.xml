@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.ly.picassostudy.ListViewActivity">
+    tools:context="com.ly.justsoso.ListViewActivity">
 
     <ListView
         android:id="@+id/picasso_list_view"
