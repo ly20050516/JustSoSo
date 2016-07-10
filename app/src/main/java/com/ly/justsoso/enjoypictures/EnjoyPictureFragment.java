@@ -11,6 +11,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,6 @@ import com.ly.justsoso.base.ui.DetailImageView;
 import com.ly.justsoso.base.adaptor.RecycleViewAdapter;
 import com.ly.justsoso.base.ui.SpacesItemDecoration;
 import com.ly.justsoso.enjoypictures.bean.Pictures;
-import com.ly.justsoso.enjoypictures.common.SearchOption;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -84,9 +84,12 @@ public class EnjoyPictureFragment extends Fragment implements EnjoyPictureContra
 
     @Override
     public void onResume() {
-        mEnjoyPicturePresenter.start();
+        if(mEnjoyPicturePresenter != null){
+             mEnjoyPicturePresenter.start();
+        }
         super.onResume();
     }
+
 
     @Override
     public void setPresenter(EnjoyPictureContract.Presenter presenter) {
@@ -164,7 +167,7 @@ public class EnjoyPictureFragment extends Fragment implements EnjoyPictureContra
             @Override
             public void onRefresh() {
                 Log.d(TAG, "onRefresh: ");
-                mEnjoyPicturePresenter.newSearch("Android");
+                mEnjoyPicturePresenter.newSearch();
             }
         });
     }
@@ -197,7 +200,6 @@ public class EnjoyPictureFragment extends Fragment implements EnjoyPictureContra
                 {
                     mSwipeRefreshLayout.setRefreshing(false);
                     mRecycleViewAdapter.notifyDataSetChanged();
-
                     break;
                 }
             }

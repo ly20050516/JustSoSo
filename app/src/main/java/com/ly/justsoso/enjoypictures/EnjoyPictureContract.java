@@ -18,6 +18,7 @@ public interface EnjoyPictureContract {
     interface Presenter extends BasePresenter{
 
         void newSearch(String KeyWords);
+        void newSearch();
         void continueSearch();
     }
 }

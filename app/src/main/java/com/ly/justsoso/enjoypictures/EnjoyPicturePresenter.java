@@ -33,6 +33,13 @@ public class EnjoyPicturePresenter implements EnjoyPictureContract.Presenter {
     }
 
     @Override
+    public void newSearch() {
+        if(mSearchOption != null){
+            loadData(mSearchOption);
+        }
+    }
+
+    @Override
     public void continueSearch() {
         if(mSearchOption.responesCounts >= mSearchOption.requestCounts){
             Log.d(TAG, "continueSearch: mSearchOption.responesCounts " + mSearchOption.responesCounts);
