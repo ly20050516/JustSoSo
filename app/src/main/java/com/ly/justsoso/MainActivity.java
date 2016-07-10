@@ -1,6 +1,5 @@
 package com.ly.justsoso;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +7,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,11 +19,15 @@ import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 
 import com.ly.justsoso.base.utils.ActivityUtils;
+import com.ly.justsoso.base.utils.ConstantsUtil;
 import com.ly.justsoso.enjoypictures.EnjoyPictureFragment;
 import com.ly.justsoso.enjoypictures.EnjoyPicturePresenter;
 import com.ly.justsoso.enjoypictures.EnjoyPictureRepository;
 import com.ly.justsoso.enjoypictures.data.local.LocalDataSource;
 import com.ly.justsoso.enjoypictures.data.remote.RemoteDataSource;
+import com.ly.justsoso.gamecenter.GameCenterFragment;
+import com.ly.justsoso.gamecenter.GameCenterPresenter;
+import com.ly.justsoso.gamecenter.GameCenterRepository;
 import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,SearchView.OnQueryTextListener{
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DrawerLayout mRootDrawerLayout;
     InputMethodManager inputMethodManager;
     EnjoyPicturePresenter mEnjoyPicturePresenter;
+    GameCenterPresenter mGameCenterPreSenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView)searchItem.getActionView();
         searchView.setOnQueryTextListener(this);
@@ -101,10 +103,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.action_settings) {
             return true;
         }
-        if(id == R.id.action_search){
-            SearchView view = (SearchView) item.getActionView();
 
-        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -124,19 +123,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             handleBatteryStatistics();
         }else if(menuId == R.id.nav_small_talk){
             handleSmallTalk();
+        }else if(menuId == R.id.nav_game_center){
+            handleGameCenter();
         }
         mRootDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
     private void handlePictureEnjoy(){
-        EnjoyPictureFragment enjoyPictureFragment = (EnjoyPictureFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+        EnjoyPictureFragment enjoyPictureFragment = (EnjoyPictureFragment) getSupportFragmentManager().findFragmentByTag(ConstantsUtil.FRAGMENT_ENJOY_PICTURE);
         if(null == enjoyPictureFragment){
             enjoyPictureFragment = EnjoyPictureFragment.newInstance();
-            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),enjoyPictureFragment,R.id.contentFrame);
+            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),enjoyPictureFragment,R.id.contentFrame, ConstantsUtil.FRAGMENT_ENJOY_PICTURE);
             EnjoyPictureRepository er = new EnjoyPictureRepository(new LocalDataSource(this),new RemoteDataSource());
             mEnjoyPicturePresenter = new EnjoyPicturePresenter(er,enjoyPictureFragment);
             enjoyPictureFragment.setPresenter(mEnjoyPicturePresenter);
+        }else{
+            ActivityUtils.showFragmentToActivity(getSupportFragmentManager(),enjoyPictureFragment);
         }
     }
 
@@ -148,7 +151,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-
+    private void handleGameCenter(){
+        GameCenterFragment gameCenterFragment = (GameCenterFragment) getSupportFragmentManager().findFragmentByTag(ConstantsUtil.FRAGMENT_GAME_CENTER);
+        if(null == gameCenterFragment){
+            gameCenterFragment = GameCenterFragment.newInstance();
+            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),gameCenterFragment,R.id.contentFrame,ConstantsUtil.FRAGMENT_GAME_CENTER);
+            GameCenterRepository gc = new GameCenterRepository();
+            mGameCenterPreSenter = new GameCenterPresenter(gameCenterFragment,gc);
+            gameCenterFragment.setPresenter(mGameCenterPreSenter);
+        }else{
+            ActivityUtils.showFragmentToActivity(getSupportFragmentManager(),gameCenterFragment);
+        }
+    }
 
     private void hideSoftInput() {
         if (inputMethodManager != null) {

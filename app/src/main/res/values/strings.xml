@@ -13,6 +13,7 @@
     <string name="action_menu_picture">Picture Enjoy</string>
     <string name="action_menu_battery">Battery Statistics</string>
     <string name="action_menu_chat">Small Talk</string>
+    <string name="action_game_center">Game Center</string>
     <!-- Navigation view menu -->
 
     <!-- Navigation header layout -->
@@ -22,6 +23,9 @@
     <!-- Drawer Layout -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="game_center">Game Center</string>
     <!-- Drawer Layout -->
 
 </resources>
