@@ -173,7 +173,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(),
                     InputMethodManager.HIDE_NOT_ALWAYS);
-//            searchView.clearFocus();
         }
     }
     /**
