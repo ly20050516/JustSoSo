@@ -5,13 +5,13 @@ package com.ly.justsoso.enjoypictures.common;
  */
 public interface Constants {
 
-    public static final  String KEY_WORD = "KEY_WORD";
-    public static final  String PAGE_NO = "PAGE_NO";
-    public static final  String PAGE_COUNT = "PAGE_COUNT";
-    public static  final String PICTURE_SERVER = "http://192.168.3.13:8080/PictureServer/SpringMVC/GetPictures";
+    String KEY_WORD = "KEY_WORD";
+    String PAGE_NO = "PAGE_NO";
+    String PAGE_COUNT = "PAGE_COUNT";
+    String PICTURE_SERVER = "http://192.168.3.13:8080/PictureServer/SpringMVC/GetPictures";
 
 
-    public static final String[] URLS = {
+    String[] URLS = {
             "http://b.hiphotos.baidu.com/zhidao/pic/item/eaf81a4c510fd9f9169aeb8c272dd42a2934a442.jpg",
             "http://pic67.nipic.com/file/20150514/21036787_181947848862_2.jpg",
             "http://c.hiphotos.baidu.com/zhidao/wh%3D450%2C600/sign=4f582c74b4fb43161a4a727e15946a15/72f082025aafa40f39ce8262ad64034f78f01900.jpg",

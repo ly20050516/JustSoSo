@@ -2,8 +2,6 @@ package com.ly.justsoso.enjoypictures;
 
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,7 +9,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +25,10 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by LY on 7/3/2016.
@@ -94,20 +95,19 @@ public class EnjoyPictureFragment extends Fragment implements EnjoyPictureContra
     @Override
     public void setPresenter(EnjoyPictureContract.Presenter presenter) {
         mEnjoyPicturePresenter = presenter;
-        H.sendEmptyMessage(MSG_NOTIFY_RECYCLE_ADAPTR_CHANGED);
+        refreshRecycleViewAdapter();
     }
 
     @Override
     public void setDatas(Pictures pictures) {
-
         mRecycleViewAdapter.setmDatas(initDataFromePictureServer(pictures));
-        H.sendEmptyMessage(MSG_NOTIFY_RECYCLE_ADAPTR_CHANGED);
+        refreshRecycleViewAdapter();
     }
 
     @Override
     public void addDatas(Pictures pictures) {
         mRecycleViewAdapter.addDatas(initDataFromePictureServer(pictures));
-        H.sendEmptyMessage(MSG_NOTIFY_RECYCLE_ADAPTR_CHANGED);
+        refreshRecycleViewAdapter();
     }
 
     List initDataFromePictureServer(Pictures picture){
@@ -190,20 +190,24 @@ public class EnjoyPictureFragment extends Fragment implements EnjoyPictureContra
         Picasso.with(getContext()).load(item.detailUrl).into(mDetailImageView.mImageView);
     }
 
-    public static final int MSG_NOTIFY_RECYCLE_ADAPTR_CHANGED = 100;
-    Handler H = new Handler(){
+    private void refreshRecycleViewAdapter(){
+        Observable<Object> refresh = Observable.just(new Object());
+        refresh.observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Object>() {
+            @Override
+            public void onCompleted() {
 
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what){
-                case MSG_NOTIFY_RECYCLE_ADAPTR_CHANGED:
-                {
-                    mSwipeRefreshLayout.setRefreshing(false);
-                    mRecycleViewAdapter.notifyDataSetChanged();
-                    break;
-                }
             }
-            super.handleMessage(msg);
-        }
-    };
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Object obj) {
+                mSwipeRefreshLayout.setRefreshing(false);
+                mRecycleViewAdapter.notifyDataSetChanged();
+            }
+        });
+    }
 }
