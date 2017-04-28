@@ -3,10 +3,11 @@ package com.ly.justsoso.enjoypictures.data.remote;
 
 
 import com.alibaba.fastjson.JSON;
+import com.ly.framework.mvp.BaseDataSource;
 import com.ly.justsoso.enjoypictures.bean.Pictures;
 import com.ly.justsoso.enjoypictures.common.Constants;
 import com.ly.justsoso.enjoypictures.common.SearchOption;
-import com.ly.justsoso.framework.mvp.BaseDataSource;
+
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -23,7 +24,7 @@ import okhttp3.Response;
 /**
  * Created by LY on 7/3/2016.
  */
-public class RemoteDataSource implements BaseDataSource<SearchOption,Pictures>{
+public class RemoteDataSource implements BaseDataSource<SearchOption,Pictures> {
 
 
     @Override

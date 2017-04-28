@@ -1,13 +1,14 @@
 package com.ly.justsoso.enjoypictures;
 
+import com.ly.framework.mvp.BaseDataSource;
 import com.ly.justsoso.enjoypictures.bean.Pictures;
 import com.ly.justsoso.enjoypictures.common.SearchOption;
-import com.ly.justsoso.framework.mvp.BaseDataSource;
+
 
 /**
  * Created by LY on 7/3/2016.
  */
-public class EnjoyPictureRepository implements BaseDataSource<SearchOption,Pictures>{
+public class EnjoyPictureRepository implements BaseDataSource<SearchOption,Pictures> {
 
     private BaseDataSource<SearchOption,Pictures> mLocalDataSource;
     private BaseDataSource<SearchOption,Pictures> mRemoteDataSource;
