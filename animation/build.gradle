@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply from:rootProject.getRootDir().absolutePath + "/utils.gralde"
+apply from: rootProject.getRootDir().absolutePath + "/utils.gradle"
 
 android {
     compileSdkVersion 23
