@@ -1,1 +1,8 @@
-include ':app' , 'framework'
+
+def initJustSoSoEnvironment() {
+    println "initJustSoSoEnvironment"
+}
+
+initJustSoSoEnvironment()
+
+include ':app', ':animation', 'framework'

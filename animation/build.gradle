@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply from:rootProject.getRootDir().absolutePath + "/utils.gralde"
 
 android {
     compileSdkVersion 23
@@ -30,15 +31,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
-gradle.taskGraph.whenReady {
-    println("gradle.taskGraph.whenReady")
+gradle.beforeProject {
+    println("beforePoject")
 }
-
-gradle.buildFinished {
-    println("gradle build finish")
-}
-
-println "gradle id = " + gradle.hashCode()
-println "gradle home dir = " + gradle.gradleHomeDir
-println "gradle user home dir = " + gradle.gradleUserHomeDir
-println  "gradle version = " + gradle.gradleVersion
