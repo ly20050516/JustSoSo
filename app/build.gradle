@@ -17,6 +17,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    productFlavors{
+        googleplayer{
+            buildConfigField 'String','FLURRY_KEY','"ABCDEFG"'
+        }
+        baidushichang{
+            buildConfigField 'String','FLURRY_KEY','"HIJKLMN"'
+        }
+    }
 }
 
 dependencies {

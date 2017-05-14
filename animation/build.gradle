@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply from: rootProject.getRootDir().absolutePath + "/utils.gradle"
 
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
@@ -33,4 +34,23 @@ dependencies {
 
 gradle.beforeProject {
     println("beforePoject")
+}
+
+class MyPlugin implements Plugin<Project> {
+
+    /**
+     * Apply this plugin to the given target object.
+     *
+     * @param target The target object
+     */
+    @Override
+    void apply(Project target) {
+
+        target.task('taskPlugin'){
+            doLast{
+                println 'My Plugin'
+            }
+        }
+
+    }
 }

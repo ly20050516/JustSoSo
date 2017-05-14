@@ -17,9 +17,35 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            sourceSets {
+                main {
+                    java {
+                        srcDir 'src/main/java'
+                    }
+                    resources {
+                        srcDir 'src/main/res'
+                    }
+                }
+            }
+        }
+
+        shoply{
+            minifyEnabled false
+            sourceSets{
+                main{
+                    java{
+                        srcDir 'src/main/java'
+                    }
+                    resources{
+                        srcDir 'src/main/res'
+                    }
+                }
+            }
         }
     }
 }
+
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -41,4 +67,4 @@ gradle.buildFinished {
 println "gradle id = " + gradle.hashCode()
 println "gradle home dir = " + gradle.gradleHomeDir
 println "gradle user home dir = " + gradle.gradleUserHomeDir
-println  "gradle version = " + gradle.gradleVersion
+println "gradle version = " + gradle.gradleVersion

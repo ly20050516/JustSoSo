@@ -13,12 +13,14 @@ buildscript {
 }
 
 allprojects {
+    println "allprojects project.name = " + project.name
     repositories {
-        println "gradle api = " + gradle.api
-        MavenArtifactRepository mr = jcenter()
-        println "repositories url = " + mr.getUrl()
-        println "repositories name = " + mr.getName()
+        jcenter()
     }
+}
+
+subprojects {
+    println "subprojects project.name = " + project.name
 }
 
 task clean(type: Delete) {
@@ -26,6 +28,9 @@ task clean(type: Delete) {
 }
 
 task HelloTask {
+    doFirst {
+        println "this object ${this.getClass().name} do first"
+    }
     doLast{
         logger.debug("gradle","Hello Gradle")
     }
@@ -89,3 +94,103 @@ task taskDelegate << {
         it.method1()
     }
 }
+
+task Hello << {
+    println "Hello"
+}
+
+task World << {
+    println 'World'
+}
+
+World.dependsOn(Hello)
+
+task exTask(dependsOn : Hello) {
+    doLast {
+        println '--- ex Task --'
+    }
+}
+
+task exMultiTask {
+    dependsOn Hello,World
+
+    doLast{
+        println '-- ex MultiTask end --'
+    }
+}
+
+exMultiTask.doLast {
+    println "project.hasProperty(exMultiTask )" + project.hasProperty('exMultiTask')
+}
+
+ext.age = 18
+
+ext {
+    phone = '13612090400'
+    name = 'gradlely'
+}
+
+task customProperty {
+
+    ext.inner = 'inner porperty'
+
+    doLast {
+        println "project has property age ${project.hasProperty('age')}"
+        println "project has property phone ${project.hasProperty('phone')}"
+        println "project has property name ${project.hasProperty('name')}"
+        println "project has property inner ${project.hasProperty('inner')}"
+
+        println age
+        println phone
+        println name
+        println inner
+    }
+}
+
+def buildTime() {
+    def date = new Date()
+    date.format('yyyy-mm-dd hh:mm:ss')
+}
+
+task printBuildTime {
+    println "outer " + buildTime()
+    doLast{
+        println "inner " + buildTime()
+    }
+}
+
+def Task createTask = task(createTask,group : org.gradle.api.plugins.BasePlugin.BUILD_GROUP)
+ createTask.doLast{
+    println "${createTask.group}"
+ }
+
+class CustomTask extends DefaultTask {
+
+    @TaskAction
+    def doself() {
+        println this.getClass().name + " doself"
+    }
+}
+
+Task task1 = task(task1,type : CustomTask)
+task1.doFirst{
+
+    println this.getClass().name + " doFirst"
+}
+
+task1.doLast {
+    println this.getClass().name + " doLast"
+}
+
+task1.doFirst {
+    println this.getClass().name + " doFirst again"
+}
+
+
+task task2  {
+    doFirst{
+        println "class name is ${this.getClass().name} do First"
+    }
+}
+
+task2.mustRunAfter(task1)
