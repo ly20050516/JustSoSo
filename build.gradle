@@ -14,10 +14,78 @@ buildscript {
 
 allprojects {
     repositories {
-        jcenter()
+        println "gradle api = " + gradle.api
+        MavenArtifactRepository mr = jcenter()
+        println "repositories url = " + mr.getUrl()
+        println "repositories name = " + mr.getName()
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+task HelloTask {
+    doLast{
+        logger.debug("gradle","Hello Gradle")
+    }
+}
+
+def customEachList(List list,Closure closure) {
+
+    for (java.lang.Object o : list) {
+        closure(o)
+    }
+}
+
+task callCustomEachList << {
+    logger.log(LogLevel.DEBUG,"callCustomEachList ")
+    def list = [1,2,3,4,5,6,7,8,9,10]
+    customEachList(list, {
+        println it
+    })
+}
+
+def customEachMap(Map map,Closure closure) {
+
+    for(java.lang.Object o : map) {
+        closure(o)
+    }
+}
+
+task callCustomEachMap << {
+    println "call custom each map"
+    def map = ['key1':'value1','key2' : 'value2']
+
+    customEachMap map, {
+        println it.key + " " + it.value
+    }
+}
+
+
+def method1(){
+    println "context this: ${this.getClass().name} in root,method1 in root"
+}
+
+class Delegate{
+
+    def method1(){
+        println "context this: ${this.getClass().name} in delegate,method1 in delegate"
+    }
+
+    def test(Closure<Delegate> closure) {
+        closure(this)
+    }
+}
+
+task taskDelegate << {
+
+    new Delegate().test {
+        println "thisObject.getClass().name = " + thisObject.getClass().name
+        println "owner.getClass().name = " + owner.getClass().name
+        println "delegate.getClass().name = " + delegate.getClass().name
+
+        method1()
+        it.method1()
+    }
 }
