@@ -8,7 +8,7 @@ public interface Constants {
     String KEY_WORD = "KEY_WORD";
     String PAGE_NO = "PAGE_NO";
     String PAGE_COUNT = "PAGE_COUNT";
-    String PICTURE_SERVER = "http://192.168.3.13:8080/PictureServer/SpringMVC/GetPictures";
+    String PICTURE_SERVER = "http://192.168.3.8:8080/PictureServer/SpringMVC/GetPictures";
 
 
     String[] URLS = {

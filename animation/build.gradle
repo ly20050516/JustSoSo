@@ -31,26 +31,3 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     testCompile 'junit:junit:4.12'
 }
-
-gradle.beforeProject {
-    println("beforePoject")
-}
-
-class MyPlugin implements Plugin<Project> {
-
-    /**
-     * Apply this plugin to the given target object.
-     *
-     * @param target The target object
-     */
-    @Override
-    void apply(Project target) {
-
-        target.task('taskPlugin'){
-            doLast{
-                println 'My Plugin'
-            }
-        }
-
-    }
-}

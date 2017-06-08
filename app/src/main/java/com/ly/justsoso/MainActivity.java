@@ -64,9 +64,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
         inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         Picasso.with(this).setIndicatorsEnabled(true);
-
-
-
     }
 
     @Override

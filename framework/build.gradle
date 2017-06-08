@@ -55,16 +55,3 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     testCompile 'junit:junit:4.12'
 }
-
-gradle.taskGraph.whenReady {
-    println("gradle.taskGraph.whenReady")
-}
-
-gradle.buildFinished {
-    println("gradle build finish")
-}
-
-println "gradle id = " + gradle.hashCode()
-println "gradle home dir = " + gradle.gradleHomeDir
-println "gradle user home dir = " + gradle.gradleUserHomeDir
-println "gradle version = " + gradle.gradleVersion
