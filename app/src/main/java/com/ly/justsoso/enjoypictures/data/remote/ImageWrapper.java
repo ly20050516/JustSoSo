@@ -1,4 +1,4 @@
-package com.ly.justsoso.enjoypictures.picture;
+package com.ly.justsoso.enjoypictures.data.remote;
 
 import java.util.ArrayList;
 

@@ -11,7 +11,12 @@ public class SearchOption {
 
     @Override
     public boolean equals(Object o) {
+        if(o == null) {
+            return false;
+        }
         SearchOption c = (SearchOption) o;
-        return keywords.equals(c.keywords);
+        return keywords.equals(c.keywords)
+                && (pageNo == pageNo || pageNo == 0)
+                && (requestCounts == requestCounts || requestCounts == 40);
     }
 }

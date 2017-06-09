@@ -3,6 +3,8 @@ package com.ly.justsoso.enjoypictures;
 import android.util.Log;
 
 import com.ly.framework.mvp.BaseDataSource;
+import com.ly.justsoso.base.utils.SpModeKey;
+import com.ly.justsoso.base.utils.SpModelUtils;
 import com.ly.justsoso.enjoypictures.bean.Pictures;
 import com.ly.justsoso.enjoypictures.common.SearchOption;
 
@@ -23,7 +25,14 @@ public class EnjoyPicturePresenter implements EnjoyPictureContract.Presenter {
     @Override
     public void start() {
         mSearchOption = new SearchOption();
+        String keywords = SpModelUtils.getInstance().getString(SpModeKey.SEARCH_KEY_WORDS,"Android");
+        mSearchOption.keywords = keywords;
         loadData(mSearchOption);
+    }
+
+    @Override
+    public void end() {
+        SpModelUtils.getInstance().setString(SpModeKey.SEARCH_KEY_WORDS,mSearchOption.keywords);
     }
 
     @Override

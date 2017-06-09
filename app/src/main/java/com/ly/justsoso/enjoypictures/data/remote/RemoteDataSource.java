@@ -4,7 +4,6 @@ package com.ly.justsoso.enjoypictures.data.remote;
 import com.ly.framework.mvp.BaseDataSource;
 import com.ly.justsoso.enjoypictures.bean.Pictures;
 import com.ly.justsoso.enjoypictures.common.SearchOption;
-import com.ly.justsoso.enjoypictures.picture.PicturesRepository;
 
 /**
  * Created by LY on 7/3/2016.

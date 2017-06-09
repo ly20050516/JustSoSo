@@ -24,12 +24,14 @@ public class EnjoyPictureRepository implements BaseDataSource<SearchOption,Pictu
     public void getDatas(SearchOption searchOption, DataLoadCallback<Pictures> callback) {
         if(mLastSearchOption == null){
             mLastSearchOption = searchOption;
-        }else if(!mLastSearchOption.equals(searchOption)){
+            mLocalDataSource.getDatas(searchOption,callback);
+        }else {
             mLocalDataSource.emptyDatas();
             mRemoteDataSource.emptyDatas();
+            mLastSearchOption = searchOption;
+            mRemoteDataSource.getDatas(searchOption,callback);
         }
-        mLastSearchOption = searchOption;
-        mRemoteDataSource.getDatas(searchOption,callback);
+
     }
 
     @Override

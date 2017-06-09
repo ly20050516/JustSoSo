@@ -16,4 +16,9 @@ public class GameCenterPresenter implements GameCenterContract.Presenter {
     public void start() {
 
     }
+
+    @Override
+    public void end() {
+
+    }
 }

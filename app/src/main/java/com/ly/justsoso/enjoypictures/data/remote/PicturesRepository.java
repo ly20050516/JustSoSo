@@ -1,16 +1,14 @@
-package com.ly.justsoso.enjoypictures.picture;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
+package com.ly.justsoso.enjoypictures.data.remote;
 
 import com.alibaba.fastjson.JSON;
 import com.ly.framework.mvp.BaseDataSource;
+import com.ly.justsoso.JustSoSoApplication;
 import com.ly.justsoso.enjoypictures.bean.PictureData;
 import com.ly.justsoso.enjoypictures.bean.Pictures;
+import com.ly.justsoso.greendao.PictureDataDao;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -179,7 +177,7 @@ public class PicturesRepository {
 			@Override
 			public void onResponse(Call call, Response response) throws IOException {
 				String lines = response.body().string();
-				int realResponsCounts = 0;
+				int realResponsCounts;
 				int start = lines.indexOf(MATCH_IMAGE_DATA_START);
 				int end = lines.indexOf(MATCH_IMAGE_DATA_END, start);
 				lines = lines.substring(start, end + MATCH_IMAGE_DATA_END.length());
@@ -204,6 +202,10 @@ public class PicturesRepository {
 					pictureData.setObjURL(imgData.getObjURL());
 					allPictures.add(pictureData);
 				}
+
+                PictureDataDao dao = JustSoSoApplication.getInstance().getDaoSession().getPictureDataDao();
+                dao.insertInTx(allPictures);
+
 				Pictures pictures = new Pictures();
 				pictures.setPictures(allPictures);
 				pictures.setRealCounts(realResponsCounts);

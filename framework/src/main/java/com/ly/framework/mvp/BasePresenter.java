@@ -6,4 +6,5 @@ package com.ly.framework.mvp;
 public interface BasePresenter {
 
     void start();
+    void end();
 }
