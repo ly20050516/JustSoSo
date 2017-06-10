@@ -31,6 +31,8 @@ import com.ly.justsoso.gamecenter.GameCenterRepository;
 import com.ly.justsoso.headline.HeadLineFragment;
 import com.ly.justsoso.headline.HeadLinePresenter;
 import com.ly.justsoso.headline.HeadLineRepository;
+import com.ly.justsoso.headline.data.local.LocalListSource;
+import com.ly.justsoso.headline.data.remote.RemoteListSource;
 import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,SearchView.OnQueryTextListener{
@@ -151,8 +153,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(null == headLineFragment) {
             headLineFragment = HeadLineFragment.newInstance();
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),headLineFragment,R.id.contentFrame,ConstantsUtil.FRAGMENT_TODAY_HEADLINE);
-            HeadLineRepository repository = new HeadLineRepository();
-            mHeadLinePresenter = new HeadLinePresenter();
+            HeadLineRepository repository = new HeadLineRepository(new LocalListSource(),new RemoteListSource());
+            mHeadLinePresenter = new HeadLinePresenter(repository,headLineFragment);
             headLineFragment.setPresenter(mHeadLinePresenter);
         }else{
             ActivityUtils.showFragmentToActivity(getSupportFragmentManager(),headLineFragment);

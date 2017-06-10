@@ -6,10 +6,7 @@ package com.ly.justsoso.headline.utils;
 
 public class ConstantUtils {
 
-    public static final String BASE_LIST_URL = "http://wangyi.butterfly.mopaasapp.com/news/api";
-    public static final String KEY_TYPE = "type";
-    public static final String KEY_PAGE = "page";
-    public static final String KEY_LIMIT = "limit";
+
 
     public static final String TYPE_VALUE_WAR = "war";
     public static final String TYPE_VALUE_SPORT = "sport";
@@ -21,7 +18,6 @@ public class ConstantUtils {
     public static final String TYPE_VALUE_TRAVEL = "travel";
     public static final String TYPE_VALUE_LADY = "lady";
 
-    public static final String BASE_DETAIL_URL = "http://wangyi.butterfly.mopaasapp.com/detail/api";
-    public static final String KEY_SIMPLE_ID = "simpleId";
+
 
 }

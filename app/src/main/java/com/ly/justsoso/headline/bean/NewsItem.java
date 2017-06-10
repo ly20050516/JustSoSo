@@ -1,10 +1,17 @@
 package com.ly.justsoso.headline.bean;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Generated;
+
 /**
  * Created by LY on 2017-06-11.
  */
 
+@Entity
 public class NewsItem {
+    @Id
+    Long _id;
     String imgurl;
     boolean has_content;
     String docUrl;
@@ -12,6 +19,23 @@ public class NewsItem {
     String time;
     String title;
     String channelname;
+
+    @Generated(hash = 179679663)
+    public NewsItem(Long _id, String imgurl, boolean has_content, String docUrl,
+            long id, String time, String title, String channelname) {
+        this._id = _id;
+        this.imgurl = imgurl;
+        this.has_content = has_content;
+        this.docUrl = docUrl;
+        this.id = id;
+        this.time = time;
+        this.title = title;
+        this.channelname = channelname;
+    }
+
+    @Generated(hash = 1697690472)
+    public NewsItem() {
+    }
 
     public String getImgurl() {
         return imgurl;
@@ -67,5 +91,17 @@ public class NewsItem {
 
     public void setChannelname(String channelname) {
         this.channelname = channelname;
+    }
+
+    public boolean getHas_content() {
+        return this.has_content;
+    }
+
+    public Long get_id() {
+        return this._id;
+    }
+
+    public void set_id(Long _id) {
+        this._id = _id;
     }
 }

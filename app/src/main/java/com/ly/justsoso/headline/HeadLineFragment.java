@@ -33,6 +33,12 @@ public class HeadLineFragment extends Fragment implements HeadLineContract.View 
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mHeadLinePresenter.start();
+    }
+
+    @Override
     public void setPresenter(HeadLineContract.Presenter presenter) {
         mHeadLinePresenter = presenter;
     }

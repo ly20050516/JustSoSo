@@ -214,5 +214,6 @@ public class EnjoyPictureFragment extends Fragment implements EnjoyPictureContra
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mEnjoyPicturePresenter.end();
     }
 }

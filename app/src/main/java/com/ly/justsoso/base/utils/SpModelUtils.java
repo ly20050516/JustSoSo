@@ -34,7 +34,7 @@ public class SpModelUtils {
 
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(key,value);
-        editor.apply();
+        editor.commit();
     }
 
     public String getString(String key,String defValue) {
