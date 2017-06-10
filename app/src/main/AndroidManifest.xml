@@ -23,24 +23,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.ly.justsoso.ListViewActivity" />
-        <activity
-            android:launchMode="singleTop"
-            android:name="com.ly.justsoso.RecycleViewActivity"
-            android:label="@string/picture"
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <meta-data
-                android:name="android.app.default_searchable"
-                android:value=".RecycleViewActivity" />
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-
-        </activity>
     </application>
 
 </manifest>

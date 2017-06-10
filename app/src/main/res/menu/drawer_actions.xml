@@ -7,9 +7,9 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/action_menu_picture" />
         <item
-            android:id="@+id/nav_battery_statistics"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/action_menu_battery" />
+            android:id="@+id/nav_today_headline"
+            android:icon="@drawable/ic_notifications_black_24dp"
+            android:title="@string/action_menu_today_headline" />
 
         <item
             android:id="@+id/nav_small_talk"

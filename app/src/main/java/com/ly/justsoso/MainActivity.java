@@ -28,6 +28,9 @@ import com.ly.justsoso.enjoypictures.data.remote.RemoteDataSource;
 import com.ly.justsoso.gamecenter.GameCenterFragment;
 import com.ly.justsoso.gamecenter.GameCenterPresenter;
 import com.ly.justsoso.gamecenter.GameCenterRepository;
+import com.ly.justsoso.headline.HeadLineFragment;
+import com.ly.justsoso.headline.HeadLinePresenter;
+import com.ly.justsoso.headline.HeadLineRepository;
 import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,SearchView.OnQueryTextListener{
@@ -36,7 +39,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DrawerLayout mRootDrawerLayout;
     InputMethodManager inputMethodManager;
     EnjoyPicturePresenter mEnjoyPicturePresenter;
-    GameCenterPresenter mGameCenterPreSenter;
+    GameCenterPresenter mGameCenterPresenter;
+    HeadLinePresenter mHeadLinePresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,8 +122,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int menuId = item.getItemId();
         if(menuId == R.id.nav_picture_enjoy){
             handlePictureEnjoy();
-        }else if(menuId == R.id.nav_battery_statistics){
-            handleBatteryStatistics();
+        }else if(menuId == R.id.nav_today_headline){
+            handleTodayHeadLine();
         }else if(menuId == R.id.nav_small_talk){
             handleSmallTalk();
         }else if(menuId == R.id.nav_game_center){
@@ -142,8 +146,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void handleBatteryStatistics(){
-
+    private void handleTodayHeadLine(){
+        HeadLineFragment headLineFragment = (HeadLineFragment) getSupportFragmentManager().findFragmentByTag(ConstantsUtil.FRAGMENT_TODAY_HEADLINE);
+        if(null == headLineFragment) {
+            headLineFragment = HeadLineFragment.newInstance();
+            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),headLineFragment,R.id.contentFrame,ConstantsUtil.FRAGMENT_TODAY_HEADLINE);
+            HeadLineRepository repository = new HeadLineRepository();
+            mHeadLinePresenter = new HeadLinePresenter();
+            headLineFragment.setPresenter(mHeadLinePresenter);
+        }else{
+            ActivityUtils.showFragmentToActivity(getSupportFragmentManager(),headLineFragment);
+        }
     }
 
     private void handleSmallTalk(){
@@ -156,8 +169,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             gameCenterFragment = GameCenterFragment.newInstance();
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),gameCenterFragment,R.id.contentFrame,ConstantsUtil.FRAGMENT_GAME_CENTER);
             GameCenterRepository gc = new GameCenterRepository();
-            mGameCenterPreSenter = new GameCenterPresenter(gameCenterFragment,gc);
-            gameCenterFragment.setPresenter(mGameCenterPreSenter);
+            mGameCenterPresenter = new GameCenterPresenter(gameCenterFragment,gc);
+            gameCenterFragment.setPresenter(mGameCenterPresenter);
         }else{
             ActivityUtils.showFragmentToActivity(getSupportFragmentManager(),gameCenterFragment);
         }

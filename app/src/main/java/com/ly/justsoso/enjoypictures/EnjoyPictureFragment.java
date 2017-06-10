@@ -15,12 +15,10 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.ly.justsoso.R;
+import com.ly.justsoso.base.adaptor.RecycleViewAdapter;
 import com.ly.justsoso.base.item.PicassoRecycleItem;
 import com.ly.justsoso.base.ui.DetailImageView;
-import com.ly.justsoso.base.adaptor.RecycleViewAdapter;
 import com.ly.justsoso.base.ui.SpacesItemDecoration;
-import com.ly.justsoso.base.utils.SpModeKey;
-import com.ly.justsoso.base.utils.SpModelUtils;
 import com.ly.justsoso.enjoypictures.bean.Pictures;
 import com.squareup.picasso.Picasso;
 
