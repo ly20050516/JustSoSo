@@ -13,32 +13,23 @@ public class HeadLinePresenter implements HeadLineContract.Presenter {
 
     HeadLineContract.View mHeadLineView;
     HeadLineRepository mHeadLineRepository;
-    RequestNewsList requestNewsList;
+
     public HeadLinePresenter(HeadLineRepository mHeadLineRepository,HeadLineContract.View mHeadLineView) {
         this.mHeadLineRepository = mHeadLineRepository;
         this.mHeadLineView = mHeadLineView;
     }
     @Override
     public void start() {
-        requestNewsList = new RequestNewsList();
-        requestNewsList.setType(ConstantUtils.TYPE_VALUE_EDU);
-        requestNewsList.setPage(1);
-        requestNewsList.setLimit(10);
-        mHeadLineRepository.getDatas(requestNewsList, new BaseDataSource.DataLoadCallback<NewsList>() {
-            @Override
-            public void onDataLoadComplete(NewsList newsList) {
 
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-
-            }
-        });
     }
 
     @Override
     public void end() {
 
+    }
+
+    @Override
+    public void requestList(RequestNewsList requestNewsList, BaseDataSource.DataLoadCallback<NewsList> callback) {
+        mHeadLineRepository.getDatas(requestNewsList,callback);
     }
 }

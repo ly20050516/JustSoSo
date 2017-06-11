@@ -6,8 +6,6 @@ package com.ly.justsoso.headline.utils;
 
 public class ConstantUtils {
 
-
-
     public static final String TYPE_VALUE_WAR = "war";
     public static final String TYPE_VALUE_SPORT = "sport";
     public static final String TYPE_VALUE_TECH = "tech";
@@ -17,7 +15,5 @@ public class ConstantUtils {
     public static final String TYPE_VALUE_GUPIAO = "gupiao";
     public static final String TYPE_VALUE_TRAVEL = "travel";
     public static final String TYPE_VALUE_LADY = "lady";
-
-
 
 }
