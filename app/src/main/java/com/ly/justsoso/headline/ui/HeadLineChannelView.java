@@ -3,6 +3,7 @@ package com.ly.justsoso.headline.ui;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -49,18 +50,25 @@ public class HeadLineChannelView extends AbstractChannelView {
 
     @Override
     public void addNewsList(NewsList newsList) {
-
         Observable.just(newsList)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<NewsList>() {
                     @Override
                     public void call(NewsList newsList) {
-                        int size = newsList.getList().size() + mRecyclerViewAdapter.mNewsItemList.size();
-                        int page = size % 10 == 0 ? size / 10 : size / 10 + 1;
-                        mRecyclerViewAdapter.mNewsItemList.addAll(newsList.getList());
+                        if(newsList == null) {
+                            mSwipeRefreshLayout.setRefreshing(false);
+                            return;
+                        }
+                        int page = mRequestNewsList.getPage() + 1;
+                        if(mRecyclerViewAdapter.mNewsItemList.size() == 0) {
+                            mRecyclerViewAdapter.mNewsItemList.addAll(newsList.getList());
+                        }else {
+                            mRecyclerViewAdapter.mNewsItemList.addAll(0,newsList.getList());
+                        }
                         mRecyclerViewAdapter.notifyDataSetChanged();
                         mRequestNewsList.setPage(page);
                         mRecyclerViewAdapter.notifyDataSetChanged();
+                        mSwipeRefreshLayout.setRefreshing(false);
                     }
                 });
     }
@@ -72,11 +80,11 @@ public class HeadLineChannelView extends AbstractChannelView {
         mRequestNewsList.setPage(1);
         mRequestNewsList.setLimit(10);
 
-        mSwipeRefreshLayout.setRefreshing(true);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 mRequestList.requestList(mRequestNewsList,HeadLineChannelView.this);
+                mSwipeRefreshLayout.setRefreshing(true);
             }
         });
 
@@ -84,14 +92,21 @@ public class HeadLineChannelView extends AbstractChannelView {
         mRecyclerView.addItemDecoration(new SpacesItemDecoration(16));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerViewAdapter = new HeadLineChannelAdapter();
+        mRecyclerViewAdapter.mOnClickItem = new OnClickItem() {
+            @Override
+            public void onClickItem(View view, int postion, NewsItem newsItem) {
+
+            }
+        };
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
         mRequestList.requestList(mRequestNewsList,HeadLineChannelView.this);
+        mSwipeRefreshLayout.setRefreshing(true);
     }
 
     class HeadLineChannelAdapter extends RecyclerView.Adapter<HeadLineChannelAdapter.RecyclerViewHolder>{
 
         List<NewsItem> mNewsItemList = new ArrayList<>();
-
+        OnClickItem mOnClickItem = null;
         @Override
         public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(getContext()).inflate(R.layout.head_line_channel_item,parent,false);
@@ -100,13 +115,20 @@ public class HeadLineChannelView extends AbstractChannelView {
 
 
         @Override
-        public void onBindViewHolder(RecyclerViewHolder holder, int position) {
-            NewsItem item = mNewsItemList.get(position);
-            if(item == null || TextUtils.isEmpty(item.getImgurl())){
-                return;
+        public void onBindViewHolder(final RecyclerViewHolder holder, final int position) {
+            final NewsItem item = mNewsItemList.get(position);
+            if(!TextUtils.isEmpty(item.getImgurl())) {
+                Picasso.with(getContext()).load(item.getImgurl()).placeholder(R.drawable.user_placeholder).error(R.drawable.user_placeholder).into(holder.img);
+            }else{
+                holder.img.setImageResource(R.drawable.user_placeholder);
             }
-            Picasso.with(getContext()).load(item.getImgurl()).placeholder(R.drawable.user_placeholder).error(R.drawable.user_placeholder).into(holder.img);
             holder.title.setText(item.getTitle());
+            holder.root.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnClickItem.onClickItem(holder.root,position,item);
+                }
+            });
         }
 
 
@@ -118,11 +140,17 @@ public class HeadLineChannelView extends AbstractChannelView {
         class RecyclerViewHolder extends  RecyclerView.ViewHolder{
             ImageView img;
             TextView title;
+            CardView root;
             public RecyclerViewHolder(View itemView) {
                 super(itemView);
+                root = (CardView) itemView.findViewById(R.id.head_line_item_root);
                 img = (ImageView) itemView.findViewById(R.id.head_line_item_image);
                 title = (TextView) itemView.findViewById(R.id.head_line_item_title);
             }
         }
+    }
+
+    interface OnClickItem{
+        void onClickItem(View view,int postion,NewsItem newsItem);
     }
 }

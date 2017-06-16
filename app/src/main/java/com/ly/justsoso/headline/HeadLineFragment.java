@@ -72,7 +72,7 @@ public class HeadLineFragment extends Fragment implements HeadLineContract.View,
 
                         @Override
                         public void onDataNotAvailable() {
-
+                            channelView.addNewsList(null);
                         }
                     });
                 }

@@ -44,14 +44,20 @@ public class RemoteListSource implements BaseDataSource<RequestNewsList,NewsList
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
+                callback.onDataNotAvailable();
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String json = response.body().string();
-                NewsList newsList = JSON.parseObject(json,NewsList.class);
-                callback.onDataLoadComplete(newsList);
+            public void onResponse(Call call, Response response) {
+                String json = null;
+                try {
+                    json = response.body().string();
+                    NewsList newsList = JSON.parseObject(json,NewsList.class);
+                    callback.onDataLoadComplete(newsList);
+                } catch (Exception e) {
+                    callback.onDataNotAvailable();
+                    e.printStackTrace();
+                }
             }
         });
     }
