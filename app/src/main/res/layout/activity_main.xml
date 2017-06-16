@@ -14,29 +14,6 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         >
-        <com.ly.framework.ui.WindowLayerLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:enable_touch="true">
-            <FrameLayout
-                android:layout_marginTop="?attr/actionBarSize"
-                android:id="@+id/contentFrame1"
-                android:background="#ff00dd"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-            <FrameLayout
-                android:layout_marginTop="?attr/actionBarSize"
-                android:id="@+id/contentFrame2"
-                android:background="#005588"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-            <FrameLayout
-                android:layout_marginTop="?attr/actionBarSize"
-                android:id="@+id/contentFrame3"
-                android:background="#559988"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </com.ly.framework.ui.WindowLayerLayout>
         <FrameLayout
             android:layout_marginTop="?attr/actionBarSize"
             android:id="@+id/contentFrame"

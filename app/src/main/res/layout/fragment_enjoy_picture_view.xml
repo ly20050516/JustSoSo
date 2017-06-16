@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.ly.framework.ui.WindowLayerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary"
-    android:id="@+id/root_activity_recycle_view"
+    android:id="@+id/root_window_layer_layout"
     tools:context="com.ly.justsoso.MainActivity">
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/picasso_swipe_refresh_layout"
@@ -16,4 +16,4 @@
             android:layout_height="match_parent">
         </android.support.v7.widget.RecyclerView>
     </android.support.v4.widget.SwipeRefreshLayout>
-</FrameLayout>
+</com.ly.framework.ui.WindowLayerLayout>

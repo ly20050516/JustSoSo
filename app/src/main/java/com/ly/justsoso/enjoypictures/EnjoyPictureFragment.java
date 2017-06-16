@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.ly.framework.ui.WindowLayerLayout;
 import com.ly.justsoso.R;
 import com.ly.justsoso.base.adaptor.RecycleViewAdapter;
 import com.ly.justsoso.base.item.PicassoRecycleItem;
@@ -40,7 +41,7 @@ public class EnjoyPictureFragment extends Fragment implements EnjoyPictureContra
     RecycleViewAdapter mRecycleViewAdapter;
     DetailImageView mDetailImageView;
     ViewGroup.LayoutParams mImageViewParams;
-    FrameLayout mFrameLayout;
+    WindowLayerLayout mFrameLayout;
     SwipeRefreshLayout mSwipeRefreshLayout;
     StaggeredGridLayoutManager mStaggeredGridLayoutManager;
 
@@ -65,9 +66,9 @@ public class EnjoyPictureFragment extends Fragment implements EnjoyPictureContra
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.fragment_recycle_view,container,false);
+        View root = inflater.inflate(R.layout.fragment_enjoy_picture_view,container,false);
         mRecycleView = (RecyclerView) root.findViewById(R.id.picasso_recycle_view);
-        mFrameLayout = (FrameLayout) root.findViewById(R.id.root_activity_recycle_view);
+        mFrameLayout = (WindowLayerLayout) root.findViewById(R.id.root_window_layer_layout);
         mSwipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.picasso_swipe_refresh_layout);
 
         mSwipeRefreshLayout.setRefreshing(true);
@@ -186,7 +187,6 @@ public class EnjoyPictureFragment extends Fragment implements EnjoyPictureContra
         }
         mFrameLayout.removeView(mDetailImageView);
         mFrameLayout.addView(mDetailImageView, mImageViewParams);
-        mDetailImageView.show();
         Picasso.with(getContext()).load(item.detailUrl).into(mDetailImageView.mImageView);
     }
 

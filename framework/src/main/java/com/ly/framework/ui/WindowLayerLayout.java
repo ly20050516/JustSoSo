@@ -60,6 +60,12 @@ public class WindowLayerLayout extends FrameLayout {
     }
 
     @Override
+    public void addView(View child) {
+        super.addView(child);
+        child.layout(getLeft(),getTop(),getRight(),getBottom());
+    }
+
+    @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
@@ -69,12 +75,15 @@ public class WindowLayerLayout extends FrameLayout {
     }
 
     float mLastX;
-
+    boolean mIsAnimation;
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 mLastX = event.getX();
+                if(getChildCount() == 1) {
+                    return false;
+                }
                 break;
             case MotionEvent.ACTION_MOVE:
                 float x = event.getX();
@@ -83,7 +92,7 @@ public class WindowLayerLayout extends FrameLayout {
                 if(view == null) {
                     break;
                 }
-                if (Math.abs(distance) >= MIN_DISTANCE ) {
+                if (Math.abs(distance) >= MIN_DISTANCE && !mIsAnimation) {
                     int left = view.getLeft() + distance < 0 ? 0 : view.getLeft() + distance;
                     view.layout(left,view.getTop(), left + view.getWidth(),view.getBottom());
                     mLastX = x;
@@ -102,6 +111,27 @@ public class WindowLayerLayout extends FrameLayout {
                 if(translationX * 2 < getWidth()) {
                     ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(view,"translationX",0,-translationX);
                     objectAnimator.setDuration(500);
+                    objectAnimator.addListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            mIsAnimation = true;
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            mIsAnimation = false;
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+                            mIsAnimation = false;
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+
+                        }
+                    });
                     objectAnimator.start();
                 }else {
                     final ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(view,"translationX",0,getRight() - translationX);
@@ -109,11 +139,12 @@ public class WindowLayerLayout extends FrameLayout {
                     objectAnimator.addListener(new Animator.AnimatorListener() {
                         @Override
                         public void onAnimationStart(Animator animation) {
-
+                            mIsAnimation = true;
                         }
 
                         @Override
                         public void onAnimationEnd(Animator animation) {
+                            mIsAnimation = false;
                             View view = getChildAt(getChildCount() - 1);
                             if(view != null) {
                                 removeView(view);
@@ -123,7 +154,7 @@ public class WindowLayerLayout extends FrameLayout {
 
                         @Override
                         public void onAnimationCancel(Animator animation) {
-
+                            mIsAnimation = false;
                         }
 
                         @Override
@@ -143,6 +174,9 @@ public class WindowLayerLayout extends FrameLayout {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         super.onInterceptTouchEvent(ev);
+        if(getChildCount() == 1) {
+            return false;
+        }
         return mEnableTouch;
     }
 
