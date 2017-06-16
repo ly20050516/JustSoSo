@@ -2,6 +2,7 @@ package com.ly.framework.ui;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.ly.framework.R;
@@ -62,9 +64,72 @@ public class WindowLayerLayout extends FrameLayout {
     @Override
     public void addView(View child) {
         super.addView(child);
-        child.layout(getLeft(),getTop(),getRight(),getBottom());
+        doAddViewAnimation(child);
     }
 
+    @Override
+    public void addView(View child, int index) {
+        super.addView(child, index);
+        doAddViewAnimation(child);
+    }
+
+    @Override
+    public void addView(View child, int index, ViewGroup.LayoutParams params) {
+        super.addView(child, index, params);
+        doAddViewAnimation(child);
+    }
+
+    @Override
+    public void addView(View child, ViewGroup.LayoutParams params) {
+
+        doAddViewAnimation(child);
+        super.addView(child, params);
+    }
+
+    @Override
+    public void addView(View child, int width, int height) {
+        super.addView(child, width, height);
+        doAddViewAnimation(child);
+    }
+
+    private void doAddViewAnimation(final View view) {
+        if(getChildCount() <= 1) {
+            return;
+        }
+        view.layout(getRight(),getTop(),getRight() + view.getWidth(),getBottom());
+        final ValueAnimator valueAnimator = ValueAnimator.ofInt(getRight(),getLeft());
+        valueAnimator.setDuration(500);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int left = (int) animation.getAnimatedValue();
+                view.layout(left,view.getTop(),left + view.getWidth(),view.getBottom());
+            }
+        });
+        valueAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                valueAnimator.removeAllUpdateListeners();
+                valueAnimator.removeAllListeners();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        valueAnimator.start();
+    }
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -81,7 +146,7 @@ public class WindowLayerLayout extends FrameLayout {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 mLastX = event.getX();
-                if(getChildCount() == 1) {
+                if(getChildCount() <= 1) {
                     return false;
                 }
                 break;
@@ -109,22 +174,33 @@ public class WindowLayerLayout extends FrameLayout {
                 Log.d(TAG, "onTouchEvent: getLeft = " + getLeft() + ";getRight = " + getRight() + ";getWidth = " + getWidth());
 
                 if(translationX * 2 < getWidth()) {
-                    ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(view,"translationX",0,-translationX);
-                    objectAnimator.setDuration(500);
-                    objectAnimator.addListener(new Animator.AnimatorListener() {
+                    final ValueAnimator valueAnimator = ValueAnimator.ofFloat(translationX,0);
+                    valueAnimator.setDuration(500);
+                    valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            float value = (float) animation.getAnimatedValue();
+                            Log.d(TAG, "onAnimationUpdate: less value " + value);
+                            View view = getChildAt(getChildCount() - 1);
+                            view.layout((int)value,view.getTop(),(int)value + view.getWidth(),view.getBottom());
+                        }
+                    });
+                    valueAnimator.addListener(new Animator.AnimatorListener() {
                         @Override
                         public void onAnimationStart(Animator animation) {
-                            mIsAnimation = true;
+
                         }
 
                         @Override
                         public void onAnimationEnd(Animator animation) {
-                            mIsAnimation = false;
+                            valueAnimator.removeAllUpdateListeners();
+                            valueAnimator.removeAllListeners();
                         }
 
                         @Override
                         public void onAnimationCancel(Animator animation) {
-                            mIsAnimation = false;
+                            valueAnimator.removeAllUpdateListeners();
+                            valueAnimator.removeAllListeners();
                         }
 
                         @Override
@@ -132,29 +208,40 @@ public class WindowLayerLayout extends FrameLayout {
 
                         }
                     });
-                    objectAnimator.start();
+                    valueAnimator.start();
                 }else {
-                    final ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(view,"translationX",0,getRight() - translationX);
-                    objectAnimator.setDuration(500);
-                    objectAnimator.addListener(new Animator.AnimatorListener() {
+                    final ValueAnimator valueAnimator = ValueAnimator.ofFloat(translationX,getRight());
+                    valueAnimator.setDuration(500);
+                    ValueAnimator.AnimatorUpdateListener updateAnimator = new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            float value = (float) animation.getAnimatedValue();
+                            Log.d(TAG, "onAnimationUpdate: more value " + value);
+                            View view = getChildAt(getChildCount() - 1);
+                            view.layout((int)value,view.getTop(),(int)value + view.getWidth(),view.getBottom());
+                        }
+                    };
+                    valueAnimator.addUpdateListener(updateAnimator);
+                    valueAnimator.addListener(new Animator.AnimatorListener() {
                         @Override
                         public void onAnimationStart(Animator animation) {
-                            mIsAnimation = true;
+
                         }
 
                         @Override
                         public void onAnimationEnd(Animator animation) {
-                            mIsAnimation = false;
                             View view = getChildAt(getChildCount() - 1);
                             if(view != null) {
                                 removeView(view);
                             }
-                            objectAnimator.removeListener(this);
+                            valueAnimator.removeAllUpdateListeners();
+                            valueAnimator.removeAllListeners();
                         }
 
                         @Override
                         public void onAnimationCancel(Animator animation) {
-                            mIsAnimation = false;
+                            valueAnimator.removeAllUpdateListeners();
+                            valueAnimator.removeAllListeners();
                         }
 
                         @Override
@@ -162,7 +249,7 @@ public class WindowLayerLayout extends FrameLayout {
 
                         }
                     });
-                    objectAnimator.start();
+                    valueAnimator.start();
                 }
                 break;
             default:
@@ -174,7 +261,7 @@ public class WindowLayerLayout extends FrameLayout {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         super.onInterceptTouchEvent(ev);
-        if(getChildCount() == 1) {
+        if(getChildCount() <= 1) {
             return false;
         }
         return mEnableTouch;
