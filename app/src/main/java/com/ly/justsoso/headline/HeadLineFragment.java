@@ -10,12 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ly.framework.mvp.BaseDataSource;
+import com.ly.framework.ui.WindowLayerLayout;
 import com.ly.justsoso.R;
-import com.ly.justsoso.headline.bean.NewsList;
+import com.ly.justsoso.headline.bean.NewsItem;
 import com.ly.justsoso.headline.bean.ViewPageTabTitle;
-import com.ly.justsoso.headline.common.RequestNewsList;
-import com.ly.justsoso.headline.ui.AbstractChannelView;
 import com.ly.justsoso.headline.ui.HeadLineChannelView;
 import com.ly.justsoso.headline.ui.HeadLineChannelViewFactory;
 
@@ -30,6 +28,7 @@ public class HeadLineFragment extends Fragment implements HeadLineContract.View,
 
     HeadLineContract.Presenter mHeadLinePresenter;
 
+    WindowLayerLayout mWindowLayerLayoutRoot;
     ViewPager mViewPager;
     PagerTabStrip mPagerTabShip;
     List<ViewPageTabTitle> mTabTitle;
@@ -52,6 +51,7 @@ public class HeadLineFragment extends Fragment implements HeadLineContract.View,
 
         mViewPager = (ViewPager) root.findViewById(R.id.viewpager_list);
         mPagerTabShip = (PagerTabStrip) root.findViewById(R.id.pager_tab_strip_list);
+        mWindowLayerLayoutRoot = (WindowLayerLayout) root.findViewById(R.id.head_line_root);
 
         mTabTitle = new ArrayList<>();
         mTabViews = new ArrayList<>();
@@ -60,25 +60,9 @@ public class HeadLineFragment extends Fragment implements HeadLineContract.View,
             title.setChannelId(channelIds[i]);
             title.setChannelName(getString(channelNameIds[i]));
             mTabTitle.add(title);
-
-            HeadLineChannelView headLineListView = (HeadLineChannelView) HeadLineChannelViewFactory.getChannelView(getContext(), HeadLineChannelViewFactory.CHANNEL_VIEW_NORMAL, new AbstractChannelView.RequestList() {
-                @Override
-                public void requestList(RequestNewsList requestNewsList, final AbstractChannelView channelView) {
-                    mHeadLinePresenter.requestList(requestNewsList, new BaseDataSource.DataLoadCallback<NewsList>() {
-                        @Override
-                        public void onDataLoadComplete(NewsList newsList) {
-                            channelView.addNewsList(newsList);
-                        }
-
-                        @Override
-                        public void onDataNotAvailable() {
-                            channelView.addNewsList(null);
-                        }
-                    });
-                }
-            });
+            HeadLineChannelView headLineListView = (HeadLineChannelView) HeadLineChannelViewFactory.getChannelView(getContext(), HeadLineChannelViewFactory.CHANNEL_VIEW_NORMAL);
             headLineListView.setViewPageTabTitle(title);
-            headLineListView.lastInit();
+            headLineListView.setPresenter(mHeadLinePresenter);
             mTabViews.add(headLineListView);
         }
 
@@ -143,6 +127,11 @@ public class HeadLineFragment extends Fragment implements HeadLineContract.View,
 
     @Override
     public void onPageScrollStateChanged(int state) {
+
+    }
+
+    @Override
+    public void onItemClick(NewsItem newsItem) {
 
     }
 }

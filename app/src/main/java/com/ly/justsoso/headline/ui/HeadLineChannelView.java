@@ -14,8 +14,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ly.framework.mvp.BaseDataSource;
 import com.ly.justsoso.R;
 import com.ly.justsoso.base.ui.SpacesItemDecoration;
+import com.ly.justsoso.headline.HeadLineContract;
 import com.ly.justsoso.headline.bean.NewsItem;
 import com.ly.justsoso.headline.bean.NewsList;
 import com.ly.justsoso.headline.common.RequestNewsList;
@@ -32,14 +34,15 @@ import rx.functions.Action1;
  * Created by LY on 2017-06-11.
  */
 
-public class HeadLineChannelView extends AbstractChannelView {
+public class HeadLineChannelView extends AbstractChannelView{
 
     SwipeRefreshLayout mSwipeRefreshLayout;
     RecyclerView mRecyclerView;
     HeadLineChannelAdapter mRecyclerViewAdapter;
+    HeadLineContract.Presenter mListPresenter;
     RequestNewsList mRequestNewsList;
-    public HeadLineChannelView(@NonNull Context context,RequestList requestList) {
-        super(context,requestList);
+    public HeadLineChannelView(@NonNull Context context) {
+        super(context);
         LayoutInflater.from(context).inflate(R.layout.head_line_channel_view,this,true);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.head_line_channel_swipe);
@@ -48,8 +51,7 @@ public class HeadLineChannelView extends AbstractChannelView {
 
     }
 
-    @Override
-    public void addNewsList(NewsList newsList) {
+    private void addNewsList(NewsList newsList) {
         Observable.just(newsList)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<NewsList>() {
@@ -73,8 +75,7 @@ public class HeadLineChannelView extends AbstractChannelView {
                 });
     }
 
-    @Override
-    public void lastInit() {
+    private void lastInit() {
         mRequestNewsList = new RequestNewsList();
         mRequestNewsList.setType(getViewPageType());
         mRequestNewsList.setPage(1);
@@ -83,8 +84,7 @@ public class HeadLineChannelView extends AbstractChannelView {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mRequestList.requestList(mRequestNewsList,HeadLineChannelView.this);
-                mSwipeRefreshLayout.setRefreshing(true);
+                onRequestListRefresh();
             }
         });
 
@@ -99,8 +99,29 @@ public class HeadLineChannelView extends AbstractChannelView {
             }
         };
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
-        mRequestList.requestList(mRequestNewsList,HeadLineChannelView.this);
+        onRequestListRefresh();
         mSwipeRefreshLayout.setRefreshing(true);
+    }
+
+    private void onRequestListRefresh() {
+        mListPresenter.requestList(mRequestNewsList,new BaseDataSource.DataLoadCallback<NewsList>(){
+
+            @Override
+            public void onDataLoadComplete(NewsList newsList) {
+                addNewsList(newsList);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
+        mSwipeRefreshLayout.setRefreshing(true);
+    }
+
+    public void setPresenter(HeadLineContract.Presenter presenter) {
+        mListPresenter = presenter;
+        lastInit();
     }
 
     class HeadLineChannelAdapter extends RecyclerView.Adapter<HeadLineChannelAdapter.RecyclerViewHolder>{

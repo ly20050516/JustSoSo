@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.ly.framework.ui.WindowLayerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/head_line_channel_swipe"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/head_line_channel_swipe"
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/head_line_channel_recycle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/head_line_channel_recycle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </android.support.v7.widget.RecyclerView>
-    </android.support.v4.widget.SwipeRefreshLayout>
-</com.ly.framework.ui.WindowLayerLayout>
+        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+</android.support.v4.widget.SwipeRefreshLayout>

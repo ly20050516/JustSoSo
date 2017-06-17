@@ -12,17 +12,12 @@ import com.ly.justsoso.headline.common.RequestNewsList;
  * Created by LY on 2017-06-11.
  */
 
-public abstract class AbstractChannelView extends FrameLayout {
+public abstract class AbstractChannelView extends AbstractView {
 
     ViewPageTabTitle mViewPageTabTitle;
-    RequestList mRequestList;
-    public interface RequestList{
-        void requestList(RequestNewsList requestNewsList,AbstractChannelView channelView);
-    }
 
-    public AbstractChannelView(@NonNull Context context,RequestList requestList) {
+    public AbstractChannelView(@NonNull Context context) {
         super(context);
-        this.mRequestList = requestList;
     }
 
     public ViewPageTabTitle getViewPageTabTitle() {
@@ -36,6 +31,4 @@ public abstract class AbstractChannelView extends FrameLayout {
     public String getViewPageType() {
         return mViewPageTabTitle.getChannelId();
     }
-    public abstract void addNewsList(NewsList newsList);
-    public abstract void lastInit();
 }

@@ -2,16 +2,29 @@ package com.ly.justsoso.headline;
 
 import com.ly.framework.mvp.BaseDataSource;
 import com.ly.justsoso.headline.bean.NewsDetail;
+import com.ly.justsoso.headline.bean.NewsItem;
+import com.ly.justsoso.headline.bean.NewsList;
 import com.ly.justsoso.headline.common.RequestDetail;
+import com.ly.justsoso.headline.common.RequestNewsList;
+import com.ly.justsoso.headline.data.local.LocalDetailSource;
+import com.ly.justsoso.headline.data.remote.RemoteDetailSource;
 
 /**
- * Created by LY on 2017-06-11.
+ * Created by LY on 2017-06-10.
  */
 
 public class HeadLineDetailRepository implements BaseDataSource<RequestDetail,NewsDetail> {
-    @Override
-    public void getDatas(RequestDetail requestDetailList, DataLoadCallback<NewsDetail> callback) {
 
+    BaseDataSource<RequestDetail,NewsDetail> localSource,remoteSource;
+
+    public HeadLineDetailRepository() {
+        localSource = new LocalDetailSource();
+        remoteSource = new RemoteDetailSource();
+    }
+
+    @Override
+    public void getDatas(RequestDetail requestDetail, DataLoadCallback<NewsDetail> callback) {
+        remoteSource.getDatas(requestDetail, callback);
     }
 
     @Override

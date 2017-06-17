@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             headLineFragment = HeadLineFragment.newInstance();
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),headLineFragment,R.id.contentFrame,ConstantsUtil.FRAGMENT_TODAY_HEADLINE);
             HeadLineRepository repository = new HeadLineRepository(new LocalListSource(),new RemoteListSource());
-            mHeadLinePresenter = new HeadLinePresenter(repository,headLineFragment);
+            mHeadLinePresenter = new HeadLinePresenter(headLineFragment);
             headLineFragment.setPresenter(mHeadLinePresenter);
         }else{
             ActivityUtils.showFragmentToActivity(getSupportFragmentManager(),headLineFragment);
