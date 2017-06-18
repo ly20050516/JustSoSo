@@ -22,7 +22,7 @@ public class NewsItem {
 
     @Generated(hash = 179679663)
     public NewsItem(Long _id, String imgurl, boolean has_content, String docUrl,
-            long id, String time, String title, String channelname) {
+                    long id, String time, String title, String channelname) {
         this._id = _id;
         this.imgurl = imgurl;
         this.has_content = has_content;
@@ -35,6 +35,22 @@ public class NewsItem {
 
     @Generated(hash = 1697690472)
     public NewsItem() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof NewsItem)) {
+            return false;
+        }
+
+        NewsItem other = (NewsItem) o;
+        return other.getHas_content() == has_content
+                && other.getChannelname().equals(channelname)
+                && other.getDocUrl().equals(docUrl)
+                && other.getId() == id
+                && other.getImgurl().equals(imgurl)
+                && other.getTime().equals(time)
+                && other.getTitle().equals(title);
     }
 
     public String getImgurl() {

@@ -14,6 +14,7 @@ import com.ly.framework.ui.WindowLayerLayout;
 import com.ly.justsoso.R;
 import com.ly.justsoso.headline.bean.NewsItem;
 import com.ly.justsoso.headline.bean.ViewPageTabTitle;
+import com.ly.justsoso.headline.ui.HeadLineChannelDetailView;
 import com.ly.justsoso.headline.ui.HeadLineChannelView;
 import com.ly.justsoso.headline.ui.HeadLineChannelViewFactory;
 
@@ -33,6 +34,7 @@ public class HeadLineFragment extends Fragment implements HeadLineContract.View,
     PagerTabStrip mPagerTabShip;
     List<ViewPageTabTitle> mTabTitle;
     List<HeadLineChannelView> mTabViews;
+    HeadLineChannelDetailView mHeadLineChannelDetailView;
 
     String[] channelIds = new String[]{"war", "sport", "tech", "edu", "ent", "money", "gupiao", "travel", "lady"};
     int[] channelNameIds = new int[]{R.string.type_title_war, R.string.type_title_sport, R.string.type_title_tech, R.string.type_title_edu, R.string.type_title_ent, R.string.type_title_money, R.string.type_title_gupiao, R.string.type_title_travel, R.string.type_title_lady};
@@ -132,6 +134,13 @@ public class HeadLineFragment extends Fragment implements HeadLineContract.View,
 
     @Override
     public void onItemClick(NewsItem newsItem) {
+        if(mHeadLineChannelDetailView == null) {
+            mHeadLineChannelDetailView = new HeadLineChannelDetailView(getContext());
+            mHeadLineChannelDetailView.setHeadLineDetailPresenter(mHeadLinePresenter);
+        }
+
+        mWindowLayerLayoutRoot.addView(mHeadLineChannelDetailView);
+        mHeadLineChannelDetailView.updateView(newsItem);
 
     }
 }

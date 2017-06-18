@@ -1,8 +1,10 @@
 package com.ly.justsoso.headline;
 
 import com.ly.framework.mvp.BaseDataSource;
+import com.ly.justsoso.headline.bean.NewsDetail;
 import com.ly.justsoso.headline.bean.NewsItem;
 import com.ly.justsoso.headline.bean.NewsList;
+import com.ly.justsoso.headline.common.RequestDetail;
 import com.ly.justsoso.headline.common.RequestNewsList;
 import com.ly.justsoso.headline.data.local.LocalDetailSource;
 import com.ly.justsoso.headline.data.local.LocalListSource;
@@ -46,7 +48,7 @@ public class HeadLinePresenter implements HeadLineContract.Presenter {
     }
 
     @Override
-    public void requestDetail(NewsItem newsItem) {
-
+    public void requestDetail(RequestDetail requestDetail, BaseDataSource.DataLoadCallback<NewsDetail> callback) {
+        mHeadLineDetailRepository.getDatas(requestDetail,callback);
     }
 }
