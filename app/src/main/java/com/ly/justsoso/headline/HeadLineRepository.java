@@ -2,7 +2,7 @@ package com.ly.justsoso.headline;
 
 import com.ly.framework.mvp.BaseDataSource;
 import com.ly.justsoso.headline.bean.NewsList;
-import com.ly.justsoso.headline.common.RequestNewsList;
+import com.ly.justsoso.headline.request.RequestNewsList;
 import com.ly.justsoso.headline.data.local.LocalListSource;
 import com.ly.justsoso.headline.data.remote.RemoteListSource;
 

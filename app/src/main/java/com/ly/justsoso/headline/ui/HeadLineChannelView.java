@@ -20,7 +20,7 @@ import com.ly.justsoso.base.ui.SpacesItemDecoration;
 import com.ly.justsoso.headline.HeadLineContract;
 import com.ly.justsoso.headline.bean.NewsItem;
 import com.ly.justsoso.headline.bean.NewsList;
-import com.ly.justsoso.headline.common.RequestNewsList;
+import com.ly.justsoso.headline.request.RequestNewsList;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

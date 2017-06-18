@@ -4,12 +4,8 @@ import com.ly.framework.mvp.BaseDataSource;
 import com.ly.justsoso.headline.bean.NewsDetail;
 import com.ly.justsoso.headline.bean.NewsItem;
 import com.ly.justsoso.headline.bean.NewsList;
-import com.ly.justsoso.headline.common.RequestDetail;
-import com.ly.justsoso.headline.common.RequestNewsList;
-import com.ly.justsoso.headline.data.local.LocalDetailSource;
-import com.ly.justsoso.headline.data.local.LocalListSource;
-import com.ly.justsoso.headline.data.remote.RemoteDetailSource;
-import com.ly.justsoso.headline.data.remote.RemoteListSource;
+import com.ly.justsoso.headline.request.RequestDetail;
+import com.ly.justsoso.headline.request.RequestNewsList;
 
 /**
  * Created by LY on 2017-06-10.

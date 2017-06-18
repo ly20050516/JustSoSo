@@ -1,7 +1,6 @@
 package com.ly.framework.ui;
 
 import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -23,9 +22,6 @@ import com.ly.framework.R;
 public class WindowLayerLayout extends FrameLayout {
 
     public static final String TAG = "WindowLayerLayout";
-
-
-
     private boolean mEnableTouch = true;
     private static final int MIN_DISTANCE = 5;
 
@@ -53,13 +49,14 @@ public class WindowLayerLayout extends FrameLayout {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-
-//        int childCount = getChildCount();
-//        for(int i = 0;i < childCount;i ++) {
-//            View view = getChildAt(i);
-//            view.layout(left,top,right,bottom);
-//        }
+        Log.d(TAG, "onLayout: left = " + left + ";top = " + top + ";right = " + right + ";bottom = " + bottom);
+        int count = getChildCount();
+        for(int i = 0;i < count;i++) {
+            View child = getChildAt(i);
+            child.layout(left,top,right,bottom);
+        }
     }
+
 
     @Override
     public void addView(View child) {
@@ -81,9 +78,9 @@ public class WindowLayerLayout extends FrameLayout {
 
     @Override
     public void addView(View child, ViewGroup.LayoutParams params) {
-
-        doAddViewAnimation(child);
         super.addView(child, params);
+        doAddViewAnimation(child);
+
     }
 
     @Override
@@ -96,7 +93,6 @@ public class WindowLayerLayout extends FrameLayout {
         if(getChildCount() <= 1) {
             return;
         }
-        view.layout(getRight(),getTop(),getRight() + view.getWidth(),getBottom());
         final ValueAnimator valueAnimator = ValueAnimator.ofInt(getRight(),getLeft());
         valueAnimator.setDuration(500);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -137,40 +133,64 @@ public class WindowLayerLayout extends FrameLayout {
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+
+        switch (widthMode) {
+            case MeasureSpec.UNSPECIFIED:
+                Log.d(TAG, "onMeasure: UNSPECIFIED");
+                break;
+            case MeasureSpec.AT_MOST:
+                Log.d(TAG, "onMeasure: AT_MOST");
+                break;
+            case MeasureSpec.EXACTLY:
+                Log.d(TAG, "onMeasure: EXACTLY");
+                break;
+        }
+        Log.d(TAG, "onMeasure: width = " + widthSize + ";height = " + heightSize);
+        int count = getChildCount();
+        for (int i = 0; i < count; i++) {
+            View child = getChildAt(i);
+            Log.d(TAG, "onMeasure: child width = " + child.getWidth() + ";height = " + child.getHeight());
+        }
     }
 
-    float mLastX;
+    float mLastDownX;
+    float mLastDownY;
     boolean mIsAnimation;
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                mLastX = event.getX();
+
                 if(getChildCount() <= 1) {
                     return false;
                 }
-                break;
+                Log.d(TAG, "onTouchEvent: down mLastDownX = " + mLastDownX);
+                return true;
             case MotionEvent.ACTION_MOVE:
                 float x = event.getX();
-                int distance = (int) (x - mLastX);
+                int distance = (int) (x - mLastDownX);
                 View view = getChildAt(getChildCount() - 1);
                 if(view == null) {
-                    break;
+                    return false;
                 }
                 if (Math.abs(distance) >= MIN_DISTANCE && !mIsAnimation) {
+                    Log.d(TAG, "onTouchEvent: move distance = " + distance);
                     int left = view.getLeft() + distance < 0 ? 0 : view.getLeft() + distance;
                     view.layout(left,view.getTop(), left + view.getWidth(),view.getBottom());
-                    mLastX = x;
+                    mLastDownX = x;
+                    return true;
                 }
-                break;
+                return false;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
+
                 view = getChildAt(getChildCount() - 1);
                 if(view == null) {
-                    break;
+                    return false;
                 }
                 float translationX = view.getLeft();
-                Log.d(TAG, "onTouchEvent: translationX = " + translationX);
+                Log.d(TAG, "onTouchEvent: up translationX = " + translationX);
                 Log.d(TAG, "onTouchEvent: getLeft = " + getLeft() + ";getRight = " + getRight() + ";getWidth = " + getWidth());
 
                 if(translationX * 2 < getWidth()) {
@@ -255,16 +275,46 @@ public class WindowLayerLayout extends FrameLayout {
             default:
                 break;
         }
-        return mEnableTouch;
+        return super.onTouchEvent(event);
     }
-
+    boolean mIsBeingDragged = false;
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        super.onInterceptTouchEvent(ev);
+
         if(getChildCount() <= 1) {
             return false;
         }
-        return mEnableTouch;
+        final int action = ev.getAction();
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                mLastDownX = ev.getX();
+                mLastDownY = ev.getY();
+                mIsBeingDragged = false;
+                Log.d(TAG, "onInterceptTouchEvent: down mIsBeingDragged = " + mIsBeingDragged);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                float x = ev.getX();
+                float y = ev.getY();
+                int distanceX = (int) (x - mLastDownX);
+                int distanceY = (int) (y - mLastDownY);
+                View view = getChildAt(getChildCount() - 1);
+                if(view == null) {
+                    return false;
+                }
+                if(Math.abs(distanceY) > Math.abs(distanceX)) {
+                    mIsBeingDragged = false;
+                }else if (Math.abs(distanceX) >= MIN_DISTANCE && !mIsAnimation) {
+                    mIsBeingDragged = true;
+                }
+                Log.d(TAG, "onInterceptTouchEvent: move mIsBeingDragged = " + mIsBeingDragged);
+                break;
+            case MotionEvent.ACTION_UP:
+                Log.d(TAG, "onInterceptTouchEvent: up mIsBeingDragged = " + mIsBeingDragged);
+                break;
+            default:
+                break;
+        }
+        return mIsBeingDragged;
     }
 
     public boolean ismEnableTouch() {

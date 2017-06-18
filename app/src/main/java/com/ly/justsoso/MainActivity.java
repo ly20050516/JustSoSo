@@ -25,14 +25,11 @@ import com.ly.justsoso.enjoypictures.EnjoyPicturePresenter;
 import com.ly.justsoso.enjoypictures.EnjoyPictureRepository;
 import com.ly.justsoso.enjoypictures.data.local.LocalDataSource;
 import com.ly.justsoso.enjoypictures.data.remote.RemoteDataSource;
-import com.ly.justsoso.gamecenter.GameCenterFragment;
-import com.ly.justsoso.gamecenter.GameCenterPresenter;
-import com.ly.justsoso.gamecenter.GameCenterRepository;
+import com.ly.justsoso.osc.OSCFragment;
+import com.ly.justsoso.osc.OSCPresenter;
+import com.ly.justsoso.osc.OSCRepository;
 import com.ly.justsoso.headline.HeadLineFragment;
 import com.ly.justsoso.headline.HeadLinePresenter;
-import com.ly.justsoso.headline.HeadLineRepository;
-import com.ly.justsoso.headline.data.local.LocalListSource;
-import com.ly.justsoso.headline.data.remote.RemoteListSource;
 import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,SearchView.OnQueryTextListener{
@@ -41,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DrawerLayout mRootDrawerLayout;
     InputMethodManager inputMethodManager;
     EnjoyPicturePresenter mEnjoyPicturePresenter;
-    GameCenterPresenter mGameCenterPresenter;
+    OSCPresenter mGameCenterPresenter;
     HeadLinePresenter mHeadLinePresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,12 +162,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void handleGameCenter(){
-        GameCenterFragment gameCenterFragment = (GameCenterFragment) getSupportFragmentManager().findFragmentByTag(ConstantsUtil.FRAGMENT_GAME_CENTER);
+        OSCFragment gameCenterFragment = (OSCFragment) getSupportFragmentManager().findFragmentByTag(ConstantsUtil.FRAGMENT_GAME_CENTER);
         if(null == gameCenterFragment){
-            gameCenterFragment = GameCenterFragment.newInstance();
+            gameCenterFragment = OSCFragment.newInstance();
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),gameCenterFragment,R.id.contentFrame,ConstantsUtil.FRAGMENT_GAME_CENTER);
-            GameCenterRepository gc = new GameCenterRepository();
-            mGameCenterPresenter = new GameCenterPresenter(gameCenterFragment,gc);
+            OSCRepository gc = new OSCRepository();
+            mGameCenterPresenter = new OSCPresenter(gameCenterFragment,gc);
             gameCenterFragment.setPresenter(mGameCenterPresenter);
         }else{
             ActivityUtils.showFragmentToActivity(getSupportFragmentManager(),gameCenterFragment);

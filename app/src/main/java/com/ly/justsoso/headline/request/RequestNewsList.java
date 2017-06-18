@@ -1,4 +1,4 @@
-package com.ly.justsoso.headline.common;
+package com.ly.justsoso.headline.request;
 
 /**
  * Created by LY on 2017-06-11.

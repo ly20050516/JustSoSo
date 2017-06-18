@@ -3,7 +3,7 @@ package com.ly.justsoso.headline.data.remote;
 import com.alibaba.fastjson.JSON;
 import com.ly.framework.mvp.BaseDataSource;
 import com.ly.justsoso.headline.bean.NewsList;
-import com.ly.justsoso.headline.common.RequestNewsList;
+import com.ly.justsoso.headline.request.RequestNewsList;
 
 import java.io.IOException;
 

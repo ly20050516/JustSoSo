@@ -1,4 +1,4 @@
-package com.ly.justsoso.gamecenter;
+package com.ly.justsoso.osc;
 
 import android.content.Context;
 import android.net.Uri;
@@ -13,12 +13,12 @@ import com.ly.justsoso.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link GameCenterFragment.OnFragmentInteractionListener} interface
+ * {@link OSCFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link GameCenterFragment#newInstance} factory method to
+ * Use the {@link OSCFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class GameCenterFragment extends Fragment implements GameCenterContract.View{
+public class OSCFragment extends Fragment implements OSCContract.View{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -30,7 +30,7 @@ public class GameCenterFragment extends Fragment implements GameCenterContract.V
 
     private OnFragmentInteractionListener mListener;
 
-    public GameCenterFragment() {
+    public OSCFragment() {
         // Required empty public constructor
     }
 
@@ -40,11 +40,11 @@ public class GameCenterFragment extends Fragment implements GameCenterContract.V
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment GameCenterFragment.
+     * @return A new instance of fragment OSCFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static GameCenterFragment newInstance(String param1, String param2) {
-        GameCenterFragment fragment = new GameCenterFragment();
+    public static OSCFragment newInstance(String param1, String param2) {
+        OSCFragment fragment = new OSCFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -52,8 +52,8 @@ public class GameCenterFragment extends Fragment implements GameCenterContract.V
         return fragment;
     }
 
-    public static GameCenterFragment newInstance(){
-        return new GameCenterFragment();
+    public static OSCFragment newInstance(){
+        return new OSCFragment();
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,7 +68,7 @@ public class GameCenterFragment extends Fragment implements GameCenterContract.V
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_game_center, container, false);
+        return inflater.inflate(R.layout.fragment_osc, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -96,7 +96,7 @@ public class GameCenterFragment extends Fragment implements GameCenterContract.V
     }
 
     @Override
-    public void setPresenter(GameCenterContract.Presenter presenter) {
+    public void setPresenter(OSCContract.Presenter presenter) {
 
     }
 

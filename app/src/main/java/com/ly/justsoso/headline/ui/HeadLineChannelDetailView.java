@@ -1,10 +1,7 @@
 package com.ly.justsoso.headline.ui;
 
 import android.content.Context;
-import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.webkit.WebView;
 
@@ -13,7 +10,7 @@ import com.ly.justsoso.R;
 import com.ly.justsoso.headline.HeadLineContract;
 import com.ly.justsoso.headline.bean.NewsDetail;
 import com.ly.justsoso.headline.bean.NewsItem;
-import com.ly.justsoso.headline.common.RequestDetail;
+import com.ly.justsoso.headline.request.RequestDetail;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -53,7 +50,7 @@ public class HeadLineChannelDetailView extends AbstractDetailView{
                         .subscribe(new Action1<NewsDetail>() {
                             @Override
                             public void call(NewsDetail newsDetail) {
-                                mDetailWebView.loadData(newsDetail.getContent(),"text/html","utf-8");
+                                mDetailWebView.loadDataWithBaseURL(null, newsDetail.getContent(), "text/html", "utf-8", null);
                             }
                         });
 

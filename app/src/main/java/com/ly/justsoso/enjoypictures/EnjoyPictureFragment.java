@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.ly.framework.ui.WindowLayerLayout;
 import com.ly.justsoso.R;
@@ -66,7 +65,7 @@ public class EnjoyPictureFragment extends Fragment implements EnjoyPictureContra
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.fragment_enjoy_picture_view,container,false);
+        View root = inflater.inflate(R.layout.fragment_enjoy_picture,container,false);
         mRecycleView = (RecyclerView) root.findViewById(R.id.picasso_recycle_view);
         mFrameLayout = (WindowLayerLayout) root.findViewById(R.id.root_window_layer_layout);
         mSwipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.picasso_swipe_refresh_layout);

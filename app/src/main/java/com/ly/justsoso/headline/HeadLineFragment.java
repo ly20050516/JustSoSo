@@ -49,7 +49,7 @@ public class HeadLineFragment extends Fragment implements HeadLineContract.View,
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_today_headline, container, false);
+        View root = inflater.inflate(R.layout.fragment_headline, container, false);
 
         mViewPager = (ViewPager) root.findViewById(R.id.viewpager_list);
         mPagerTabShip = (PagerTabStrip) root.findViewById(R.id.pager_tab_strip_list);
