@@ -95,7 +95,7 @@ public class HeadLineChannelView extends AbstractChannelView{
         mRecyclerViewAdapter.mOnClickItem = new OnClickItem() {
             @Override
             public void onClickItem(View view, int postion, NewsItem newsItem) {
-
+                mListPresenter.itemClick(newsItem);
             }
         };
         mRecyclerView.setAdapter(mRecyclerViewAdapter);

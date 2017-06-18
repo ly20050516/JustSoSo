@@ -15,6 +15,10 @@ import com.ly.justsoso.headline.bean.NewsDetail;
 import com.ly.justsoso.headline.bean.NewsItem;
 import com.ly.justsoso.headline.common.RequestDetail;
 
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+
 /**
  * Created by LY on 2017-06-18.
  */
@@ -35,7 +39,7 @@ public class HeadLineChannelDetailView extends AbstractDetailView{
     }
 
     public void updateView(NewsItem newsItem) {
-        if(mNewItem != null & mNewItem.equals(newsItem)) {
+        if(mNewItem != null && mNewItem.equals(newsItem)) {
             return;
         }
         mNewItem = newsItem;
@@ -44,7 +48,15 @@ public class HeadLineChannelDetailView extends AbstractDetailView{
         mHeadLineDetailPresenter.requestDetail(requestDetail, new BaseDataSource.DataLoadCallback<NewsDetail>() {
             @Override
             public void onDataLoadComplete(NewsDetail newsDetail) {
-                mDetailWebView.loadData(newsDetail.getContent(),"text/html","utf-8");
+                Observable.just(newsDetail)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Action1<NewsDetail>() {
+                            @Override
+                            public void call(NewsDetail newsDetail) {
+                                mDetailWebView.loadData(newsDetail.getContent(),"text/html","utf-8");
+                            }
+                        });
+
             }
 
             @Override

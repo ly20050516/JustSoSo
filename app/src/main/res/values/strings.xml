@@ -11,9 +11,9 @@
 
     <!-- Navigation view menu -->
     <string name="action_menu_picture">美图欣赏</string>
-    <string name="action_menu_today_headline">今日头条</string>
-    <string name="action_menu_chat">通讯社交</string>
-    <string name="action_game_center">游戏中心</string>
+    <string name="action_menu_today_headline">头条新闻</string>
+    <string name="action_menu_chat">经典案例</string>
+    <string name="action_game_center">开源中国</string>
     <!-- Navigation view menu -->
 
     <!-- Navigation header layout -->
