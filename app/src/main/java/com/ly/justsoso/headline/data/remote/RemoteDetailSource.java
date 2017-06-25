@@ -46,8 +46,15 @@ public class RemoteDetailSource implements BaseDataSource<RequestDetail,NewsDeta
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String json = response.body().string();
-                NewsDetail newsDetail = JSON.parseObject(json,NewsDetail.class);
-                callback.onDataLoadComplete(newsDetail);
+                try {
+                    NewsDetail newsDetail = JSON.parseObject(json, NewsDetail.class);
+                    callback.onDataLoadComplete(newsDetail);
+                }catch (Exception e)
+                {
+                    e.printStackTrace();
+                    callback.onDataLoadComplete(null);
+                }
+
             }
         });
     }

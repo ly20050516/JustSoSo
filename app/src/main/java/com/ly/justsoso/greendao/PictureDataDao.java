@@ -22,12 +22,12 @@ public class PictureDataDao extends AbstractDao<PictureData, Long> {
     /**
      * Properties of entity PictureData.<br/>
      * Can be used for QueryBuilder and for referencing column names.
-    */
+     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property ThumbURL = new Property(1, String.class, "thumbURL", false, "THUMB_URL");
         public final static Property ObjURL = new Property(2, String.class, "objURL", false, "OBJ_URL");
-    };
+    }
 
 
     public PictureDataDao(DaoConfig config) {
@@ -128,6 +128,11 @@ public class PictureDataDao extends AbstractDao<PictureData, Long> {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public boolean hasKey(PictureData entity) {
+        return entity.getId() != null;
     }
 
     @Override

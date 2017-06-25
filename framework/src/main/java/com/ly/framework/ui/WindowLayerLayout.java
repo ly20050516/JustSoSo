@@ -193,7 +193,7 @@ public class WindowLayerLayout extends FrameLayout {
                 Log.d(TAG, "onTouchEvent: up translationX = " + translationX);
                 Log.d(TAG, "onTouchEvent: getLeft = " + getLeft() + ";getRight = " + getRight() + ";getWidth = " + getWidth());
 
-                if(translationX * 2 < getWidth()) {
+                if(translationX * 4 < getWidth()) {
                     final ValueAnimator valueAnimator = ValueAnimator.ofFloat(translationX,0);
                     valueAnimator.setDuration(500);
                     valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {

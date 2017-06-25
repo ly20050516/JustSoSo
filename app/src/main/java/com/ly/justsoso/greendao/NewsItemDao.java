@@ -22,7 +22,7 @@ public class NewsItemDao extends AbstractDao<NewsItem, Long> {
     /**
      * Properties of entity NewsItem.<br/>
      * Can be used for QueryBuilder and for referencing column names.
-    */
+     */
     public static class Properties {
         public final static Property _id = new Property(0, Long.class, "_id", true, "_id");
         public final static Property Imgurl = new Property(1, String.class, "imgurl", false, "IMGURL");
@@ -32,7 +32,7 @@ public class NewsItemDao extends AbstractDao<NewsItem, Long> {
         public final static Property Time = new Property(5, String.class, "time", false, "TIME");
         public final static Property Title = new Property(6, String.class, "title", false, "TITLE");
         public final static Property Channelname = new Property(7, String.class, "channelname", false, "CHANNELNAME");
-    };
+    }
 
 
     public NewsItemDao(DaoConfig config) {
@@ -182,6 +182,11 @@ public class NewsItemDao extends AbstractDao<NewsItem, Long> {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public boolean hasKey(NewsItem entity) {
+        return entity.get_id() != null;
     }
 
     @Override

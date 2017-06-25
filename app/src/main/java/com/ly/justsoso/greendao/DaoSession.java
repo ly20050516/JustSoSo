@@ -47,8 +47,8 @@ public class DaoSession extends AbstractDaoSession {
     }
     
     public void clear() {
-        pictureDataDaoConfig.getIdentityScope().clear();
-        newsItemDaoConfig.getIdentityScope().clear();
+        pictureDataDaoConfig.clearIdentityScope();
+        newsItemDaoConfig.clearIdentityScope();
     }
 
     public PictureDataDao getPictureDataDao() {

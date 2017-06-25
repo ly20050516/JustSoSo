@@ -1,14 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'org.greenrobot:greendao-gradle-plugin:3.0.0'
-    }
-}
+
 
 greendao {
     schemaVersion 1
@@ -18,7 +11,7 @@ greendao {
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId "com.ly.justsoso"
@@ -47,8 +40,7 @@ dependencies {
     compile 'com.squareup.okio:okio:1.8.0'
     compile 'com.google.guava:guava:19.0'
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile'org.greenrobot:greendao:3.0.1'
-    compile'org.greenrobot:greendao-generator:3.0.0'
+    compile'org.greenrobot:greendao:3.2.2'
     compile 'org.greenrobot:essentials:3.0.0-RC1'
 
     compile project(':framework')
