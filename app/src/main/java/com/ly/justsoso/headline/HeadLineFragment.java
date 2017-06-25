@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ly.framework.ui.WindowLayerLayout;
+import com.ly.framework.ui.layout.WindowLayerLayout;
 import com.ly.justsoso.R;
 import com.ly.justsoso.headline.bean.NewsItem;
 import com.ly.justsoso.headline.bean.ViewPageTabTitle;

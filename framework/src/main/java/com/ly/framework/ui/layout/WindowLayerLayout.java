@@ -1,4 +1,4 @@
-package com.ly.framework.ui;
+package com.ly.framework.ui.layout;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;

@@ -13,7 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ly.framework.ui.WindowLayerLayout;
+import com.ly.framework.ui.layout.WindowLayerLayout;
 import com.ly.justsoso.R;
 import com.ly.justsoso.base.adaptor.RecycleViewAdapter;
 import com.ly.justsoso.base.item.PicassoRecycleItem;
@@ -127,13 +127,6 @@ public class EnjoyPictureFragment extends Fragment implements EnjoyPictureContra
     }
     void initRecycleViewLoadMore(){
         mRecycleView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            /**
-             * Callback method to be invoked when RecyclerView's scroll state changes.
-             *
-             * @param recyclerView The RecyclerView whose scroll state has changed.
-             * @param newState     The updated scroll state. One of {@link #SCROLL_STATE_IDLE},
-             *                     {@link #SCROLL_STATE_DRAGGING} or {@link #SCROLL_STATE_SETTLING}.
-             */
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -213,6 +206,12 @@ public class EnjoyPictureFragment extends Fragment implements EnjoyPictureContra
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
         mEnjoyPicturePresenter.end();
     }
 }

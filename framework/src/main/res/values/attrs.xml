@@ -3,4 +3,13 @@
     <declare-styleable name="WindowLayerLayout">
         <attr name="enable_touch" format="boolean"></attr>
     </declare-styleable>
+
+    <declare-styleable name="XProgressBar">
+        <attr name="unreach_height" format="dimension"></attr>
+        <attr name="unreach_color" format="color"></attr>
+        <attr name="text_size" format="dimension"></attr>
+        <attr name="text_color" format="color"></attr>
+        <attr name="reach_height" format="dimension"></attr>
+        <attr name="reach_color" format="color"></attr>
+    </declare-styleable>
 </resources>

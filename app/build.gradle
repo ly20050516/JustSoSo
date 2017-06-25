@@ -29,19 +29,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:design:23.1.1'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.android.support:support-v4:23.1.1'
-    compile 'com.alibaba:fastjson:1.2.12'
-    compile 'com.squareup.okhttp3:okhttp:3.3.1'
-    compile 'com.squareup.okio:okio:1.8.0'
-    compile 'com.google.guava:guava:19.0'
-    compile 'io.reactivex:rxandroid:1.2.1'
-    compile'org.greenrobot:greendao:3.2.2'
-    compile 'org.greenrobot:essentials:3.0.0-RC1'
+
 
     compile project(':framework')
     compile project(':animation')
