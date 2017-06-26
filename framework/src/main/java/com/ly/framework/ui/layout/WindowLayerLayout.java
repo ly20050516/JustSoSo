@@ -24,6 +24,7 @@ public class WindowLayerLayout extends FrameLayout {
     public static final String TAG = "WindowLayerLayout";
     private boolean mEnableTouch = true;
     private static final int MIN_DISTANCE = 5;
+    private static final int LEFT_OFFSET_SCALE = 4;
 
     public WindowLayerLayout(@NonNull Context context) {
         super(context);
@@ -165,7 +166,6 @@ public class WindowLayerLayout extends FrameLayout {
                 if(getChildCount() <= 1) {
                     return false;
                 }
-                Log.d(TAG, "onTouchEvent: down mLastDownX = " + mLastDownX);
                 return true;
             case MotionEvent.ACTION_MOVE:
                 float x = event.getX();
@@ -175,7 +175,6 @@ public class WindowLayerLayout extends FrameLayout {
                     return false;
                 }
                 if (Math.abs(distance) >= MIN_DISTANCE && !mIsAnimation) {
-                    Log.d(TAG, "onTouchEvent: move distance = " + distance);
                     int left = view.getLeft() + distance < 0 ? 0 : view.getLeft() + distance;
                     view.layout(left,view.getTop(), left + view.getWidth(),view.getBottom());
                     mLastDownX = x;
@@ -190,17 +189,14 @@ public class WindowLayerLayout extends FrameLayout {
                     return false;
                 }
                 float translationX = view.getLeft();
-                Log.d(TAG, "onTouchEvent: up translationX = " + translationX);
-                Log.d(TAG, "onTouchEvent: getLeft = " + getLeft() + ";getRight = " + getRight() + ";getWidth = " + getWidth());
 
-                if(translationX * 4 < getWidth()) {
+                if(translationX * LEFT_OFFSET_SCALE < getWidth()) {
                     final ValueAnimator valueAnimator = ValueAnimator.ofFloat(translationX,0);
                     valueAnimator.setDuration(500);
                     valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                         @Override
                         public void onAnimationUpdate(ValueAnimator animation) {
                             float value = (float) animation.getAnimatedValue();
-                            Log.d(TAG, "onAnimationUpdate: less value " + value);
                             View view = getChildAt(getChildCount() - 1);
                             view.layout((int)value,view.getTop(),(int)value + view.getWidth(),view.getBottom());
                         }
@@ -236,7 +232,6 @@ public class WindowLayerLayout extends FrameLayout {
                         @Override
                         public void onAnimationUpdate(ValueAnimator animation) {
                             float value = (float) animation.getAnimatedValue();
-                            Log.d(TAG, "onAnimationUpdate: more value " + value);
                             View view = getChildAt(getChildCount() - 1);
                             view.layout((int)value,view.getTop(),(int)value + view.getWidth(),view.getBottom());
                         }
@@ -277,6 +272,7 @@ public class WindowLayerLayout extends FrameLayout {
         }
         return super.onTouchEvent(event);
     }
+
     boolean mIsBeingDragged = false;
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
@@ -290,7 +286,6 @@ public class WindowLayerLayout extends FrameLayout {
                 mLastDownX = ev.getX();
                 mLastDownY = ev.getY();
                 mIsBeingDragged = false;
-                Log.d(TAG, "onInterceptTouchEvent: down mIsBeingDragged = " + mIsBeingDragged);
                 break;
             case MotionEvent.ACTION_MOVE:
                 float x = ev.getX();
@@ -306,10 +301,8 @@ public class WindowLayerLayout extends FrameLayout {
                 }else if (Math.abs(distanceX) >= MIN_DISTANCE && !mIsAnimation) {
                     mIsBeingDragged = true;
                 }
-                Log.d(TAG, "onInterceptTouchEvent: move mIsBeingDragged = " + mIsBeingDragged);
                 break;
             case MotionEvent.ACTION_UP:
-                Log.d(TAG, "onInterceptTouchEvent: up mIsBeingDragged = " + mIsBeingDragged);
                 break;
             default:
                 break;
@@ -317,11 +310,11 @@ public class WindowLayerLayout extends FrameLayout {
         return mIsBeingDragged;
     }
 
-    public boolean ismEnableTouch() {
+    public boolean isEnableTouch() {
         return mEnableTouch;
     }
 
-    public void setmEnableTouch(boolean mEnableTouch) {
+    public void setEnableTouch(boolean mEnableTouch) {
         this.mEnableTouch = mEnableTouch;
     }
 }
