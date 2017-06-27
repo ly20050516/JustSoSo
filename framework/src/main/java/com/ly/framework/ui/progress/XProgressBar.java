@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ProgressBar;
@@ -19,19 +21,29 @@ public class XProgressBar extends ProgressBar {
 
     public static final String TAG = "XProgressBar";
 
-    public static final int DEFAULT_COLOR = Color.rgb(0x33,0xa9,0x88);
+    public static final int DEFAULT_COLOR = Color.rgb(0xFF,0xa9,0x88);
     public static final int DEFAULT_UNREACH_HEIGHT = 3;
     public static final int DEFAULT_TEXT_SIZE = 14;
     public static final int DEFAULT_REACH_HEIGHT = 1;
+    public static final int DEFAULT_TEXT_LEFT_MARGIN = 2;
+    public static final int DEFAULT_TEXT_RIGHT_MARGIN = 2;
 
-    private int mUnreachHeight = DEFAULT_UNREACH_HEIGHT;
-    private int mUnreachColor = DEFAULT_COLOR;
 
-    private int mTextSize = DEFAULT_TEXT_SIZE;
-    private int mTextColor = DEFAULT_COLOR;
+    private int mUnreachHeight;
+    private int mUnreachColor;
 
-    private int mReachHeight = DEFAULT_REACH_HEIGHT;
-    private int mReachColor = DEFAULT_COLOR;
+    private int mTextSize;
+    private int mTextColor;
+
+    private int mReachHeight;
+    private int mReachColor;
+
+    private int mTextLeftMargin;
+    private int mTextRightMargin;
+
+    private Paint mPaint;
+    private StringBuilder mTextPercent = new StringBuilder();
+    private Rect mTextRect = new Rect();
 
     public XProgressBar(Context context) {
         this(context,null);
@@ -45,6 +57,18 @@ public class XProgressBar extends ProgressBar {
 
     private void initController(Context context, AttributeSet attrs) {
 
+        mPaint = new Paint();
+        mPaint.setAntiAlias(true);
+
+        mUnreachHeight = dp2px(DEFAULT_UNREACH_HEIGHT);
+        mUnreachColor = DEFAULT_COLOR;
+        mTextSize = sp2px(DEFAULT_TEXT_SIZE);
+        mTextColor = DEFAULT_COLOR;
+        mReachHeight = dp2px(DEFAULT_REACH_HEIGHT);
+        mReachColor = DEFAULT_COLOR;
+        mTextLeftMargin = dp2px(DEFAULT_TEXT_LEFT_MARGIN);
+        mTextRightMargin = dp2px(DEFAULT_TEXT_RIGHT_MARGIN);
+
         TypedArray typedArray = context.obtainStyledAttributes(attrs,R.styleable.XProgressBar);
         if(typedArray != null) {
             mUnreachHeight = (int) typedArray.getDimension(R.styleable.XProgressBar_unreach_height, dp2px(DEFAULT_UNREACH_HEIGHT));
@@ -53,6 +77,8 @@ public class XProgressBar extends ProgressBar {
             mTextColor = typedArray.getColor(R.styleable.XProgressBar_text_color,DEFAULT_COLOR);
             mReachHeight = (int) typedArray.getDimension(R.styleable.XProgressBar_reach_height,dp2px(DEFAULT_REACH_HEIGHT));
             mReachColor = typedArray.getColor(R.styleable.XProgressBar_reach_color,DEFAULT_COLOR);
+            mTextLeftMargin = (int) typedArray.getDimension(R.styleable.XProgressBar_text_left_margin,dp2px(DEFAULT_TEXT_LEFT_MARGIN));
+            mTextRightMargin = (int) typedArray.getDimension(R.styleable.XProgressBar_text_right_margin,dp2px(DEFAULT_TEXT_RIGHT_MARGIN));
             typedArray.recycle();
         }
     }
@@ -95,11 +121,17 @@ public class XProgressBar extends ProgressBar {
 
         }
 
+        int maxTmpHeight = Math.max(mUnreachHeight,mReachHeight);
+        Paint paint = new Paint();
+        paint.setTextSize(mTextSize);
+        int textHeight = (int) (paint.descent() - paint.ascent());
+        maxTmpHeight = Math.max(maxTmpHeight,textHeight);
+        height = getPaddingTop() + getPaddingBottom() + maxTmpHeight;
+
         if(heightMode == MeasureSpec.AT_MOST) {
-            int maxTmpHeight = Math.max(mUnreachHeight,mReachHeight);
-            height = getPaddingTop() + getPaddingBottom() + maxTmpHeight;
+            // keep height
         }else {
-            height = Math.max(heightSize,getPaddingLeft() + getPaddingRight() + Math.max(mUnreachHeight,mReachHeight));
+            height = Math.max(heightSize,height);
         }
 
         Log.d(TAG, "onMeasure: heightSize = " + heightSize + ";height = " + height);
@@ -113,8 +145,40 @@ public class XProgressBar extends ProgressBar {
         Log.d(TAG, "onLayout: change = " + changed + ";left = " + left + ";top = " + top + ";right = " + right + ";bottom = " + bottom);
     }
 
+
     @Override
     protected void onDraw(Canvas canvas) {
+
+        super.onDraw(canvas);
+
+        canvas.save();
+        canvas.translate(getPaddingLeft(),getPaddingTop());
+        int maxProgress = getMax();
+        int progress = getProgress();
+        mTextPercent.delete(0,mTextPercent.length());
+        mTextPercent.append(progress).append("%");
+        mPaint.setTextSize(mTextSize);
+        int textWidth = (int) mPaint.measureText(mTextPercent.toString());
+        int remainWidth = getWidth() - getPaddingLeft() - getPaddingRight() - mTextLeftMargin - mTextRightMargin - textWidth;
+        int reachWidth = (int) (remainWidth * (progress * 1.0f / maxProgress));
+
+        mPaint.setStrokeWidth(mReachHeight);
+        mPaint.setColor(mReachColor);
+        canvas.drawLine(0,0,reachWidth,0,mPaint);
+
+        mPaint.setTextSize(mTextSize);
+        mPaint.setColor(mTextColor);
+        canvas.translate(reachWidth + mTextLeftMargin,0);
+        mPaint.getTextBounds(mTextPercent.toString(),0,mTextPercent.toString().length(),mTextRect);
+        canvas.drawText(mTextPercent.toString(),-mTextRect.left,-mTextRect.top,mPaint);
+
+        mPaint.setStrokeWidth(mUnreachHeight);
+        mPaint.setColor(mUnreachColor);
+        canvas.translate(textWidth + mTextRightMargin,0);
+        canvas.drawLine(0,0,remainWidth - reachWidth,0,mPaint);
+
+        Log.d(TAG, "onDraw: reachWidth = " + reachWidth + ";unreachWidth = " + (remainWidth - reachWidth));
+        canvas.restore();
     }
 
     private int dp2px(int dp) {

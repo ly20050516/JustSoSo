@@ -11,5 +11,7 @@
         <attr name="text_color" format="color"></attr>
         <attr name="reach_height" format="dimension"></attr>
         <attr name="reach_color" format="color"></attr>
+        <attr name="text_left_margin" format="dimension"></attr>
+        <attr name="text_right_margin" format="dimension"></attr>
     </declare-styleable>
 </resources>
