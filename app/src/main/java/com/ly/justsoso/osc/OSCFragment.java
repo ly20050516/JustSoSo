@@ -83,7 +83,7 @@ public class OSCFragment extends Fragment implements OSCContract.View{
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        for (int i = 0; i < 100; i++) {
+                        for (int i = 0; i <= 100; i++) {
                             Log.d("XProgressBar", "run: progress = " + i);
                             mProgressBar.setProgress(i);
                             try {
