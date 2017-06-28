@@ -124,7 +124,8 @@ public class XProgressBar extends ProgressBar {
         int maxTmpHeight = Math.max(mUnreachHeight,mReachHeight);
         Paint paint = new Paint();
         paint.setTextSize(mTextSize);
-        int textHeight = (int) (paint.descent() - paint.ascent());
+        Paint.FontMetricsInt fontMetricsInt = paint.getFontMetricsInt();
+        int textHeight = fontMetricsInt.bottom - fontMetricsInt.top;
         maxTmpHeight = Math.max(maxTmpHeight,textHeight);
         height = getPaddingTop() + getPaddingBottom() + maxTmpHeight;
 
@@ -153,18 +154,24 @@ public class XProgressBar extends ProgressBar {
 
         canvas.save();
         canvas.translate(getPaddingLeft(),getPaddingTop());
+        Log.d(TAG, "onDraw: padding left = " + getPaddingLeft() + ";padding right = " + getPaddingRight());
         int maxProgress = getMax();
         int progress = getProgress();
+        Log.d(TAG, "onDraw: progress = " + progress + ";maxProgress = " + maxProgress);
         mTextPercent.delete(0,mTextPercent.length());
         mTextPercent.append(progress).append("%");
         mPaint.setTextSize(mTextSize);
         int textWidth = (int) mPaint.measureText(mTextPercent.toString());
+        Paint.FontMetricsInt fontMetricsInt = mPaint.getFontMetricsInt();
+        int textHeight = fontMetricsInt.descent - fontMetricsInt.ascent;
+        Log.d(TAG, "onDraw: textWidth = " + textWidth + ";textHeight = " + textHeight);
         int remainWidth = getWidth() - getPaddingLeft() - getPaddingRight() - mTextLeftMargin - mTextRightMargin - textWidth;
         int reachWidth = (int) (remainWidth * (progress * 1.0f / maxProgress));
 
         mPaint.setStrokeWidth(mReachHeight);
         mPaint.setColor(mReachColor);
-        canvas.drawLine(0,0,reachWidth,0,mPaint);
+        int y = (textHeight - mReachHeight) / 2;
+        canvas.drawLine(0,y,reachWidth,y,mPaint);
 
         mPaint.setTextSize(mTextSize);
         mPaint.setColor(mTextColor);
@@ -175,7 +182,8 @@ public class XProgressBar extends ProgressBar {
         mPaint.setStrokeWidth(mUnreachHeight);
         mPaint.setColor(mUnreachColor);
         canvas.translate(textWidth + mTextRightMargin,0);
-        canvas.drawLine(0,0,remainWidth - reachWidth,0,mPaint);
+        y = (textHeight - mUnreachHeight) / 2;
+        canvas.drawLine(0,y,remainWidth - reachWidth,y,mPaint);
 
         Log.d(TAG, "onDraw: reachWidth = " + reachWidth + ";unreachWidth = " + (remainWidth - reachWidth));
         canvas.restore();

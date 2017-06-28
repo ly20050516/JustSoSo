@@ -3,7 +3,9 @@ package com.ly.justsoso.osc;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,12 +67,36 @@ public class OSCFragment extends Fragment implements OSCContract.View{
         }
     }
 
+    XProgressBar mProgressBar;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_osc, container, false);
-        ((XProgressBar)view.findViewById(R.id.xprogressbar)).setProgress(50);
+        mProgressBar = (XProgressBar) view.findViewById(R.id.xprogressbar);
+        mProgressBar.setIndeterminate(false);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                Log.d("XProgressBar", "run: " + mProgressBar.getProgress());
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (int i = 0; i < 100; i++) {
+                            Log.d("XProgressBar", "run: progress = " + i);
+                            mProgressBar.setProgress(i);
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }).start();
+
+            }
+        },1000);
         return view;
     }
 
