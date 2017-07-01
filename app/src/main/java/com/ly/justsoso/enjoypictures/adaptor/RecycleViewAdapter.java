@@ -1,4 +1,4 @@
-package com.ly.justsoso.base.adaptor;
+package com.ly.justsoso.enjoypictures.adaptor;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,10 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
 
 import com.ly.justsoso.R;
-import com.ly.justsoso.base.item.PicassoRecycleItem;
+import com.ly.justsoso.enjoypictures.adaptor.item.PicassoRecycleItem;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

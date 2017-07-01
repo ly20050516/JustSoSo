@@ -1,4 +1,4 @@
-package com.ly.justsoso.base.ui;
+package com.ly.justsoso.enjoypictures.ui;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;

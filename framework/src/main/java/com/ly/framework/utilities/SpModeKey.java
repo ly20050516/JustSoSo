@@ -1,4 +1,4 @@
-package com.ly.justsoso.base.utils;
+package com.ly.framework.utilities;
 
 /**
  * Created by LY on 2017-06-10.

@@ -3,8 +3,8 @@ package com.ly.justsoso.enjoypictures;
 import android.util.Log;
 
 import com.ly.framework.mvp.BaseDataSource;
-import com.ly.justsoso.base.utils.SpModeKey;
-import com.ly.justsoso.base.utils.SpModelUtils;
+import com.ly.framework.utilities.SpModeKey;
+import com.ly.framework.utilities.SpModelUtils;
 import com.ly.justsoso.enjoypictures.bean.Pictures;
 import com.ly.justsoso.enjoypictures.common.SearchOption;
 

@@ -55,7 +55,6 @@ dependencies {
     })
 
 
-    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
@@ -68,4 +67,6 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile'org.greenrobot:greendao:3.2.2'
     compile 'org.greenrobot:essentials:3.0.0-RC1'
+
+
 }

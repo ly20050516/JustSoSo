@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.ly.framework.mvp.BaseDataSource;
 import com.ly.justsoso.R;
-import com.ly.justsoso.base.ui.SpacesItemDecoration;
+import com.ly.justsoso.enjoypictures.ui.SpacesItemDecoration;
 import com.ly.justsoso.headline.HeadLineContract;
 import com.ly.justsoso.headline.bean.NewsItem;
 import com.ly.justsoso.headline.bean.NewsList;

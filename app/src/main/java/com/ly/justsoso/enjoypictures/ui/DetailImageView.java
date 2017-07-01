@@ -1,12 +1,9 @@
-package com.ly.justsoso.base.ui;
+package com.ly.justsoso.enjoypictures.ui;
 
 import android.content.Context;
-import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Scroller;
 
 import com.ly.justsoso.R;
 

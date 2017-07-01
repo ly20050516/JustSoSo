@@ -3,6 +3,7 @@ package com.ly.justsoso;
 import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.ly.framework.context.ContextManager;
 import com.ly.justsoso.greendao.DaoMaster;
 import com.ly.justsoso.greendao.DaoSession;
 
@@ -22,6 +23,11 @@ public class JustSoSoApplication extends Application {
         super.onCreate();
         sInstance = this;
         initGreenDao();
+        initContextManager();
+    }
+
+    private void initContextManager() {
+        ContextManager.initApplication(this);
     }
 
     public static JustSoSoApplication getInstance() {

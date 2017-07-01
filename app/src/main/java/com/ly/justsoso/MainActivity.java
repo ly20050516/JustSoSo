@@ -18,8 +18,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 
-import com.ly.justsoso.base.utils.ActivityUtils;
-import com.ly.justsoso.base.utils.ConstantsUtil;
+import com.ly.framework.utilities.ActivityUtils;
+import com.ly.framework.utilities.ConstantsUtil;
 import com.ly.justsoso.enjoypictures.EnjoyPictureFragment;
 import com.ly.justsoso.enjoypictures.EnjoyPicturePresenter;
 import com.ly.justsoso.enjoypictures.EnjoyPictureRepository;
@@ -30,6 +30,8 @@ import com.ly.justsoso.osc.OSCPresenter;
 import com.ly.justsoso.osc.OSCRepository;
 import com.ly.justsoso.headline.HeadLineFragment;
 import com.ly.justsoso.headline.HeadLinePresenter;
+import com.ly.justsoso.sample.SampleFragment;
+import com.ly.justsoso.sample.SamplePresenter;
 import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,SearchView.OnQueryTextListener{
@@ -40,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     EnjoyPicturePresenter mEnjoyPicturePresenter;
     OSCPresenter mGameCenterPresenter;
     HeadLinePresenter mHeadLinePresenter;
+    SamplePresenter mSamplePresenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,10 +127,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             handlePictureEnjoy();
         }else if(menuId == R.id.nav_today_headline){
             handleTodayHeadLine();
-        }else if(menuId == R.id.nav_small_talk){
-            handleSmallTalk();
-        }else if(menuId == R.id.nav_game_center){
-            handleGameCenter();
+        }else if(menuId == R.id.nav_sample){
+            handleSample();
+        }else if(menuId == R.id.nav_osc){
+            handleOSC();
         }
         mRootDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
@@ -146,10 +150,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void handleTodayHeadLine(){
-        HeadLineFragment headLineFragment = (HeadLineFragment) getSupportFragmentManager().findFragmentByTag(ConstantsUtil.FRAGMENT_TODAY_HEADLINE);
+        HeadLineFragment headLineFragment = (HeadLineFragment) getSupportFragmentManager().findFragmentByTag(ConstantsUtil.FRAGMENT_HEADLINE);
         if(null == headLineFragment) {
             headLineFragment = HeadLineFragment.newInstance();
-            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),headLineFragment,R.id.contentFrame,ConstantsUtil.FRAGMENT_TODAY_HEADLINE);
+            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),headLineFragment,R.id.contentFrame,ConstantsUtil.FRAGMENT_HEADLINE);
             mHeadLinePresenter = new HeadLinePresenter(headLineFragment);
             headLineFragment.setPresenter(mHeadLinePresenter);
         }else{
@@ -157,20 +161,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void handleSmallTalk(){
-
+    private void handleSample(){
+        SampleFragment sampleFragment = (SampleFragment) getSupportFragmentManager().findFragmentByTag(ConstantsUtil.FRAGMENT_SAMPLE);
+        if(null == sampleFragment) {
+            sampleFragment = SampleFragment.newInstance();
+            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),sampleFragment,R.id.contentFrame,ConstantsUtil.FRAGMENT_SAMPLE);
+            mSamplePresenter = new SamplePresenter();
+            sampleFragment.setPresenter(mSamplePresenter);
+        }else {
+            ActivityUtils.showFragmentToActivity(getSupportFragmentManager(),sampleFragment);
+        }
     }
 
-    private void handleGameCenter(){
-        OSCFragment gameCenterFragment = (OSCFragment) getSupportFragmentManager().findFragmentByTag(ConstantsUtil.FRAGMENT_GAME_CENTER);
-        if(null == gameCenterFragment){
-            gameCenterFragment = OSCFragment.newInstance();
-            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),gameCenterFragment,R.id.contentFrame,ConstantsUtil.FRAGMENT_GAME_CENTER);
+    private void handleOSC(){
+        OSCFragment oscFragment = (OSCFragment) getSupportFragmentManager().findFragmentByTag(ConstantsUtil.FRAGMENT_OSC);
+        if(null == oscFragment){
+            oscFragment = OSCFragment.newInstance();
+            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),oscFragment,R.id.contentFrame,ConstantsUtil.FRAGMENT_OSC);
             OSCRepository gc = new OSCRepository();
-            mGameCenterPresenter = new OSCPresenter(gameCenterFragment,gc);
-            gameCenterFragment.setPresenter(mGameCenterPresenter);
+            mGameCenterPresenter = new OSCPresenter(oscFragment,gc);
+            oscFragment.setPresenter(mGameCenterPresenter);
         }else{
-            ActivityUtils.showFragmentToActivity(getSupportFragmentManager(),gameCenterFragment);
+            ActivityUtils.showFragmentToActivity(getSupportFragmentManager(),oscFragment);
         }
     }
 

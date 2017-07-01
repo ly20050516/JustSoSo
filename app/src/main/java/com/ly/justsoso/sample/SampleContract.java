@@ -9,7 +9,7 @@ import com.ly.justsoso.osc.OSCContract;
  */
 
 public interface SampleContract {
-    interface View extends BaseView<OSCContract.Presenter> {
+    interface View extends BaseView<SampleContract.Presenter> {
 
     }
 

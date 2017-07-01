@@ -1,10 +1,10 @@
-package com.ly.justsoso.base.utils;
+package com.ly.framework.utilities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
-import com.ly.justsoso.JustSoSoApplication;
+import com.ly.framework.context.ContextManager;
 
 /**
  * Created by LY on 2017-06-10.
@@ -17,7 +17,7 @@ public class SpModelUtils {
     private static final String MODEL_NAME = "sp_mode";
     private static final int OPEN_MODE = Context.MODE_PRIVATE;
     private SpModelUtils() {
-        mSharedPreferences = JustSoSoApplication.getInstance().getSharedPreferences(MODEL_NAME,OPEN_MODE);
+        mSharedPreferences = ContextManager.getApplicationContext().getSharedPreferences(MODEL_NAME,OPEN_MODE);
     }
 
     public static SpModelUtils getInstance() {

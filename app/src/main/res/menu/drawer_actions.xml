@@ -12,11 +12,11 @@
             android:title="@string/action_menu_headline" />
 
         <item
-            android:id="@+id/nav_small_talk"
+            android:id="@+id/nav_sample"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/action_menu_sample" />
         <item
-            android:id="@+id/nav_game_center"
+            android:id="@+id/nav_osc"
             android:icon="@drawable/ic_menu_manage"
             android:title="@string/action_menu_osc" />
     </group>

@@ -1,4 +1,4 @@
-package com.ly.justsoso.base.utils;
+package com.ly.framework.utilities;
 
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
