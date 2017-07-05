@@ -58,6 +58,13 @@ public class SampleFragment extends Fragment implements SampleContract.View{
         item.itemType = SampleCardTypeDef.CARD_TYPE_UI;
         item.itemName = "XProgressBarCard";
         mRecycleViewAdapter.add(item);
+
+        item = new SampleItem();
+        item.itemStyle = SampleCardStyleDef.CARD_STYLE_UI_NORMAL;
+        item.itemType = SampleCardTypeDef.CARD_TYPE_UI;
+        item.itemName = "SampleNormalCard";
+        mRecycleViewAdapter.add(item);
+
         mRecycleViewAdapter.notifyDataSetChanged();
 
     }

@@ -22,9 +22,14 @@ public class SampleCardFactory {
         }
 
 
+        AbstractSampleCard sampleCard;
         switch (sampleItem.itemStyle) {
+            case SampleCardStyleDef.CARD_STYLE_UI_NORMAL:
+                sampleCard = new SampleNormalCard();
+                cardSoftReference = new SoftReference<>(sampleCard);
+                break;
             case SampleCardStyleDef.CARD_STYLE_UI_XPROGRESS_BAR:
-                AbstractSampleCard sampleCard = new XProgressBarCard();
+                sampleCard = new XProgressBarCard();
                 cardSoftReference = new SoftReference<>(sampleCard);
                 break;
             default:

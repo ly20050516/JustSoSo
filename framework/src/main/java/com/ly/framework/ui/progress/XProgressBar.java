@@ -150,8 +150,6 @@ public class XProgressBar extends ProgressBar {
     @Override
     protected void onDraw(Canvas canvas) {
 
-        super.onDraw(canvas);
-
         canvas.save();
         canvas.translate(getPaddingLeft(),getPaddingTop());
         Log.d(TAG, "onDraw: padding left = " + getPaddingLeft() + ";padding right = " + getPaddingRight());

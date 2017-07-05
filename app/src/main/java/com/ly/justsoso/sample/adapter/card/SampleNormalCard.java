@@ -2,19 +2,19 @@ package com.ly.justsoso.sample.adapter.card;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.TextView;
 
-import com.ly.framework.ui.progress.XProgressBar;
 import com.ly.justsoso.sample.adapter.item.SampleItem;
 
 import java.lang.ref.SoftReference;
 
 /**
- * Created by ly on 2017/7/2.
+ * Created by ly on 2017/7/3.
  */
 
-public class XProgressBarCard extends AbstractSampleCard {
+public class SampleNormalCard extends AbstractSampleCard {
 
-    SoftReference<XProgressBar> mView;
+    SoftReference<TextView> mView;
 
     @Override
     public int getCardType() {
@@ -33,23 +33,21 @@ public class XProgressBarCard extends AbstractSampleCard {
 
     @Override
     public View getCardView(Context context) {
-
         if(mView == null || mView.get() == null) {
-            XProgressBar view = new XProgressBar(context);
-            mView = new SoftReference<>(view);
+            TextView textView = new TextView(context);
+            mView = new SoftReference<>(textView);
         }
-
         return mView.get();
     }
 
     @Override
     public void updateData(SampleItem item) {
-        mSampleItem = item;
-        if(mView != null && mView.get() instanceof XProgressBar) {
-            XProgressBar xProgressBar = mView.get();
-            xProgressBar.setIndeterminate(false);
-            xProgressBar.setProgress(30);
-        }
 
+        mSampleItem = item;
+
+        if(mView != null && mView.get() != null) {
+            TextView textView = mView.get();
+            textView.setText("SampleNormalCard");
+        }
     }
 }
