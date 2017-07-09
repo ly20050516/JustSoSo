@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-
+apply plugin: 'maven'
 
 android {
     compileSdkVersion 23
@@ -31,22 +31,51 @@ android {
             }
         }
 
-        shoply{
+        shoply {
             minifyEnabled false
-            sourceSets{
-                main{
-                    java{
+            sourceSets {
+                main {
+                    java {
                         srcDir 'src/main/java'
                     }
-                    resources{
+                    resources {
                         srcDir 'src/main/res'
                     }
                 }
             }
         }
     }
+
 }
 
+uploadArchives {
+    repositories {
+        mavenDeployer {
+
+            snapshotRepository(url : MAVEN_SNAPSHOT_URL) {
+                authentication(userName: MAVEN_USER, password: MAVEN_PASSWORD)
+
+            }
+            repository(url : MAVEN_RELEASE_URL) {
+
+                authentication(userName: MAVEN_USER, password: MAVEN_PASSWORD)
+            }
+
+            pom.project {
+                version '0.0.1-SNAPSHOT'
+                artifactId 'framework'
+                groupId GROUP_ID
+                packaging LIBRARY_TYPE
+                description DESCRIPTION
+            }
+        }
+
+    }
+}
+
+artifacts {
+    archives file('framework.aar')
+}
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -65,7 +94,7 @@ dependencies {
     compile 'com.squareup.okio:okio:1.8.0'
     compile 'com.google.guava:guava:19.0'
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile'org.greenrobot:greendao:3.2.2'
+    compile 'org.greenrobot:greendao:3.2.2'
     compile 'org.greenrobot:essentials:3.0.0-RC1'
 
 
