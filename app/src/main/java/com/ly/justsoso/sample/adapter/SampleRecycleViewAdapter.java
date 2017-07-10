@@ -50,6 +50,7 @@ public class SampleRecycleViewAdapter extends RecyclerView.Adapter<SampleRecycle
     @Override
     public SampleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CardView cardView = new CardView(mContext);
+        cardView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         return new SampleViewHolder(cardView);
     }
 

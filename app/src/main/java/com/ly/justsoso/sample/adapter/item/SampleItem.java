@@ -9,5 +9,6 @@ public class SampleItem {
     public int itemType;
     public int itemStyle;
     public String itemName;
+    public String itemDesc;
 
 }

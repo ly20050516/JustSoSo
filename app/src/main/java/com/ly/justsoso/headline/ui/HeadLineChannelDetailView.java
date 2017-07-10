@@ -50,7 +50,15 @@ public class HeadLineChannelDetailView extends AbstractDetailView{
                         .subscribe(new Action1<NewsDetail>() {
                             @Override
                             public void call(NewsDetail newsDetail) {
-                                mDetailWebView.loadDataWithBaseURL(null, newsDetail.getContent(), "text/html", "utf-8", null);
+                                if(newsDetail == null) {
+
+                                    mDetailWebView.loadDataWithBaseURL(null,"服务器返回数据错误","text/html","utf-8",null);
+
+                                }else {
+
+                                    mDetailWebView.loadDataWithBaseURL(null, newsDetail.getContent(), "text/html", "utf-8", null);
+
+                                }
                             }
                         });
 

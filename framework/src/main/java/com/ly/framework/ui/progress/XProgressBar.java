@@ -50,7 +50,13 @@ public class XProgressBar extends ProgressBar {
     }
 
     public XProgressBar(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs,0);
+
+
+    }
+
+    public XProgressBar(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
 
         initController(context,attrs);
     }

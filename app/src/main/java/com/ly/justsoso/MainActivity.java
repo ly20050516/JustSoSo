@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(null == sampleFragment) {
             sampleFragment = SampleFragment.newInstance();
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),sampleFragment,R.id.contentFrame,ConstantsUtil.FRAGMENT_SAMPLE);
-            mSamplePresenter = new SamplePresenter();
+            mSamplePresenter = new SamplePresenter(sampleFragment);
             sampleFragment.setPresenter(mSamplePresenter);
         }else {
             ActivityUtils.showFragmentToActivity(getSupportFragmentManager(),sampleFragment);

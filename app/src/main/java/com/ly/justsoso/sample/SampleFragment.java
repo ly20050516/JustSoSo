@@ -2,6 +2,7 @@ package com.ly.justsoso.sample;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ly.framework.ui.layout.WindowLayerLayout;
 import com.ly.justsoso.R;
 import com.ly.justsoso.enjoypictures.ui.SpacesItemDecoration;
 import com.ly.justsoso.sample.adapter.ActionProcessor;
@@ -16,6 +18,7 @@ import com.ly.justsoso.sample.adapter.SampleRecycleViewAdapter;
 import com.ly.justsoso.sample.adapter.card.SampleCardStyleDef;
 import com.ly.justsoso.sample.adapter.card.SampleCardTypeDef;
 import com.ly.justsoso.sample.adapter.item.SampleItem;
+import com.ly.justsoso.sample.ui.SampleCategoryView;
 
 
 /**
@@ -24,9 +27,7 @@ import com.ly.justsoso.sample.adapter.item.SampleItem;
 
 public class SampleFragment extends Fragment implements SampleContract.View{
 
-    RecyclerView mRecycleView;
-    SampleRecycleViewAdapter mRecycleViewAdapter;
-
+    WindowLayerLayout mWindowLayerLayout;
     SampleContract.Presenter mSamplePresenter;
     public static SampleFragment newInstance() {
         return new SampleFragment();
@@ -36,38 +37,14 @@ public class SampleFragment extends Fragment implements SampleContract.View{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_sample,container,false);
-        mRecycleView = (RecyclerView) root.findViewById(R.id.recycle_view_sample);
-        init();
+        mWindowLayerLayout = (WindowLayerLayout) root.findViewById(R.id.root_window_layer_layout);
+        SampleCategoryView sampleCategoryView = new SampleCategoryView(getContext());
+        WindowLayerLayout.LayoutParams layoutParams = new WindowLayerLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        mWindowLayerLayout.addView(sampleCategoryView,layoutParams);
         return root;
     }
 
-    private void init() {
-        mRecycleViewAdapter = new SampleRecycleViewAdapter(getContext());
-        mRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecycleView.addItemDecoration(new SpacesItemDecoration(5));
-        mRecycleView.setAdapter(mRecycleViewAdapter);
-        mRecycleViewAdapter.setActionProcessor(new ActionProcessor() {
-            @Override
-            public void action(int action, SampleItem sampleItem) {
 
-            }
-        });
-
-        SampleItem item = new SampleItem();
-        item.itemStyle = SampleCardStyleDef.CARD_STYLE_UI_XPROGRESS_BAR;
-        item.itemType = SampleCardTypeDef.CARD_TYPE_UI;
-        item.itemName = "XProgressBarCard";
-        mRecycleViewAdapter.add(item);
-
-        item = new SampleItem();
-        item.itemStyle = SampleCardStyleDef.CARD_STYLE_UI_NORMAL;
-        item.itemType = SampleCardTypeDef.CARD_TYPE_UI;
-        item.itemName = "SampleNormalCard";
-        mRecycleViewAdapter.add(item);
-
-        mRecycleViewAdapter.notifyDataSetChanged();
-
-    }
 
     @Override
     public void onDestroyView() {
@@ -81,4 +58,8 @@ public class SampleFragment extends Fragment implements SampleContract.View{
 
     }
 
+    @Override
+    public void onItemClick(int action,SampleItem sampleItem) {
+
+    }
 }
