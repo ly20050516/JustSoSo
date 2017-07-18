@@ -202,10 +202,8 @@ public class FlowLayout extends ViewGroup {
 
     public static class LayoutParams extends MarginLayoutParams {
 
-
         public LayoutParams(Context c, AttributeSet attrs) {
             super(c, attrs);
-
         }
 
     }
