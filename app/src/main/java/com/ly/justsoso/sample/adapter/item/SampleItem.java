@@ -6,9 +6,10 @@ package com.ly.justsoso.sample.adapter.item;
 
 public class SampleItem {
 
-    public int itemType;
-    public int itemStyle;
-    public String itemName;
-    public String itemDesc;
+    public int cardId;
+    public int cardType;
+    public int cardStyle;
+    public String cardName;
+    public String cardDesc;
 
 }

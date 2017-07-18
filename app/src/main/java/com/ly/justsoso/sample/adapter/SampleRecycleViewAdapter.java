@@ -3,11 +3,13 @@ package com.ly.justsoso.sample.adapter;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.ly.framework.context.ContextManager;
 import com.ly.framework.utilities.DisplayUtil;
 import com.ly.justsoso.sample.adapter.card.AbstractSampleCard;
+import com.ly.justsoso.sample.adapter.card.SampleCardAction;
 import com.ly.justsoso.sample.adapter.card.SampleCardFactory;
 import com.ly.justsoso.sample.adapter.item.SampleItem;
 
@@ -77,7 +79,7 @@ public class SampleRecycleViewAdapter extends RecyclerView.Adapter<SampleRecycle
             mRoot = itemView;
         }
 
-        public void update(Context context,SampleItem sampleItem) {
+        public void update(Context context, final SampleItem sampleItem) {
             AbstractSampleCard sampleCard = mSampleCardFactory.generate(sampleItem);
             mRoot.removeAllViews();
             mRoot.addView(sampleCard.getCardView(context),layoutParams);
@@ -87,6 +89,14 @@ public class SampleRecycleViewAdapter extends RecyclerView.Adapter<SampleRecycle
                 public void action(int action, SampleItem sampleItem) {
                     if(mActionProcessor != null) {
                         mActionProcessor.action(action,sampleItem);
+                    }
+                }
+            });
+            mRoot.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mActionProcessor != null) {
+                        mActionProcessor.action(SampleCardAction.action_item_click,sampleItem);
                     }
                 }
             });

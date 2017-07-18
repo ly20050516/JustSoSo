@@ -16,6 +16,7 @@
     </declare-styleable>
 
     <declare-styleable name="FlowLayout">
-        <attr name="interval" format="dimension"></attr>
+        <attr name="vertical_interval" format="dimension"></attr>
+        <attr name="horizontal_interval" format="dimension"></attr>
     </declare-styleable>
 </resources>

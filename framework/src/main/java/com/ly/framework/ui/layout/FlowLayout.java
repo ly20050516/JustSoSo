@@ -17,8 +17,8 @@ import com.ly.framework.utilities.DisplayUtil;
 public class FlowLayout extends ViewGroup {
 
     public static final String TAG = "FlowLayout";
-    private int interval;
-
+    private int mVerticalInterval;
+    private int mHorizontalInterval;
     public FlowLayout(Context context) {
         this(context, null);
     }
@@ -35,11 +35,10 @@ public class FlowLayout extends ViewGroup {
 
     private void init(Context context, AttributeSet attrs, int style) {
 
-        interval = dp2px(5);
-
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.FlowLayout);
         if (a != null) {
-            interval = (int) a.getDimension(R.styleable.FlowLayout_interval, dp2px(5));
+            mVerticalInterval = (int) a.getDimension(R.styleable.FlowLayout_vertical_interval, dp2px(0));
+            mHorizontalInterval = (int) a.getDimension(R.styleable.FlowLayout_horizontal_interval,dp2px(0));
             a.recycle();
         }
 
@@ -77,7 +76,7 @@ public class FlowLayout extends ViewGroup {
                 /**
                  * 超过一行的宽度了，换行
                  */
-                top = top + maxHeight + interval;
+                top = top + maxHeight + mVerticalInterval;
                 left = 0;
                 maxHeight = childHeight;
                 child.layout(left,top,left + childWidth,top + childHeight);
@@ -133,7 +132,7 @@ public class FlowLayout extends ViewGroup {
          */
         if (heightMode == MeasureSpec.AT_MOST) {
             /**
-             * Wrap_content，计算出共有多少行，行高 = 每一行的最大子高度 + interval。注意，在仅一行的情况下，不要加上  interval
+             * Wrap_content，计算出共有多少行，行高 = 每一行的最大子高度 + mVerticalInterval。注意，在仅一行的情况下，不要加上  mVerticalInterval
              */
             height = 0;
             int childCount = getChildCount();
@@ -167,7 +166,7 @@ public class FlowLayout extends ViewGroup {
                      * 加上 上下 间距
                      */
                     if (rows > 0) {
-                        height += interval;
+                        height += mVerticalInterval;
                     }
 
                     /**
@@ -185,7 +184,7 @@ public class FlowLayout extends ViewGroup {
 
             height += maxHeight;
             if (rows > 0) {
-                height += interval;
+                height += mVerticalInterval;
             }
         } else {
             /**
@@ -204,6 +203,10 @@ public class FlowLayout extends ViewGroup {
 
         public LayoutParams(Context c, AttributeSet attrs) {
             super(c, attrs);
+        }
+
+        public LayoutParams(int w,int h) {
+            super(w,h);
         }
 
     }

@@ -16,14 +16,14 @@ public class SampleCardFactory {
 
     public AbstractSampleCard generate(SampleItem sampleItem) {
 
-        SoftReference<AbstractSampleCard> cardSoftReference = mSampleCards.get(sampleItem.itemStyle);
+        SoftReference<AbstractSampleCard> cardSoftReference = mSampleCards.get(sampleItem.cardStyle);
         if(cardSoftReference != null && cardSoftReference.get() != null) {
             return cardSoftReference.get();
         }
 
 
         AbstractSampleCard sampleCard;
-        switch (sampleItem.itemStyle) {
+        switch (sampleItem.cardStyle) {
             case SampleCardStyleDef.CARD_STYLE_UI_NORMAL:
                 sampleCard = new SampleNormalCard();
                 cardSoftReference = new SoftReference<>(sampleCard);
@@ -35,7 +35,7 @@ public class SampleCardFactory {
             default:
                 return null;
         }
-        mSampleCards.put(sampleItem.itemStyle,cardSoftReference);
+        mSampleCards.put(sampleItem.cardStyle,cardSoftReference);
         return cardSoftReference.get();
     }
 }

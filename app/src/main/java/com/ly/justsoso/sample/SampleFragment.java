@@ -2,23 +2,19 @@ package com.ly.justsoso.sample;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.ly.framework.ui.layout.WindowLayerLayout;
 import com.ly.justsoso.R;
-import com.ly.justsoso.enjoypictures.ui.SpacesItemDecoration;
-import com.ly.justsoso.sample.adapter.ActionProcessor;
-import com.ly.justsoso.sample.adapter.SampleRecycleViewAdapter;
-import com.ly.justsoso.sample.adapter.card.SampleCardStyleDef;
+import com.ly.justsoso.sample.adapter.card.SampleCardAction;
+import com.ly.justsoso.sample.adapter.card.SampleCardId;
 import com.ly.justsoso.sample.adapter.card.SampleCardTypeDef;
 import com.ly.justsoso.sample.adapter.item.SampleItem;
 import com.ly.justsoso.sample.ui.SampleCategoryView;
+import com.ly.justsoso.sample.ui.detail.SampleFlowLayout;
 
 
 /**
@@ -60,6 +56,21 @@ public class SampleFragment extends Fragment implements SampleContract.View{
 
     @Override
     public void onItemClick(int action,SampleItem sampleItem) {
+        if(sampleItem == null) {
+            return;
+        }
 
+        if(sampleItem.cardId == SampleCardId.CARD_ID_XPROGRESSBAR) {
+
+        }else if(sampleItem.cardId == SampleCardId.CARD_ID_FLOW_LAYOUT) {
+            onFlowLayout(action,sampleItem);
+        }
+    }
+
+    private void onFlowLayout(int action,SampleItem sampleItem) {
+        if(action == SampleCardAction.action_item_click) {
+            SampleFlowLayout layout = new SampleFlowLayout(getContext());
+            mWindowLayerLayout.addView(layout);
+        }
     }
 }

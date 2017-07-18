@@ -30,6 +30,7 @@ public abstract class AbstractSampleCard implements ActionProcessor{
         this.mActionProcessor = actionProcessor;
     }
 
+
     @Override
     public void action(int action, SampleItem sampleItem) {
         if(mActionProcessor != null) {

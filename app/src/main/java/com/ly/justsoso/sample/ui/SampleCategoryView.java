@@ -12,6 +12,7 @@ import com.ly.justsoso.enjoypictures.ui.SpacesItemDecoration;
 import com.ly.justsoso.sample.SampleContract;
 import com.ly.justsoso.sample.adapter.ActionProcessor;
 import com.ly.justsoso.sample.adapter.SampleRecycleViewAdapter;
+import com.ly.justsoso.sample.adapter.card.SampleCardId;
 import com.ly.justsoso.sample.adapter.card.SampleCardStyleDef;
 import com.ly.justsoso.sample.adapter.card.SampleCardTypeDef;
 import com.ly.justsoso.sample.adapter.item.SampleItem;
@@ -54,17 +55,19 @@ public class SampleCategoryView extends FrameLayout {
         });
 
         SampleItem item = new SampleItem();
-        item.itemStyle = SampleCardStyleDef.CARD_STYLE_UI_XPROGRESS_BAR;
-        item.itemType = SampleCardTypeDef.CARD_TYPE_UI;
-        item.itemName = "XProgressBarCard";
-        item.itemDesc = "自定义进度条";
+        item.cardStyle = SampleCardStyleDef.CARD_STYLE_UI_XPROGRESS_BAR;
+        item.cardType = SampleCardTypeDef.CARD_TYPE_UI;
+        item.cardName = "XProgressBarCard";
+        item.cardDesc = "自定义进度条";
+        item.cardId = SampleCardId.CARD_ID_XPROGRESSBAR;
         mRecycleViewAdapter.add(item);
 
         item = new SampleItem();
-        item.itemStyle = SampleCardStyleDef.CARD_STYLE_UI_NORMAL;
-        item.itemType = SampleCardTypeDef.CARD_TYPE_UI;
-        item.itemName = "SampleNormalCard";
-        item.itemDesc = "流式布局";
+        item.cardStyle = SampleCardStyleDef.CARD_STYLE_UI_NORMAL;
+        item.cardType = SampleCardTypeDef.CARD_TYPE_UI;
+        item.cardName = "SampleNormalCard";
+        item.cardDesc = "流式布局";
+        item.cardId = SampleCardId.CARD_ID_FLOW_LAYOUT;
 
         mRecycleViewAdapter.add(item);
 

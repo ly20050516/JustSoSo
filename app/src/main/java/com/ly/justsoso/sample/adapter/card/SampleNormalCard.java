@@ -22,17 +22,17 @@ public class SampleNormalCard extends AbstractSampleCard {
 
     @Override
     public int getCardType() {
-        return mSampleItem.itemType;
+        return mSampleItem.cardType;
     }
 
     @Override
     public int getCardStyle() {
-        return mSampleItem.itemStyle;
+        return mSampleItem.cardStyle;
     }
 
     @Override
     public String getCardName() {
-        return mSampleItem.itemName;
+        return mSampleItem.cardName;
     }
 
     @Override
@@ -58,7 +58,7 @@ public class SampleNormalCard extends AbstractSampleCard {
         if(mView != null && mView.get() != null) {
             LinearLayout linearLayout = mView.get();
             TextView textView = (TextView) linearLayout.findViewById(VIEW_ID_TV_DESC);
-            textView.setText(item.itemDesc);
+            textView.setText(item.cardDesc);
         }
     }
 }

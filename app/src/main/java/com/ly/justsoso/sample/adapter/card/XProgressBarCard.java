@@ -11,8 +11,6 @@ import com.ly.framework.ui.progress.XProgressBar;
 import com.ly.framework.utilities.DisplayUtil;
 import com.ly.justsoso.sample.adapter.item.SampleItem;
 
-import org.w3c.dom.Text;
-
 import java.lang.ref.SoftReference;
 
 /**
@@ -28,17 +26,17 @@ public class XProgressBarCard extends AbstractSampleCard {
 
     @Override
     public int getCardType() {
-        return mSampleItem.itemType;
+        return mSampleItem.cardType;
     }
 
     @Override
     public int getCardStyle() {
-        return mSampleItem.itemStyle;
+        return mSampleItem.cardStyle;
     }
 
     @Override
     public String getCardName() {
-        return mSampleItem.itemName;
+        return mSampleItem.cardName;
     }
 
     @Override
@@ -78,7 +76,7 @@ public class XProgressBarCard extends AbstractSampleCard {
             xProgressBar.setProgress(30);
 
             TextView textView = (TextView) linearLayout.findViewById(VIEW_ID_TV_DESC);
-            textView.setText(item.itemDesc);
+            textView.setText(item.cardDesc);
         }
 
     }
