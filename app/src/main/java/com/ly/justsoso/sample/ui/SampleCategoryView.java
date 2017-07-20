@@ -27,12 +27,12 @@ public class SampleCategoryView extends FrameLayout {
     SampleRecycleViewAdapter mRecycleViewAdapter;
     SampleContract.Presenter mSamplePresenter;
 
-    public SampleCategoryView(@NonNull Context context) {
+    public SampleCategoryView(@NonNull Context context,SampleContract.Presenter presenter) {
         super(context);
 
         LayoutInflater.from(context).inflate(R.layout.sample_category_view,this,true);
         mRecycleView = (RecyclerView)findViewById(R.id.recycle_view_sample);
-
+        setPresenter(presenter);
         init();
 
 

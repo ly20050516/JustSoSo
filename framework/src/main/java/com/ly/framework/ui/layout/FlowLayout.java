@@ -47,7 +47,7 @@ public class FlowLayout extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
 
-        Log.d(TAG, "onLayout: changed = " + changed + ";l = " + l + ";t = " + t + ";b = " + b);
+        Log.d(TAG, "onLayout: changed = " + changed + ";l = " + l + ";t = " + t + ";r = "+ r + ";b = " + b);
 
         int childCount = getChildCount();
 
@@ -60,15 +60,16 @@ public class FlowLayout extends ViewGroup {
         int width = getWidth();
         int height = getHeight();
         int maxHeight = 0;
-        Log.d(TAG, "onLayout: width = " + width + ";height = " + height);
+        Log.d(TAG, "onLayout: width = " + width + ";height = " + height + ";child count = " + childCount);
         for (int i = 0; i < childCount; i++) {
 
             View child = getChildAt(i);
             FlowLayout.LayoutParams layoutParams = (LayoutParams) child.getLayoutParams();
 
-            int childWidth = child.getWidth() + layoutParams.leftMargin + layoutParams.rightMargin;
-            int childHeight = child.getHeight() + layoutParams.topMargin + layoutParams.bottomMargin;
+            int childWidth = child.getMeasuredWidth() + layoutParams.leftMargin + layoutParams.rightMargin;
+            int childHeight = child.getMeasuredHeight() + layoutParams.topMargin + layoutParams.bottomMargin;
 
+            Log.d(TAG, "onLayout: childWidth = " + childWidth + ";childHeight = " + childHeight);
             if(childHeight > maxHeight) {
                 maxHeight = childHeight;
             }
@@ -85,6 +86,8 @@ public class FlowLayout extends ViewGroup {
                 left += childWidth;
             }
         }
+
+
     }
 
     @Override
@@ -150,8 +153,8 @@ public class FlowLayout extends ViewGroup {
                 measureChild(view, widthMeasureSpec, heightMeasureSpec);
                 FlowLayout.LayoutParams layoutParams = (LayoutParams) view.getLayoutParams();
 
-                childWidth = layoutParams.width + layoutParams.leftMargin + layoutParams.rightMargin;
-                childHeight = layoutParams.height + layoutParams.topMargin + layoutParams.bottomMargin;
+                childWidth = view.getMeasuredWidth() + layoutParams.leftMargin + layoutParams.rightMargin;
+                childHeight = view.getMeasuredHeight() + layoutParams.topMargin + layoutParams.bottomMargin;
 
                 if (childHeight > maxHeight) {
                     maxHeight = childHeight;
@@ -191,6 +194,10 @@ public class FlowLayout extends ViewGroup {
              * 具体值，或者 match_parent
              */
             height = heightSize;
+            int childCount = getChildCount();
+            for(int i = 0;i < childCount;i++) {
+                measureChild(getChildAt(i),widthMeasureSpec,heightMeasureSpec);
+            }
         }
 
         Log.d(TAG, "onMeasure: width = " + width + ";height = " + height);

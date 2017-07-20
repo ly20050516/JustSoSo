@@ -1,6 +1,7 @@
 package com.ly.justsoso.sample.ui.detail;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.ly.framework.ui.layout.FlowLayout;
@@ -11,13 +12,14 @@ import com.ly.framework.ui.layout.FlowLayout;
 
 public class SampleFlowLayout extends FlowLayout {
 
+    public static final String TAG = "SampleFlowLayout";
     public SampleFlowLayout(Context context) {
         super(context);
 
-        intit();
+        init();
     }
 
-    private void intit() {
+    private void init() {
 
         String []target = new String[]{
 
@@ -30,6 +32,7 @@ public class SampleFlowLayout extends FlowLayout {
             TextView textView = new TextView(getContext());
             textView.setText(target[i]);
             addView(textView,layoutParams);
+            Log.d(TAG, "init: target " + target[i]);
         }
     }
 }

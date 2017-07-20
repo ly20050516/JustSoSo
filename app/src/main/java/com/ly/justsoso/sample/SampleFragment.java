@@ -1,11 +1,13 @@
 package com.ly.justsoso.sample;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.ly.framework.ui.layout.WindowLayerLayout;
 import com.ly.justsoso.R;
@@ -34,7 +36,7 @@ public class SampleFragment extends Fragment implements SampleContract.View{
 
         View root = inflater.inflate(R.layout.fragment_sample,container,false);
         mWindowLayerLayout = (WindowLayerLayout) root.findViewById(R.id.root_window_layer_layout);
-        SampleCategoryView sampleCategoryView = new SampleCategoryView(getContext());
+        SampleCategoryView sampleCategoryView = new SampleCategoryView(getContext(),mSamplePresenter);
         WindowLayerLayout.LayoutParams layoutParams = new WindowLayerLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         mWindowLayerLayout.addView(sampleCategoryView,layoutParams);
         return root;
