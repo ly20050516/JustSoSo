@@ -64,7 +64,7 @@ public class FlowLayout extends ViewGroup {
         for (int i = 0; i < childCount; i++) {
 
             View child = getChildAt(i);
-            FlowLayout.LayoutParams layoutParams = (LayoutParams) child.getLayoutParams();
+            LayoutParams layoutParams = (LayoutParams) child.getLayoutParams();
 
             int childWidth = child.getMeasuredWidth() + layoutParams.leftMargin + layoutParams.rightMargin;
             int childHeight = child.getMeasuredHeight() + layoutParams.topMargin + layoutParams.bottomMargin;
@@ -83,8 +83,9 @@ public class FlowLayout extends ViewGroup {
                 child.layout(left,top,left + childWidth,top + childHeight);
             }else {
                 child.layout(left,top,left + childWidth,top + childHeight);
-                left += childWidth;
             }
+            left += childWidth;
+
         }
 
 
@@ -151,7 +152,7 @@ public class FlowLayout extends ViewGroup {
 
                 View view = getChildAt(i);
                 measureChild(view, widthMeasureSpec, heightMeasureSpec);
-                FlowLayout.LayoutParams layoutParams = (LayoutParams) view.getLayoutParams();
+                LayoutParams layoutParams = (LayoutParams) view.getLayoutParams();
 
                 childWidth = view.getMeasuredWidth() + layoutParams.leftMargin + layoutParams.rightMargin;
                 childHeight = view.getMeasuredHeight() + layoutParams.topMargin + layoutParams.bottomMargin;
@@ -205,17 +206,65 @@ public class FlowLayout extends ViewGroup {
 
     }
 
+    @Override
+    protected LayoutParams generateDefaultLayoutParams() {
+        return new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+    }
+
+    @Override
+    public LayoutParams generateLayoutParams(AttributeSet attrs) {
+        return new LayoutParams(getContext(), attrs);
+    }
+
+    @Override
+    protected ViewGroup.LayoutParams generateLayoutParams(ViewGroup.LayoutParams p) {
+        return new LayoutParams(p);
+    }
 
     public static class LayoutParams extends MarginLayoutParams {
 
+        /**
+         * {@inheritDoc}
+         */
         public LayoutParams(Context c, AttributeSet attrs) {
             super(c, attrs);
+
+
         }
 
-        public LayoutParams(int w,int h) {
-            super(w,h);
+        /**
+         * {@inheritDoc}
+         */
+        public LayoutParams(int width, int height) {
+            super(width, height);
         }
 
+
+
+        /**
+         * {@inheritDoc}
+         */
+        public LayoutParams(ViewGroup.LayoutParams source) {
+            super(source);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public LayoutParams(ViewGroup.MarginLayoutParams source) {
+            super(source);
+        }
+
+        /**
+         * Copy constructor. Clones the width, height, margin values, and
+         * gravity of the source.
+         *
+         * @param source The layout params to copy from.
+         */
+        public LayoutParams(LayoutParams source) {
+            super(source);
+
+        }
     }
 
     private int dp2px(int dp) {

@@ -68,7 +68,38 @@ public class SampleCategoryView extends FrameLayout {
         item.cardName = "SampleNormalCard";
         item.cardDesc = "流式布局";
         item.cardId = SampleCardId.CARD_ID_FLOW_LAYOUT;
+        mRecycleViewAdapter.add(item);
 
+        item = new SampleItem();
+        item.cardStyle = SampleCardStyleDef.CARD_STYLE_UI_NORMAL;
+        item.cardType = SampleCardTypeDef.CARD_TYPE_UI;
+        item.cardName = "SampleNormalCard";
+        item.cardDesc = "ColorFilter";
+        item.cardId = SampleCardId.CARD_ID_COLOR_FILTER;
+        mRecycleViewAdapter.add(item);
+
+        item = new SampleItem();
+        item.cardStyle = SampleCardStyleDef.CARD_STYLE_UI_NORMAL;
+        item.cardType = SampleCardTypeDef.CARD_TYPE_UI;
+        item.cardName = "SampleNormalCard";
+        item.cardDesc = "ColorMatrix";
+        item.cardId = SampleCardId.CARD_ID_COLOR_MATRIX;
+        mRecycleViewAdapter.add(item);
+
+        item = new SampleItem();
+        item.cardStyle = SampleCardStyleDef.CARD_STYLE_UI_NORMAL;
+        item.cardType = SampleCardTypeDef.CARD_TYPE_UI;
+        item.cardName = "SampleNormalCard";
+        item.cardDesc = "MediaPlayer";
+        item.cardId = SampleCardId.CARD_ID_MEDIAPLAYER;
+        mRecycleViewAdapter.add(item);
+
+        item = new SampleItem();
+        item.cardStyle = SampleCardStyleDef.CARD_STYLE_UI_NORMAL;
+        item.cardType = SampleCardTypeDef.CARD_TYPE_UI;
+        item.cardName = "SampleNormalCard";
+        item.cardDesc = "VideoView";
+        item.cardId = SampleCardId.CARD_ID_VIDEOVIEW;
         mRecycleViewAdapter.add(item);
 
         mRecycleViewAdapter.notifyDataSetChanged();

@@ -1,22 +1,22 @@
 package com.ly.justsoso.sample;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.ly.framework.ui.layout.WindowLayerLayout;
 import com.ly.justsoso.R;
 import com.ly.justsoso.sample.adapter.card.SampleCardAction;
 import com.ly.justsoso.sample.adapter.card.SampleCardId;
-import com.ly.justsoso.sample.adapter.card.SampleCardTypeDef;
 import com.ly.justsoso.sample.adapter.item.SampleItem;
 import com.ly.justsoso.sample.ui.SampleCategoryView;
-import com.ly.justsoso.sample.ui.detail.SampleFlowLayout;
+import com.ly.justsoso.sample.ui.detail.AbstractDetailView;
+import com.ly.justsoso.sample.ui.detail.SampleColorMatrixView;
+import com.ly.justsoso.sample.ui.detail.SampleDetailViewFactory;
+import com.ly.justsoso.sample.ui.detail.SampleFlowView;
 
 
 /**
@@ -66,13 +66,33 @@ public class SampleFragment extends Fragment implements SampleContract.View{
 
         }else if(sampleItem.cardId == SampleCardId.CARD_ID_FLOW_LAYOUT) {
             onFlowLayout(action,sampleItem);
+        }else if(sampleItem.cardId == SampleCardId.CARD_ID_COLOR_MATRIX) {
+            onColorMatrix(action,sampleItem);
+        }else if(sampleItem.cardId == SampleCardId.CARD_ID_VIDEOVIEW) {
+            onVideoView(action,sampleItem);
+        }
+    }
+
+    private void onActionItemClick(SampleItem sampleItem) {
+        AbstractDetailView view = SampleDetailViewFactory.generate(getContext(),sampleItem);
+        mWindowLayerLayout.addView(view);
+
+    }
+    private void onVideoView(int action, SampleItem sampleItem) {
+        if(action == SampleCardAction.action_item_click) {
+            onActionItemClick(sampleItem);
+        }
+    }
+
+    private void onColorMatrix(int action, SampleItem sampleItem) {
+        if(action == SampleCardAction.action_item_click) {
+            onActionItemClick(sampleItem);
         }
     }
 
     private void onFlowLayout(int action,SampleItem sampleItem) {
         if(action == SampleCardAction.action_item_click) {
-            SampleFlowLayout layout = new SampleFlowLayout(getContext());
-            mWindowLayerLayout.addView(layout);
+            onActionItemClick(sampleItem);
         }
     }
 }

@@ -10,4 +10,7 @@ public interface SampleCardId {
     int CARD_ID_FLOW_LAYOUT = 2;
     int CARD_ID_COLOR_FILTER = 3;
     int CARD_ID_COLOR_MATRIX = 4;
+    int CARD_ID_MEDIAPLAYER = 5;
+    int CARD_ID_VIDEOVIEW = 6;
+
 }
