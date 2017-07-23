@@ -40,7 +40,7 @@ public class SampleSimpleColorMatrixView extends AbstractDetailView {
         mSeekBarRotate = (SeekBar) findViewById(R.id.color_matrix_seek_bar_rotate);
         mSeekBarSaturation = (SeekBar) findViewById(R.id.color_matrix_seek_bar_saturation);
         mSeekBarScale = (SeekBar) findViewById(R.id.color_matrix_seek_bar_scale);
-        mBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.color_matrix);
+        mBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.color_matrix2);
         mImageView.setImageBitmap(mBitmap);
 
         initRotate();

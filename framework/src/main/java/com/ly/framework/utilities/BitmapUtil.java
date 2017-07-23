@@ -4,13 +4,14 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 /**
  * Created by ly on 2017/7/22.
  */
 
 public class BitmapUtil {
-
+    public static final String TAG = "BitmapUtil";
     public static Bitmap drawableToBitmap(Drawable drawable) {
 
         if(drawable == null) {
@@ -38,7 +39,7 @@ public class BitmapUtil {
         if(in == null) {
             return null;
         }
-
+        Log.d(TAG, "createBitmap: width = " + in.getWidth() + ";height = " + in.getHeight());
         Bitmap out = Bitmap.createBitmap(in.getWidth(),in.getHeight(), Bitmap.Config.ARGB_8888);
         return out;
     }
