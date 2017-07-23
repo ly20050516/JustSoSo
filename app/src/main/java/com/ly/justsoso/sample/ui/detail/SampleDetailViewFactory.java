@@ -19,6 +19,8 @@ final public class SampleDetailViewFactory {
             detailView = new SampleFlowView(context);
         }else if(id == SampleCardId.CARD_ID_VIDEOVIEW) {
             detailView = new SampleVideoView(context);
+        }else if(id == SampleCardId.CARD_ID_SIMPLE_COLOR_MATRIX) {
+            detailView = new SampleSimpleColorMatrixView(context);
         }else if(id == SampleCardId.CARD_ID_COLOR_MATRIX) {
             detailView = new SampleColorMatrixView(context);
         }

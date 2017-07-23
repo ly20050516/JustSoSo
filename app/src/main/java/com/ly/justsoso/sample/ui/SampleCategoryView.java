@@ -82,7 +82,15 @@ public class SampleCategoryView extends FrameLayout {
         item.cardStyle = SampleCardStyleDef.CARD_STYLE_UI_NORMAL;
         item.cardType = SampleCardTypeDef.CARD_TYPE_UI;
         item.cardName = "SampleNormalCard";
-        item.cardDesc = "ColorMatrix";
+        item.cardDesc = "Simple Color Matrix";
+        item.cardId = SampleCardId.CARD_ID_SIMPLE_COLOR_MATRIX;
+        mRecycleViewAdapter.add(item);
+
+        item = new SampleItem();
+        item.cardStyle = SampleCardStyleDef.CARD_STYLE_UI_NORMAL;
+        item.cardType = SampleCardTypeDef.CARD_TYPE_UI;
+        item.cardName = "SampleNormalCard";
+        item.cardDesc = "Color Matrix";
         item.cardId = SampleCardId.CARD_ID_COLOR_MATRIX;
         mRecycleViewAdapter.add(item);
 

@@ -14,12 +14,17 @@ public class ColorMatrixUtil {
 
     public static Bitmap colorMatrix(Bitmap in,float rotate,float saturation,float scale) {
 
-        if(in == null || in.isRecycled()) {
+        Bitmap out = Bitmap.createBitmap(in.getWidth(),in.getHeight(), Bitmap.Config.ARGB_8888);
+        colorMatrix(out,in,rotate,saturation,scale);
+        return out;
+    }
 
-            return null;
+    public static void colorMatrix(Bitmap out,Bitmap in,float rotate,float saturation,float scale) {
+
+        if(out == null || out.isRecycled() || in == null || in.isRecycled()) {
+            return;
         }
 
-        Bitmap out = Bitmap.createBitmap(in.getWidth(),in.getHeight(), Bitmap.Config.ARGB_8888);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setAntiAlias(true);
         Canvas canvas = new Canvas(out);
@@ -44,6 +49,26 @@ public class ColorMatrixUtil {
 
         canvas.drawBitmap(in,0,0,paint);
 
+    }
+    public static Bitmap colorMatrix(Bitmap in,float[]colorArray) {
+
+        Bitmap out = Bitmap.createBitmap(in.getWidth(),in.getHeight(), Bitmap.Config.ARGB_8888);
+        colorMatrix(out,in,colorArray);
         return out;
+    }
+
+    public static void colorMatrix(Bitmap out,Bitmap in,float[]colorArray) {
+
+
+        if(out == null || out.isRecycled() || in == null || in.isRecycled()) {
+            return;
+        }
+
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setAntiAlias(true);
+        Canvas canvas = new Canvas(out);
+
+        paint.setColorFilter(new ColorMatrixColorFilter(colorArray));
+        canvas.drawBitmap(in,0,0,paint);
     }
 }

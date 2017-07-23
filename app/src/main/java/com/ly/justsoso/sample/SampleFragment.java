@@ -14,9 +14,7 @@ import com.ly.justsoso.sample.adapter.card.SampleCardId;
 import com.ly.justsoso.sample.adapter.item.SampleItem;
 import com.ly.justsoso.sample.ui.SampleCategoryView;
 import com.ly.justsoso.sample.ui.detail.AbstractDetailView;
-import com.ly.justsoso.sample.ui.detail.SampleColorMatrixView;
 import com.ly.justsoso.sample.ui.detail.SampleDetailViewFactory;
-import com.ly.justsoso.sample.ui.detail.SampleFlowView;
 
 
 /**
@@ -66,10 +64,12 @@ public class SampleFragment extends Fragment implements SampleContract.View{
 
         }else if(sampleItem.cardId == SampleCardId.CARD_ID_FLOW_LAYOUT) {
             onFlowLayout(action,sampleItem);
-        }else if(sampleItem.cardId == SampleCardId.CARD_ID_COLOR_MATRIX) {
-            onColorMatrix(action,sampleItem);
+        }else if(sampleItem.cardId == SampleCardId.CARD_ID_SIMPLE_COLOR_MATRIX) {
+            onSimpleColorMatrix(action,sampleItem);
         }else if(sampleItem.cardId == SampleCardId.CARD_ID_VIDEOVIEW) {
             onVideoView(action,sampleItem);
+        }else if(sampleItem.cardId == SampleCardId.CARD_ID_COLOR_MATRIX) {
+            onColorMatrix(action,sampleItem);
         }
     }
 
@@ -79,6 +79,12 @@ public class SampleFragment extends Fragment implements SampleContract.View{
 
     }
     private void onVideoView(int action, SampleItem sampleItem) {
+        if(action == SampleCardAction.action_item_click) {
+            onActionItemClick(sampleItem);
+        }
+    }
+
+    private void onSimpleColorMatrix(int action, SampleItem sampleItem) {
         if(action == SampleCardAction.action_item_click) {
             onActionItemClick(sampleItem);
         }

@@ -33,4 +33,13 @@ public class BitmapUtil {
         return bitmap;
 
     }
+
+    public static Bitmap createBitmap(Bitmap in) {
+        if(in == null) {
+            return null;
+        }
+
+        Bitmap out = Bitmap.createBitmap(in.getWidth(),in.getHeight(), Bitmap.Config.ARGB_8888);
+        return out;
+    }
 }

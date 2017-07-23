@@ -1,34 +1,201 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <ImageView
-        android:layout_marginTop="10dp"
         android:id="@+id/color_matrix_image_view"
-        android:layout_gravity="center_horizontal"
         android:layout_width="300dp"
-        android:layout_height="400dp"/>
+        android:layout_height="300dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp" />
 
-    <SeekBar
-        android:layout_marginTop="10dp"
-        android:id="@+id/color_matrix_seek_bar_rotate"
+    <LinearLayout
+        android:layout_marginRight="100dp"
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:orientation="horizontal">
 
-    <SeekBar
-        android:layout_marginTop="10dp"
-        android:id="@+id/color_matrix_seek_bar_saturation"
+        <EditText
+            android:inputType="numberDecimal|numberSigned"
+            android:id="@+id/color_matrix_edit_text_1"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_width="0dp" />
+
+        <EditText
+            android:inputType="numberDecimal|numberSigned"
+
+            android:id="@+id/color_matrix_edit_text_2"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_width="0dp" />
+
+        <EditText
+            android:inputType="numberDecimal|numberSigned"
+
+            android:id="@+id/color_matrix_edit_text_3"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_width="0dp" />
+
+        <EditText
+            android:inputType="numberDecimal|numberSigned"
+
+            android:id="@+id/color_matrix_edit_text_4"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_width="0dp" />
+
+        <EditText
+            android:inputType="numberDecimal|numberSigned"
+
+            android:id="@+id/color_matrix_edit_text_5"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_width="0dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginRight="100dp"
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:orientation="horizontal">
 
-    <SeekBar
-        android:layout_marginTop="10dp"
-        android:id="@+id/color_matrix_seek_bar_scale"
+        <EditText
+            android:inputType="numberDecimal|numberSigned"
+
+            android:id="@+id/color_matrix_edit_text_6"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_width="0dp" />
+
+        <EditText
+            android:inputType="numberDecimal|numberSigned"
+
+            android:id="@+id/color_matrix_edit_text_7"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_width="0dp" />
+
+        <EditText
+            android:inputType="numberDecimal|numberSigned"
+
+            android:id="@+id/color_matrix_edit_text_8"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_width="0dp" />
+
+        <EditText
+            android:inputType="numberDecimal|numberSigned"
+
+            android:id="@+id/color_matrix_edit_text_9"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_width="0dp" />
+
+        <EditText
+            android:inputType="numberDecimal|numberSigned"
+
+            android:id="@+id/color_matrix_edit_text_10"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_width="0dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginRight="100dp"
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:orientation="horizontal">
+
+        <EditText
+            android:inputType="numberDecimal|numberSigned"
+
+            android:id="@+id/color_matrix_edit_text_11"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_width="0dp" />
+
+        <EditText
+            android:inputType="numberDecimal|numberSigned"
+
+            android:id="@+id/color_matrix_edit_text_12"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_width="0dp" />
+
+        <EditText
+            android:inputType="numberDecimal|numberSigned"
+
+            android:id="@+id/color_matrix_edit_text_13"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_width="0dp" />
+
+        <EditText
+            android:inputType="numberDecimal|numberSigned"
+
+            android:id="@+id/color_matrix_edit_text_14"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_width="0dp" />
+
+        <EditText
+            android:inputType="numberDecimal|numberSigned"
+
+            android:id="@+id/color_matrix_edit_text_15"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_width="0dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginRight="100dp"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:inputType="numberDecimal|numberSigned"
+
+            android:id="@+id/color_matrix_edit_text_16"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_width="0dp" />
+
+        <EditText
+            android:inputType="numberDecimal|numberSigned"
+
+            android:id="@+id/color_matrix_edit_text_17"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_width="0dp" />
+
+        <EditText
+            android:inputType="numberDecimal|numberSigned"
+
+            android:id="@+id/color_matrix_edit_text_18"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_width="0dp" />
+
+        <EditText
+            android:inputType="numberDecimal|numberSigned"
+
+            android:id="@+id/color_matrix_edit_text_19"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_width="0dp" />
+
+        <EditText
+            android:inputType="numberDecimal|numberSigned"
+
+            android:id="@+id/color_matrix_edit_text_20"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_width="0dp" />
+    </LinearLayout>
 </LinearLayout>
