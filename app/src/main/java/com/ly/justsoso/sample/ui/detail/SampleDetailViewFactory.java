@@ -17,12 +17,14 @@ final public class SampleDetailViewFactory {
         int id = sampleItem.cardId;
         if(id == SampleCardId.CARD_ID_FLOW_LAYOUT) {
             detailView = new SampleFlowView(context);
-        }else if(id == SampleCardId.CARD_ID_VIDEOVIEW) {
+        }else if(id == SampleCardId.CARD_ID_VIDEO_VIEW) {
             detailView = new SampleVideoView(context);
         }else if(id == SampleCardId.CARD_ID_SIMPLE_COLOR_MATRIX) {
             detailView = new SampleSimpleColorMatrixView(context);
         }else if(id == SampleCardId.CARD_ID_COLOR_MATRIX) {
             detailView = new SampleColorMatrixView(context);
+        }else if(id == SampleCardId.CARD_ID_MATRIX) {
+            detailView = new MatrixInActionView(context);
         }
 
         return detailView;

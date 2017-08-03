@@ -60,24 +60,28 @@ public class SampleFragment extends Fragment implements SampleContract.View{
             return;
         }
 
-        if(sampleItem.cardId == SampleCardId.CARD_ID_XPROGRESSBAR) {
+        if(sampleItem.cardId == SampleCardId.CARD_ID_X_PROGRESSBAR) {
 
         }else if(sampleItem.cardId == SampleCardId.CARD_ID_FLOW_LAYOUT) {
             onFlowLayout(action,sampleItem);
         }else if(sampleItem.cardId == SampleCardId.CARD_ID_SIMPLE_COLOR_MATRIX) {
             onSimpleColorMatrix(action,sampleItem);
-        }else if(sampleItem.cardId == SampleCardId.CARD_ID_VIDEOVIEW) {
+        }else if(sampleItem.cardId == SampleCardId.CARD_ID_VIDEO_VIEW) {
             onVideoView(action,sampleItem);
         }else if(sampleItem.cardId == SampleCardId.CARD_ID_COLOR_MATRIX) {
             onColorMatrix(action,sampleItem);
+        }else if(sampleItem.cardId == SampleCardId.CARD_ID_MATRIX) {
+            onMatrixInAction(action,sampleItem);
         }
     }
 
-    private void onActionItemClick(SampleItem sampleItem) {
-        AbstractDetailView view = SampleDetailViewFactory.generate(getContext(),sampleItem);
-        mWindowLayerLayout.addView(view);
-
+    private void onMatrixInAction(int action, SampleItem sampleItem) {
+        if (action == SampleCardAction.action_item_click) {
+            onActionItemClick(sampleItem);
+        }
     }
+
+
     private void onVideoView(int action, SampleItem sampleItem) {
         if(action == SampleCardAction.action_item_click) {
             onActionItemClick(sampleItem);
@@ -100,5 +104,11 @@ public class SampleFragment extends Fragment implements SampleContract.View{
         if(action == SampleCardAction.action_item_click) {
             onActionItemClick(sampleItem);
         }
+    }
+
+    private void onActionItemClick(SampleItem sampleItem) {
+        AbstractDetailView view = SampleDetailViewFactory.generate(getContext(),sampleItem);
+        mWindowLayerLayout.addView(view);
+
     }
 }

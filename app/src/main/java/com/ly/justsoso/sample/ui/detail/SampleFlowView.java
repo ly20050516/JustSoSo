@@ -11,7 +11,7 @@ import com.ly.justsoso.R;
 
 public class SampleFlowView extends AbstractDetailView {
 
-    public static final String TAG = "SampleFlowLayout";
+    public static final String TAG = "SampleFlowView";
     public SampleFlowView(Context context) {
         super(context);
     }

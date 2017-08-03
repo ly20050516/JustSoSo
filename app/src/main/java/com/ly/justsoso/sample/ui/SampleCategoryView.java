@@ -59,7 +59,7 @@ public class SampleCategoryView extends FrameLayout {
         item.cardType = SampleCardTypeDef.CARD_TYPE_UI;
         item.cardName = "XProgressBarCard";
         item.cardDesc = "自定义进度条";
-        item.cardId = SampleCardId.CARD_ID_XPROGRESSBAR;
+        item.cardId = SampleCardId.CARD_ID_X_PROGRESSBAR;
         mRecycleViewAdapter.add(item);
 
         item = new SampleItem();
@@ -68,6 +68,14 @@ public class SampleCategoryView extends FrameLayout {
         item.cardName = "SampleNormalCard";
         item.cardDesc = "流式布局";
         item.cardId = SampleCardId.CARD_ID_FLOW_LAYOUT;
+        mRecycleViewAdapter.add(item);
+
+        item = new SampleItem();
+        item.cardStyle = SampleCardStyleDef.CARD_STYLE_UI_NORMAL;
+        item.cardType = SampleCardTypeDef.CARD_TYPE_UI;
+        item.cardName = "SampleNormalCard";
+        item.cardDesc = "Matrix 实践";
+        item.cardId = SampleCardId.CARD_ID_MATRIX;
         mRecycleViewAdapter.add(item);
 
         item = new SampleItem();
@@ -99,7 +107,7 @@ public class SampleCategoryView extends FrameLayout {
         item.cardType = SampleCardTypeDef.CARD_TYPE_UI;
         item.cardName = "SampleNormalCard";
         item.cardDesc = "MediaPlayer";
-        item.cardId = SampleCardId.CARD_ID_MEDIAPLAYER;
+        item.cardId = SampleCardId.CARD_ID_MEDIA_PLAYER;
         mRecycleViewAdapter.add(item);
 
         item = new SampleItem();
@@ -107,7 +115,7 @@ public class SampleCategoryView extends FrameLayout {
         item.cardType = SampleCardTypeDef.CARD_TYPE_UI;
         item.cardName = "SampleNormalCard";
         item.cardDesc = "VideoView";
-        item.cardId = SampleCardId.CARD_ID_VIDEOVIEW;
+        item.cardId = SampleCardId.CARD_ID_VIDEO_VIEW;
         mRecycleViewAdapter.add(item);
 
         mRecycleViewAdapter.notifyDataSetChanged();
