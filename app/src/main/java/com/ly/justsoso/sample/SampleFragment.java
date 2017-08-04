@@ -72,6 +72,14 @@ public class SampleFragment extends Fragment implements SampleContract.View{
             onColorMatrix(action,sampleItem);
         }else if(sampleItem.cardId == SampleCardId.CARD_ID_MATRIX) {
             onMatrixInAction(action,sampleItem);
+        }else if(sampleItem.cardId == SampleCardId.CARD_ID_SIMPLE_MEMORY) {
+            onSimpleMemroy(action,sampleItem);
+        }
+    }
+
+    private void onSimpleMemroy(int action, SampleItem sampleItem) {
+        if (action == SampleCardAction.action_item_click) {
+            onActionItemClick(sampleItem);
         }
     }
 

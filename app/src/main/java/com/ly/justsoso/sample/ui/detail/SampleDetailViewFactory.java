@@ -25,6 +25,8 @@ final public class SampleDetailViewFactory {
             detailView = new SampleColorMatrixView(context);
         }else if(id == SampleCardId.CARD_ID_MATRIX) {
             detailView = new MatrixInActionView(context);
+        }else if(id == SampleCardId.CARD_ID_SIMPLE_MEMORY) {
+            detailView = new SimpleMemoryView(context);
         }
 
         return detailView;

@@ -118,6 +118,14 @@ public class SampleCategoryView extends FrameLayout {
         item.cardId = SampleCardId.CARD_ID_VIDEO_VIEW;
         mRecycleViewAdapter.add(item);
 
+        item = new SampleItem();
+        item.cardStyle = SampleCardStyleDef.CARD_STYLE_UI_NORMAL;
+        item.cardType = SampleCardTypeDef.CARD_TYPE_UI;
+        item.cardName = "SampleNormalCard";
+        item.cardDesc = "Simple memory";
+        item.cardId = SampleCardId.CARD_ID_SIMPLE_MEMORY;
+        mRecycleViewAdapter.add(item);
+
         mRecycleViewAdapter.notifyDataSetChanged();
 
     }

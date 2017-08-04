@@ -14,5 +14,6 @@ public interface SampleCardId {
     int CARD_ID_MEDIA_PLAYER = 6;
     int CARD_ID_VIDEO_VIEW = 7;
     int CARD_ID_MATRIX = 8;
+    int CARD_ID_SIMPLE_MEMORY = 9;
 
 }
