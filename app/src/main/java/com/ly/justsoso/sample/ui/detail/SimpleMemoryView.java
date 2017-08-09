@@ -10,12 +10,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.TextView;
 
+import com.ly.framework.utilities.FileUtil;
 import com.ly.justsoso.R;
+import com.squareup.haha.perflib.Heap;
+import com.squareup.haha.perflib.HprofParser;
+import com.squareup.haha.perflib.Snapshot;
+import com.squareup.haha.perflib.io.HprofBuffer;
+import com.squareup.haha.perflib.io.MemoryMappedFileBuffer;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,20 +34,21 @@ public class SimpleMemoryView extends AbstractDetailView {
 
     public static final String TAG = "SimpleMemoryView";
     private TextView mTextView;
+
     public SimpleMemoryView(Context context) {
         super(context);
     }
 
     @Override
     protected void inflat(Context context) {
-        LayoutInflater.from(context).inflate(R.layout.sample_simple_memory_view,this,true);
+        LayoutInflater.from(context).inflate(R.layout.sample_simple_memory_view, this, true);
 
     }
 
     @Override
     protected void init(Context context) {
 
-        Debug.startMethodTracing("JustSoSo");
+//        Debug.startMethodTracing("JustSoSo");
         mTextView = (TextView) findViewById(R.id.simple_memory_text_view_pss);
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -50,34 +59,34 @@ public class SimpleMemoryView extends AbstractDetailView {
         String sizeStr = Formatter.formatFileSize(getContext(), Debug.getPss() * 1024);
         stringBuilder.append("Pss : " + sizeStr + "\n");
 
-        sizeStr = Formatter.formatFileSize(getContext(),Debug.getNativeHeapAllocatedSize());
+        sizeStr = Formatter.formatFileSize(getContext(), Debug.getNativeHeapAllocatedSize());
         stringBuilder.append("NativeHeapAllocatedSize : " + sizeStr + "\n");
 
-        sizeStr = Formatter.formatFileSize(getContext(),Debug.getNativeHeapFreeSize());
+        sizeStr = Formatter.formatFileSize(getContext(), Debug.getNativeHeapFreeSize());
         stringBuilder.append("NativeHeapFreeSize : " + sizeStr + "\n");
 
-        sizeStr = Formatter.formatFileSize(getContext(),Debug.getNativeHeapSize());
+        sizeStr = Formatter.formatFileSize(getContext(), Debug.getNativeHeapSize());
         stringBuilder.append("NativeHeapSize : " + sizeStr + "\n");
 
-        sizeStr = Formatter.formatFileSize(getContext(),Debug.getGlobalAllocSize());
+        sizeStr = Formatter.formatFileSize(getContext(), Debug.getGlobalAllocSize());
         stringBuilder.append("GlobalAllocSize : " + sizeStr + "\n");
 
-        sizeStr = Formatter.formatFileSize(getContext(),Debug.getGlobalFreedSize());
+        sizeStr = Formatter.formatFileSize(getContext(), Debug.getGlobalFreedSize());
         stringBuilder.append("GlobalFreedSize : " + sizeStr + "\n");
 
-        sizeStr = Formatter.formatFileSize(getContext(),Debug.getThreadAllocSize());
+        sizeStr = Formatter.formatFileSize(getContext(), Debug.getThreadAllocSize());
         stringBuilder.append("ThreadAllocSize : " + sizeStr + "\n");
 
-        sizeStr = Formatter.formatFileSize(getContext(),Debug.getGlobalExternalAllocSize());
+        sizeStr = Formatter.formatFileSize(getContext(), Debug.getGlobalExternalAllocSize());
         stringBuilder.append("GlobalExternalAllocSize : " + sizeStr + "\n");
 
-        sizeStr = Formatter.formatFileSize(getContext(),Debug.getGlobalExternalFreedSize());
+        sizeStr = Formatter.formatFileSize(getContext(), Debug.getGlobalExternalFreedSize());
         stringBuilder.append("GlobalExternalFreedSize : " + sizeStr + "\n");
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             stringBuilder.append("\nDebug run time stats\n");
-            HashMap<String,String> runtimeStat = (HashMap<String, String>) Debug.getRuntimeStats();
-            for(Map.Entry<String,String> entry : runtimeStat.entrySet()) {
+            HashMap<String, String> runtimeStat = (HashMap<String, String>) Debug.getRuntimeStats();
+            for (Map.Entry<String, String> entry : runtimeStat.entrySet()) {
                 Log.d(TAG, "init runtime stat : key = " + entry.getKey() + ";value = " + entry.getValue());
                 stringBuilder.append(entry.getKey() + " : " + entry.getValue() + "\n");
             }
@@ -174,73 +183,128 @@ public class SimpleMemoryView extends AbstractDetailView {
 
         stringBuilder.append("\nAMS memory info\n");
 
-        sizeStr = Formatter.formatFileSize(getContext(),memoryInfo.totalMem);
+        sizeStr = Formatter.formatFileSize(getContext(), memoryInfo.totalMem);
         stringBuilder.append("memoryInfo.totalMem : " + sizeStr + "\n");
-        sizeStr = Formatter.formatFileSize(getContext(),memoryInfo.availMem);
+        sizeStr = Formatter.formatFileSize(getContext(), memoryInfo.availMem);
         stringBuilder.append("memoryInfo.availMem : " + sizeStr + "\n");
-        sizeStr = Formatter.formatFileSize(getContext(),memoryInfo.threshold);
+        sizeStr = Formatter.formatFileSize(getContext(), memoryInfo.threshold);
         stringBuilder.append("memoryInfo.threshold : " + sizeStr + "\n");
         stringBuilder.append("memoryInfo.lowMemory : " + memoryInfo.lowMemory + "\n");
 
         mTextView.setText(stringBuilder.toString());
 
 
-        Debug.stopMethodTracing();
+        dumpHProfDataAndAnalysis();
+
+//        Debug.stopMethodTracing();
 
 
     }
 
-    private void dumpHProfData() {
+    private void dumpHProfDataAndAnalysis() {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "hprof");
-                    if(!dir.exists()) {
-                        dir.mkdir();
-                    }
-                    File file = new File(dir,"dump.hprof");
-                    if(file.exists()){
-                        file.delete();
-                    }
-                    file.createNewFile();
-                    long time1 = System.currentTimeMillis();
-                    Debug.dumpHprofData(file.getAbsolutePath());
-                    Log.d(TAG, "init: dump hprofdata time = " + (System.currentTimeMillis() - time1));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                File hprof = dumpHProf();
+                analysisHprof(hprof);
             }
         }).start();
-
-
     }
+
+    private File dumpHProf() {
+        File hprof = null;
+        try {
+
+            File dir = new File(FileUtil.getDebugDumpDirectory(),"hprof");
+            if (!dir.exists()) {
+                dir.mkdir();
+            }
+            File file = new File(dir, "dump.hprof");
+            if (file.exists()) {
+                file.delete();
+            }
+            file.createNewFile();
+            long time1 = System.currentTimeMillis();
+            Debug.dumpHprofData(file.getAbsolutePath());
+            Log.d(TAG, "init: dump hprofdata time = " + (System.currentTimeMillis() - time1));
+            hprof = file;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return hprof;
+    }
+
+    private void analysisHprof(File file) {
+        if (file == null || !file.exists()) {
+            return;
+        }
+
+        HprofBuffer hprofBuffer = null;
+        try {
+            hprofBuffer = new MemoryMappedFileBuffer(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        HprofParser hprofParser = new HprofParser(hprofBuffer);
+
+        Snapshot snapshot = hprofParser.parse();
+
+        analysisHProfHeapCount(snapshot);
+
+//        snapshot.dumpInstanceCounts();
+//        snapshot.dumpSizes();
+//        snapshot.dumpSubclasses();
+    }
+
+    private void analysisHProfHeapCount(Snapshot snapshot) {
+        if(snapshot == null) {
+            return;
+        }
+
+        ArrayList<Heap> heapList = (ArrayList<Heap>) snapshot.getHeaps();
+        if(heapList == null) {
+            return;
+        }
+
+        Log.d(TAG, "analysisHProfHeapCount: heap sie = " + heapList.size());
+        for(Heap heap : heapList) {
+            Log.d(TAG, "analysisHProfHeapCount: id = " + heap.getId()
+                    + ";name = " + heap.getName()
+                    + ";class count = " + heap.getClasses().size()
+                    + ";instance count = " + heap.getInstancesCount());
+        }
+    }
+
     private void dumpService(final String name) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "service");
-                    if(!dir.exists()) {
+                    File dir = new File(FileUtil.getDebugDumpDirectory(), "service");
+                    if (!dir.exists()) {
                         dir.mkdir();
                     }
-                    File file = new File(dir,name);
-                    if(file.exists()){
+                    File file = new File(dir, name);
+                    if (file.exists()) {
                         file.delete();
                     }
                     file.createNewFile();
                     FileOutputStream fos = new FileOutputStream(file);
                     long time1 = System.currentTimeMillis();
-                    Debug.dumpService(name,fos.getFD(),null);
+                    Debug.dumpService(name, fos.getFD(), null);
                     fos.getFD().sync();
                     fos.close();
                     Log.d(TAG, "dumpService: name = " + name + ";cost = " + (System.currentTimeMillis() - time1));
-                }catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }).start();
 
     }
+
+
 
 }

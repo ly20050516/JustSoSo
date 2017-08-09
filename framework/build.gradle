@@ -96,6 +96,5 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'org.greenrobot:greendao:3.2.2'
     compile 'org.greenrobot:essentials:3.0.0-RC1'
-
-
+    compile 'com.squareup.haha:haha:2.0.3'
 }
