@@ -29,8 +29,7 @@ android {
 }
 
 dependencies {
-
-//    compile 'com.ly.justsoso:framework:0.0.1-SNAPSHOT'
+    //    compile 'com.ly.justsoso:framework:0.0.1-SNAPSHOT'
     compile project(':animation')
     compile project(':framework')
 }

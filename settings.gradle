@@ -1,1 +1,1 @@
-include ':app', ':animation', 'framework'
+include ':app', ':animation', ':haha', 'framework'

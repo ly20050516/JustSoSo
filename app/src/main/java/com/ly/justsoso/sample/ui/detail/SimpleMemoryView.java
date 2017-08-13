@@ -4,7 +4,6 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.os.Build;
 import android.os.Debug;
-import android.os.Environment;
 import android.text.format.Formatter;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,16 +11,22 @@ import android.widget.TextView;
 
 import com.ly.framework.utilities.FileUtil;
 import com.ly.justsoso.R;
+import com.squareup.haha.perflib.ClassObj;
 import com.squareup.haha.perflib.Heap;
 import com.squareup.haha.perflib.HprofParser;
+import com.squareup.haha.perflib.Instance;
+import com.squareup.haha.perflib.RootObj;
 import com.squareup.haha.perflib.Snapshot;
 import com.squareup.haha.perflib.io.HprofBuffer;
 import com.squareup.haha.perflib.io.MemoryMappedFileBuffer;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.MappedByteBuffer;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -251,29 +256,97 @@ public class SimpleMemoryView extends AbstractDetailView {
 
         Snapshot snapshot = hprofParser.parse();
 
-        analysisHProfHeapCount(snapshot);
+        if(snapshot != null) {
+//            analysisHProfHeap(snapshot);
+//            analysisGcRoot(snapshot);
+        }
 
 //        snapshot.dumpInstanceCounts();
 //        snapshot.dumpSizes();
 //        snapshot.dumpSubclasses();
     }
 
-    private void analysisHProfHeapCount(Snapshot snapshot) {
-        if(snapshot == null) {
-            return;
-        }
+    private void analysisHProfHeap(Snapshot snapshot) {
 
         ArrayList<Heap> heapList = (ArrayList<Heap>) snapshot.getHeaps();
         if(heapList == null) {
             return;
         }
 
-        Log.d(TAG, "analysisHProfHeapCount: heap sie = " + heapList.size());
-        for(Heap heap : heapList) {
-            Log.d(TAG, "analysisHProfHeapCount: id = " + heap.getId()
+        Log.d(TAG, "analysisHProfHeap: heap sie = " + heapList.size());
+        for(int i = 0;i < heapList.size(); i++) {
+            Heap heap = heapList.get(i);
+            Log.d(TAG,
+                    "analysisHProfHeap: id = " + heap.getId()
                     + ";name = " + heap.getName()
                     + ";class count = " + heap.getClasses().size()
-                    + ";instance count = " + heap.getInstancesCount());
+                    + ";instance count = " + heap.getInstancesCount()
+            );
+
+            if(heap.getName().equals( "app" )) {
+                analysisClasses(heap.getClasses(),i);
+//                analysisInstances((ArrayList<Instance>) heap.getInstances());
+
+
+            }
+
+        }
+
+
+
+    }
+
+    private void analysisClasses(Collection<ClassObj> classes,int heapIndex) {
+        if(classes == null) {
+            return;
+        }
+
+        for (ClassObj classObj : classes) {
+
+            Log.d(TAG, "analysisClasses: "
+                + "id = " + classObj.getId()
+                + ";unique id = " + classObj.getUniqueId()
+                + ";class name = " + classObj.getClassName()
+                + ";total retained size = " + classObj.getTotalRetainedSize()
+                + ";size = " + classObj.getSize()
+                + ";composite size = " + classObj.getCompositeSize()
+                + ";shallow size = " + classObj.getShallowSize()
+
+            );
+        }
+    }
+
+    private void analysisInstances(ArrayList<Instance> instances) {
+
+        if(instances == null) {
+            return;
+        }
+
+        for (Instance inst : instances) {
+            Log.d(TAG, "analysisHProfHeap: "
+                    + "id = " + inst.getId()
+                    + ";unique id = " + inst.getUniqueId()
+                    + ";size = " + inst.getSize()
+                    + ";composite size = " + inst.getCompositeSize()
+                    + ";class name = " + inst.getClassObj().getClassName()
+                    + ";distance to gc root = " + inst.getDistanceToGcRoot()
+                    + ";total retained size = " + inst.getTotalRetainedSize()
+            );
+        }
+    }
+
+    private void analysisGcRoot(Snapshot snapshot) {
+
+        List<RootObj> gcRoots = (List<RootObj>) snapshot.getGCRoots();
+        if(gcRoots != null) {
+            Log.d(TAG, "analysisHProfHeap: gcRoots size() = " + gcRoots.size());
+            for(RootObj gc : gcRoots) {
+                Log.d(TAG, "analysisHProfHeap: gc root size = " + gc.getSize());
+                Log.d(TAG, "analysisHProfHeap: root id = " + gc.getId());
+                Log.d(TAG, "analysisHProfHeap: class name = " + gc.getClassName(snapshot));
+                Log.d(TAG, "analysisHProfHeap: root type ,type = " + gc.getRootType().getType() + ";root type name = " + gc.getRootType().getName());
+                Log.d(TAG, "analysisHProfHeap:  root compositesize= " + gc.getCompositeSize() + "");
+            }
         }
     }
 
