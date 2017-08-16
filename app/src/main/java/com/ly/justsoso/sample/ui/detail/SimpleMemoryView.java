@@ -257,13 +257,13 @@ public class SimpleMemoryView extends AbstractDetailView {
         Snapshot snapshot = hprofParser.parse();
 
         if(snapshot != null) {
-//            analysisHProfHeap(snapshot);
-//            analysisGcRoot(snapshot);
+            analysisHProfHeap(snapshot);
+            analysisGcRoot(snapshot);
         }
 
-//        snapshot.dumpInstanceCounts();
-//        snapshot.dumpSizes();
-//        snapshot.dumpSubclasses();
+        snapshot.dumpInstanceCounts();
+        snapshot.dumpSizes();
+        snapshot.dumpSubclasses();
     }
 
     private void analysisHProfHeap(Snapshot snapshot) {
@@ -311,6 +311,7 @@ public class SimpleMemoryView extends AbstractDetailView {
                 + ";size = " + classObj.getSize()
                 + ";composite size = " + classObj.getCompositeSize()
                 + ";shallow size = " + classObj.getShallowSize()
+//                + ";retain size = " + classObj.getRetainedSize(heapIndex)
 
             );
         }

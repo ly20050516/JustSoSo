@@ -73,11 +73,20 @@ public class SampleFragment extends Fragment implements SampleContract.View{
         }else if(sampleItem.cardId == SampleCardId.CARD_ID_MATRIX) {
             onMatrixInAction(action,sampleItem);
         }else if(sampleItem.cardId == SampleCardId.CARD_ID_SIMPLE_MEMORY) {
-            onSimpleMemroy(action,sampleItem);
+            onSimpleMemory(action,sampleItem);
+        }else if(sampleItem.cardId == SampleCardId.CARD_ID_FILE_IO) {
+            onFileIo(action,sampleItem);
         }
     }
 
-    private void onSimpleMemroy(int action, SampleItem sampleItem) {
+    private void onFileIo(int action, SampleItem sampleItem) {
+        if(action == SampleCardAction.action_item_click) {
+            onActionItemClick(sampleItem);
+        }
+    }
+
+
+    private void onSimpleMemory(int action, SampleItem sampleItem) {
         if (action == SampleCardAction.action_item_click) {
             onActionItemClick(sampleItem);
         }

@@ -27,6 +27,8 @@ final public class SampleDetailViewFactory {
             detailView = new MatrixInActionView(context);
         }else if(id == SampleCardId.CARD_ID_SIMPLE_MEMORY) {
             detailView = new SimpleMemoryView(context);
+        }else if(id == SampleCardId.CARD_ID_FILE_IO) {
+            detailView = new SampleFileIOView(context);
         }
 
         return detailView;
