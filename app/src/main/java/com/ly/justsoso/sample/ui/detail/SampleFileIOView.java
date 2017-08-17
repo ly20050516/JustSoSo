@@ -12,15 +12,19 @@ import org.greenrobot.essentials.io.IoUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.DataInputStream;
-import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 /**
  * Created by ly on 2017/7/19.
@@ -31,13 +35,14 @@ public class SampleFileIOView extends AbstractDetailView {
     public static final String TAG = "SampleFileIOView";
     private TextView mTextView;
     public static final String FILE_NAME = "fileio.txt";
+
     public SampleFileIOView(Context context) {
         super(context);
     }
 
     @Override
     protected void inflat(Context context) {
-        LayoutInflater.from(context).inflate(R.layout.sample_flow_layout_view,this,true);
+        LayoutInflater.from(context).inflate(R.layout.sample_flow_layout_view, this, true);
 
     }
 
@@ -45,6 +50,19 @@ public class SampleFileIOView extends AbstractDetailView {
     protected void init(Context context) {
 
         mTextView = (TextView) findViewById(R.id.simple_file_io_text_view);
+
+        byteStream();
+        charStream();
+        byteToCharStream();
+
+    }
+
+
+
+    /**
+     * 读写字节流，字节流相关操作
+     */
+    private void byteStream() {
 
         writeByteByFileOutPutStream();
         readByteByFileInputStream();
@@ -54,14 +72,10 @@ public class SampleFileIOView extends AbstractDetailView {
 
         writeByteByDataOutputStream();
         readByteByDataInputStream();
-
     }
 
-    /**
-     * 写字节流
-     */
     private void writeByteByFileOutPutStream() {
-        File writeFile = new File(FileUtil.getDebugDumpDirectory(),FILE_NAME);
+        File writeFile = new File(FileUtil.getDebugDumpDirectory(), FILE_NAME);
         FileOutputStream fileOutputStream = null;
         try {
             fileOutputStream = new FileOutputStream(writeFile);
@@ -80,7 +94,7 @@ public class SampleFileIOView extends AbstractDetailView {
     }
 
     private void readByteByFileInputStream() {
-        File inFile = new File(FileUtil.getDebugDumpDirectory(),"writeFile.txt");
+        File inFile = new File(FileUtil.getDebugDumpDirectory(), "writeFile.txt");
         Log.d(TAG, "readByteByFileInputStream: file length " + inFile.length());
         FileInputStream fileInputStream = null;
 
@@ -88,8 +102,8 @@ public class SampleFileIOView extends AbstractDetailView {
             fileInputStream = new FileInputStream(inFile);
             byte[] buffer = new byte[1024];
             StringBuilder stringBuilder = new StringBuilder(1024);
-            while(fileInputStream.read(buffer) != -1) {
-                stringBuilder.append(new String(buffer,"GBK"));
+            while (fileInputStream.read(buffer) != -1) {
+                stringBuilder.append(new String(buffer, "GBK"));
             }
 
             Log.d(TAG, "readByteByFileInputStream: read content = " + stringBuilder.toString());
@@ -98,13 +112,13 @@ public class SampleFileIOView extends AbstractDetailView {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             IoUtils.safeClose(fileInputStream);
         }
     }
 
     private void writeByteByBufferedOutputStream() {
-        File writeFile = new File(FileUtil.getDebugDumpDirectory(),FILE_NAME);
+        File writeFile = new File(FileUtil.getDebugDumpDirectory(), FILE_NAME);
         BufferedOutputStream bufferOutputStream = null;
 
         try {
@@ -126,7 +140,7 @@ public class SampleFileIOView extends AbstractDetailView {
     }
 
     private void readByteByBufferedInputStream() {
-        File readFile = new File(FileUtil.getDebugDumpDirectory(),FILE_NAME);
+        File readFile = new File(FileUtil.getDebugDumpDirectory(), FILE_NAME);
         BufferedInputStream bufferedInputStream = null;
 
         try {
@@ -134,7 +148,7 @@ public class SampleFileIOView extends AbstractDetailView {
             bufferedInputStream = new BufferedInputStream(new FileInputStream(readFile));
             byte[] buffer = new byte[1024];
             StringBuilder stringBuilder = new StringBuilder(1024);
-            while((bufferedInputStream.read(buffer)) != -1) {
+            while ((bufferedInputStream.read(buffer)) != -1) {
                 stringBuilder.append(new String(buffer));
             }
             Log.d(TAG, "readByteByBufferedInputStream: " + stringBuilder.toString());
@@ -150,7 +164,7 @@ public class SampleFileIOView extends AbstractDetailView {
     }
 
     private void writeByteByDataOutputStream() {
-        File writeFile = new File(FileUtil.getDebugDumpDirectory(),FILE_NAME);
+        File writeFile = new File(FileUtil.getDebugDumpDirectory(), FILE_NAME);
         DataOutputStream dataOutputStream = null;
 
         try {
@@ -178,7 +192,7 @@ public class SampleFileIOView extends AbstractDetailView {
     }
 
     private void readByteByDataInputStream() {
-        File readFile = new File(FileUtil.getDebugDumpDirectory(),FILE_NAME);
+        File readFile = new File(FileUtil.getDebugDumpDirectory(), FILE_NAME);
         DataInputStream dataInputStream = null;
 
         try {
@@ -193,7 +207,8 @@ public class SampleFileIOView extends AbstractDetailView {
             stringBuilder.append("string = " + new String(bytes));
             char c = dataInputStream.readChar();
             stringBuilder.append("char = " + c);
-
+            Log.d(TAG, "readByteByDataInputStream: " + stringBuilder.toString());
+            mTextView.setText(stringBuilder.toString());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -202,5 +217,150 @@ public class SampleFileIOView extends AbstractDetailView {
             IoUtils.safeClose(dataInputStream);
         }
     }
+
+
+    /**
+     * 读写字符流
+     */
+
+    private void charStream() {
+        writeCharByFileWriter();
+        readCharByFileReader();
+        writeCharByBufferedWriter();
+        readCharByBufferedReader();
+    }
+
+    private void writeCharByFileWriter() {
+
+        File writeFile = new File(FileUtil.getDebugDumpDirectory(), FILE_NAME);
+        FileWriter fileWriter = null;
+
+        try {
+            fileWriter = new FileWriter(writeFile);
+            fileWriter.write(4222342);/** 能写入什么呢 */
+            fileWriter.write("看来可以直接写一个字符串，but,which is the charactor code");
+            fileWriter.write(new char[]{12, 435, 8989, 43533, 65535, 6553}); /** 最大能写入的数值是 65535，所以一个 char 最多占两个字节咯*/
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            IoUtils.safeClose(fileWriter);
+        }
+
+    }
+
+    private void readCharByFileReader() {
+
+        File readFile = new File(FileUtil.getDebugDumpDirectory(), FILE_NAME);
+        FileReader fileReader = null;
+
+        try {
+            fileReader = new FileReader(readFile);
+            StringBuilder stringBuilder = new StringBuilder();
+            int integer = fileReader.read();
+            stringBuilder.append(integer);
+            char[] buff = new char[512];
+            while ((fileReader.read(buff)) != -1) {
+                stringBuilder.append(new String(buff));
+            }
+
+            Log.d(TAG, "readCharByFileReader: " + stringBuilder.toString());
+            mTextView.setText(stringBuilder.toString());
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            IoUtils.safeClose(fileReader);
+        }
+
+    }
+
+    private void writeCharByBufferedWriter() {
+        File writeFile = new File(FileUtil.getDebugDumpDirectory(), FILE_NAME);
+        BufferedWriter bufferedWriter = null;
+
+        try {
+            bufferedWriter = new BufferedWriter(new FileWriter(writeFile));
+            bufferedWriter.write("今天一哥们儿在那里说自己是什么什么集团的接班人，我听到后笑了，从小老师就告诉我，我是共产主义接班人，我有说什么吗? so childish.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            IoUtils.safeClose(bufferedWriter);
+        }
+    }
+
+    private void readCharByBufferedReader() {
+        File readFile = new File(FileUtil.getDebugDumpDirectory(), FILE_NAME);
+        BufferedReader bufferedReader = null;
+
+        try {
+            bufferedReader = new BufferedReader(new FileReader(readFile));
+            StringBuilder stringBuilder = new StringBuilder();
+            String line;
+            while((line = bufferedReader.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+
+            Log.d(TAG, "readCharByBufferedReader: " + stringBuilder.toString());
+            mTextView.setText(stringBuilder.toString());
+         } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            IoUtils.safeClose(bufferedReader);
+        }
+    }
+
+    /**
+     * 字节流转字符流
+     */
+
+    private void byteToCharStream() {
+        writeByteByOutputStreamWriter();
+        readByteByInputStreamReader();
+    }
+
+    private void writeByteByOutputStreamWriter() {
+
+        File writeFile = new File(FileUtil.getDebugDumpDirectory(), FILE_NAME);
+        OutputStreamWriter outputStreamWriter = null;
+
+        try {
+            outputStreamWriter = new OutputStreamWriter(new BufferedOutputStream(new FileOutputStream(writeFile)));
+            outputStreamWriter.write("将字符流写入，其最终文件落地则为字节流，yes or no? Certainly yes");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            IoUtils.safeClose(outputStreamWriter);
+        }
+    }
+
+    private void readByteByInputStreamReader() {
+        File readFile = new File(FileUtil.getDebugDumpDirectory(), FILE_NAME);
+        InputStreamReader inputStreamReader = null;
+
+        try {
+            inputStreamReader = new InputStreamReader(new BufferedInputStream(new FileInputStream(readFile)));
+            StringBuilder stringBufiler = new StringBuilder();
+            char []buff = new char[1024];
+            while((inputStreamReader.read(buff)) != -1) {
+                stringBufiler.append(new String(buff));/** 将字节流以字符的方式写出 */
+            }
+            Log.d(TAG, "readByteByInputStreamReader: " + stringBufiler.toString());
+            mTextView.setText(stringBufiler.toString());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            IoUtils.safeClose(inputStreamReader);
+        }
+    }
+
+
 
 }
