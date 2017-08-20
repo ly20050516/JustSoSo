@@ -25,6 +25,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 
 /**
  * Created by ly on 2017/7/19.
@@ -42,7 +44,7 @@ public class SampleFileIOView extends AbstractDetailView {
 
     @Override
     protected void inflat(Context context) {
-        LayoutInflater.from(context).inflate(R.layout.sample_flow_layout_view, this, true);
+        LayoutInflater.from(context).inflate(R.layout.sample_simple_file_io, this, true);
 
     }
 
@@ -54,7 +56,7 @@ public class SampleFileIOView extends AbstractDetailView {
         byteStream();
         charStream();
         byteToCharStream();
-
+        pipedStream();
     }
 
 
@@ -361,6 +363,90 @@ public class SampleFileIOView extends AbstractDetailView {
         }
     }
 
+    private void pipedStream() {
+
+        PipedInputStream pipedInputStream = new PipedInputStream();
+        PipedOutputStream pipedOutputStream = new PipedOutputStream();
+
+        try {
+
+            pipedOutputStream.connect(pipedInputStream);
+            PipedInputStreamThread pipedInputStreamThread = new PipedInputStreamThread(pipedInputStream);
+            PipedOutputSteamThread pipedOutputStreamThread = new PipedOutputSteamThread(pipedOutputStream);
+
+            new Thread(pipedInputStreamThread).start();
+            new Thread(pipedOutputStreamThread).start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    class PipedOutputSteamThread implements Runnable{
+
+        PipedOutputStream pipedOutputStream;
+        boolean stopFlag;
+        PipedOutputSteamThread(PipedOutputStream outputStream) {
+            pipedOutputStream = outputStream;
+            stopFlag = false;
+        }
+
+
+        @Override
+        public void run() {
+            try {
+                while (!stopFlag) {
+
+                    Log.d(TAG, "PipedOutputSteamThread wirte : 我是 PipedOutputStream,我正在写入一个消息");
+                    pipedOutputStream.write("我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息".getBytes());
+                    pipedOutputStream.flush();
+
+                    Thread.yield();
+                    Thread.sleep(5000);
+                }
+            }catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                stopFlag = true;
+                IoUtils.safeClose(pipedOutputStream);
+            }
+        }
+    }
+
+    class PipedInputStreamThread implements Runnable {
+
+        PipedInputStream pipedInputStream;
+        boolean stopFlag;
+
+        PipedInputStreamThread(PipedInputStream inputStream) {
+            pipedInputStream = inputStream;
+            stopFlag = false;
+        }
+
+        @Override
+        public void run() {
+            try{
+                StringBuilder stringBuilder = new StringBuilder();
+                byte []buff = new byte[1024];
+                int len = 0;
+                while(!stopFlag) {
+                    while(pipedInputStream.available() > 0) {
+                        len = pipedInputStream.read(buff);
+                        stringBuilder.append(new String(buff,0,len));
+                    }
+                    Log.d(TAG, "PipedInputStreamThread read : " + stringBuilder.toString());
+                    stringBuilder.delete(0,stringBuilder.length());
+
+                    Thread.yield();
+                    Thread.sleep(1000);
+                }
+            }catch (Exception e) {
+                e.printStackTrace();
+            }finally {
+                stopFlag = true;
+                IoUtils.safeClose(pipedInputStream);
+            }
+        }
+    }
 
 
 }
