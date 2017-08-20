@@ -397,7 +397,16 @@ public class SampleFileIOView extends AbstractDetailView {
                 while (!stopFlag) {
 
                     Log.d(TAG, "PipedOutputSteamThread wirte : 我是 PipedOutputStream,我正在写入一个消息");
-                    pipedOutputStream.write("我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息".getBytes());
+                    pipedOutputStream.write(("我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream," +
+                            "我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是" +
+                            " PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是" +
+                            " PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是" +
+                            " PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是" +
+                            " PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是" +
+                            " PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是" +
+                            " PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是" +
+                            " PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是 PipedOutputStream,我正在写入一个消息我是" +
+                            " PipedOutputStream,我正在写入一个消息").getBytes("utf-16be"));
                     pipedOutputStream.flush();
 
                     Thread.yield();
@@ -430,12 +439,11 @@ public class SampleFileIOView extends AbstractDetailView {
                 int len = 0;
                 while(!stopFlag) {
                     while(pipedInputStream.available() > 0) {
-                        len = pipedInputStream.read(buff);
-                        stringBuilder.append(new String(buff,0,len));
+                        len = pipedInputStream.read(buff,0,1024);
+                        stringBuilder.append(new String(buff,0,len,"utf-16be"));
                     }
                     Log.d(TAG, "PipedInputStreamThread read : " + stringBuilder.toString());
                     stringBuilder.delete(0,stringBuilder.length());
-
                     Thread.yield();
                     Thread.sleep(1000);
                 }
