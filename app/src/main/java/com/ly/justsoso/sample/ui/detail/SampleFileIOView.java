@@ -44,7 +44,7 @@ public class SampleFileIOView extends AbstractDetailView {
 
     @Override
     protected void inflat(Context context) {
-        LayoutInflater.from(context).inflate(R.layout.sample_simple_file_io, this, true);
+        LayoutInflater.from(context).inflate(R.layout.sample_file_io_layout_view, this, true);
 
     }
 

@@ -16,5 +16,6 @@ public interface SampleCardId {
     int CARD_ID_MATRIX = 8;
     int CARD_ID_SIMPLE_MEMORY = 9;
     int CARD_ID_FILE_IO = 10;
+    int CARD_ID_FILE_NIO = 11;
 
 }

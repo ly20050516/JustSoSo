@@ -134,6 +134,14 @@ public class SampleCategoryView extends FrameLayout {
         item.cardId = SampleCardId.CARD_ID_FILE_IO;
         mRecycleViewAdapter.add(item);
 
+        item = new SampleItem();
+        item.cardStyle = SampleCardStyleDef.CARD_STYLE_UI_NORMAL;
+        item.cardType = SampleCardTypeDef.CARD_TYPE_UI;
+        item.cardName = "SampleNormalCard";
+        item.cardDesc = "File N I / O";
+        item.cardId = SampleCardId.CARD_ID_FILE_NIO;
+        mRecycleViewAdapter.add(item);
+
         mRecycleViewAdapter.notifyDataSetChanged();
 
     }
