@@ -12,6 +12,7 @@ public interface EnjoyPictureContract {
 
     interface View extends BaseView<Presenter> {
 
+
         void setDatas(Pictures pictures);
         void addDatas(Pictures pictures);
     }
